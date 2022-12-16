@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/schedule?characterEncoding=UTF-8&useTimezone=true&serverTimezone=Asia/Seoul
+    username: root
+    password: charmacist
+
+  jpa:
+    hibernate:
+    #ddl-auto: create
+    properties:
+      show_sql: true
+      format_sql: true

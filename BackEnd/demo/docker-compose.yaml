@@ -1,0 +1,32 @@
+version : “3”
+
+services:
+  
+
+    springsvr:
+    #image: openjdk:8-jre
+      image: maven:3.6.3-jdk-11
+      container_name: spring-svr
+      hostname: spring-svr
+      volumes:
+        - type: bind
+          source: ./
+          target: /usr/src/mymaven
+      working_dir: /usr/src/mymaven
+      environment:
+        - JVM_OPTS=-Xmx12g -Xms12g -XX:MaxPermSize=1024m
+        - TZ=Asia/Seoul
+      #command: mvn clean install
+      command: >
+        sh -c "mkdir -p /usr/src/mymaven/target &&
+          chmod 777 /usr/src/mymaven/target &&
+          mvn spring-boot:run"
+      # networks:
+      #   my-net:
+      #     #ipv4_address: 172.18.0.15
+      #     aliases:
+      #       - spring-svr
+      ports:
+        - "8090:8080"
+      stdin_open: true
+      tty: true           
