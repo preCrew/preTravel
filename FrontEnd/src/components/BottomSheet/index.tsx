@@ -15,7 +15,7 @@ const BottomSheet = ({children,contentH}: BottomSheetProps) => {
       {/*클릭 버튼 */}
       <button onClick={() => setOpen(true)}>Open sheet</button>
       {/*Sheet */}
-      <Sheet isOpen={isOpen} onClose={() => setOpen(false)} detent={sheetDetent}>
+      <Sheet isOpen={isOpen} onClose={() => setOpen(false)} detent={sheetDetent} disableDrag={true}>
         <Sheet.Container>
           <Sheet.Header />
           <Sheet.Content>{children}</Sheet.Content>
