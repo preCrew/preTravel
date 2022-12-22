@@ -24,7 +24,7 @@ const MyScheduleListItem = ({data,index}: MyScheduleListItemProps) => {
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
-                        className="pl-8 list-item text-body1"
+                        className="pl-8 list-item text-body2"
                         style={{
                             backgroundColor: snap.isDragging
                                 ? "#4fe"
@@ -33,7 +33,7 @@ const MyScheduleListItem = ({data,index}: MyScheduleListItemProps) => {
                             ...provided.draggableProps.style
                         }}
                     >
-                        <span className="inline-block w-20 h-20 font-bold text-center rounded-full bg-gray4 text-body1Bold mr-2.5 -ml-7">{index + 1}</span>
+                        <span className="inline-block w-20 h-20 font-bold text-center rounded-full bg-gray4 text-body2Bold mr-2.5 -ml-7">{index + 1}</span>
                         {data.title}
                     </div>
                 )}
