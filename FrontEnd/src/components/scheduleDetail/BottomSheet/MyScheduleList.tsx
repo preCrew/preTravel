@@ -14,6 +14,11 @@ const data = [
 
 const MyScheduleList = () => {
     const [myschedulData,setmySchedulData] = useState(data)
+    const [drag,setDrag] = useState(false)
+
+    const onDragStart = () => {
+        setDrag(true)
+    }
 
     const onDragEnd = (result: any,provided: any) => {
 		if (!result.destination) {
@@ -26,14 +31,15 @@ const MyScheduleList = () => {
 		// 재정렬을 다시 배열에
 		myschedulDataCopy.splice(result.destination.index, 0, removed);
 		setmySchedulData(myschedulDataCopy);
-        console.log(myschedulDataCopy)
-		console.log(result);
+        //console.log(myschedulDataCopy,result)
+		//console.log('끝');
+        setDrag(false)   
 	};
 
     return (
         <>
-            <BottomSheet>
-                <DragDropContext onDragEnd={onDragEnd}>
+           <BottomSheet dragOn={drag}>
+                <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
                     <Droppable droppableId="column1">
                         {(provided, snap) => (
                             <div
