@@ -32,15 +32,15 @@ const MyScheduleList = () => {
 		myschedulDataCopy.splice(result.destination.index, 0, removed);
 		setmySchedulData(myschedulDataCopy);
         //console.log(myschedulDataCopy,result)
-		//console.log('끝');
-        setDrag(false)        
+		//console.log('끝')
+        setDrag(false)   
 	};
 
     return (
         <>
-            <BottomSheet dragOn={drag}>
+           <BottomSheet dragOn={drag}>
                 <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
-                    <Droppable droppableId="column1" >
+                    <Droppable droppableId="column1">
                         {(provided, snap) => (
                             <div
                                 ref={provided.innerRef}

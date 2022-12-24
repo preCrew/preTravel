@@ -4,7 +4,7 @@ import { useState } from 'react';
 interface  BottomSheetProps{
     children?: React.ReactNode,
     contentH?: number,
-    dragOn?: boolean,
+    dragOn?: boolean,    
 }
 
 const BottomSheet = ({children,contentH,dragOn}: BottomSheetProps) => {
