@@ -1,41 +1,42 @@
 import { Routes, Route } from 'react-router-dom';
-
+import MySchedule from './mySchedule';
+import { Helmet } from 'react-helmet-async';
 
 const App = () => {
-
-
   return (
-    <>
-      {/* <Routes>
-        <Route
-          path="/view/:id"
-          element={<Post />}
+    <div className='safe-top safe-left safe-right safe-bottom'>
+      <Helmet>
+        <title>여행</title>
+        <meta charSet="UTF-8" />        
+        <meta
+          http-equiv="X-UA-Compatible"
+          content="IE=edge"
         />
-        <Route
-          path="/"
-          element={
-            <>
-              <Header />
-              <Suspense fallback={<SkeletonMainPage />}>
-                <MainPage />
-              </Suspense>
-            </>
-          }
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0"
+          viewport-fit="cover"
+        />    
+      </Helmet>    
+      <Routes>
+        {/* <Route
+          path="/view/:id"
+          element={}
         />
         <Route
           path="/login"
-          element={<LoginPage />}
-        />
+          element={}
+        /> */}
         <Route
-          path="/profile/:id"
-          element={<ProfilePage />}
+          path="/mySchedule/:id"
+          element={<MySchedule/>}
         />
-        <Route
+        {/* <Route
           path="admincollectmusic"
           element={<CollectMusicPage />}
-        />
-      </Routes> */}
-    </>
+        /> */}
+      </Routes>
+    </div>
   );
 };
 

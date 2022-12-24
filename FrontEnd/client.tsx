@@ -8,7 +8,8 @@ import '@src/assets/font.css';
 import '@src/styles/global.css';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { CookiesProvider } from 'react-cookie';
+import { HelmetProvider } from 'react-helmet-async';
+
 const twentyFourHoursInMs = 1000 * 60 * 60 * 24;
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -27,7 +28,9 @@ const container = document.querySelector('#root');
 createRoot(container as Element).render(
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <App />
+        <HelmetProvider>
+          <App />
+        </HelmetProvider>
       </BrowserRouter>
     </QueryClientProvider>
 
