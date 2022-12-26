@@ -1,8 +1,10 @@
 version : “3”
 
-services:
-  
+networks:
+  test:
+    external: true
 
+services:
     springsvr:
     #image: openjdk:8-jre
       image: maven:3.6.3-jdk-11
@@ -26,6 +28,9 @@ services:
       #     #ipv4_address: 172.18.0.15
       #     aliases:
       #       - spring-svr
+      networks:
+        - test
+
       ports:
         - "8090:8080"
       stdin_open: true
