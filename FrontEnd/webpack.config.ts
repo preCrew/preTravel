@@ -68,13 +68,13 @@ const webpackConfig: Configuration = {
     }),
   ],
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: path.join(__dirname, 'build'),
     filename: '[name].js',
-    publicPath: '/dist/',
+    publicPath: '/build/',
   },
   devServer: {
     port: 8080,
-    devMiddleware: { publicPath: '/dist' },
+    devMiddleware: { publicPath: '/build' },
     static: { directory: path.resolve(__dirname) },
     hot: true,
     historyApiFallback: true, //존재하지 않는 url일경우 -> index.html
