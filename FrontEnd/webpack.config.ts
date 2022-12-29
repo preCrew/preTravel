@@ -11,9 +11,10 @@ interface Configuration extends WebpackConfiguration {
   devServer?: WebpackDevServerConfiguration;
 }
 
+const isDevelopment = process.env.NODE_ENV !== 'production';
+
 const webpackConfig: Configuration = {
   name: 'preTravelPlan',
-  mode: 'development', //배포 production
   devtool: 'eval',
   resolve: {
     extensions: ['.js', '.jsx', '.tsx', '.ts'],
@@ -28,7 +29,7 @@ const webpackConfig: Configuration = {
     rules: [
       {
         loader: 'babel-loader',
-        options: { plugins: ['react-refresh/babel'] },
+        options: isDevelopment ? { plugins: ['react-refresh/babel'] } : {},
       },
       {
         test: /\.tsx?$/,

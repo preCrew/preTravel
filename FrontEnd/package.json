@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --mode production",
-    "dev": "NODE_ENV=development webpack serve --env development",
+    "build": "webpack --env production --mode=production",
+    "dev": "NODE_ENV=development webpack serve --env development --mode=development",
     "watch": "npx tailwindcss -i ./src/styles/global.css -o ./dist/style.css --watch"
   },
   "repository": {
