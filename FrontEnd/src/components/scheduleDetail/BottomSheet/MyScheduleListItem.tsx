@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
+import MyScheduleListEditBtn from "./MyScheduleListEditBtn";
 
 interface MyScheduleListItemProps {
     data: {
@@ -7,10 +8,11 @@ interface MyScheduleListItemProps {
         title: string,
         order: number,
     },
-    index:number
+    index:number,
+    edit:boolean,
 }
 
-const MyScheduleListItem = ({data,index}: MyScheduleListItemProps) => {
+const MyScheduleListItem = ({data,index,edit}: MyScheduleListItemProps) => {
 
     return (
         <>
@@ -18,13 +20,14 @@ const MyScheduleListItem = ({data,index}: MyScheduleListItemProps) => {
                 key={data.id}
                 draggableId={data.id}
                 index={index}
+                isDragDisabled={true}
             >
                 {(provided, snap) => (
-                    <div
+                    <li
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
-                        className="pl-8 list-item text-body2"
+                        className="flex pl-8 mb-3 text-body2"
                         style={{
                             backgroundColor: snap.isDragging
                                 ? "#4fe"
@@ -33,9 +36,12 @@ const MyScheduleListItem = ({data,index}: MyScheduleListItemProps) => {
                             ...provided.draggableProps.style
                         }}
                     >
-                        <span className="inline-block w-20 h-20 font-bold text-center rounded-full bg-gray4 text-body2Bold mr-2.5 -ml-7">{index + 1}</span>
-                        {data.title}
-                    </div>
+                        <span className="inline-block w-20 h-20 font-bold text-center rounded-full shrink-0 bg-gray4 text-body2Bold -ml-7">{index + 1}</span>
+                        <div className="flex grow">
+                            <p className="px-2 break-words grow">{data.title}</p>
+                            {edit && <MyScheduleListEditBtn />}
+                        </div>
+                    </li>
                 )}
             </Draggable>
         </>

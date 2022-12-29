@@ -1,6 +1,7 @@
 import BottomSheet from "@src/components/BottomSheet";
 import React, { useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import Button from "./Button";
 import MyScheduleListItem from "./MyScheduleListItem";
 
 const data = [
@@ -10,11 +11,14 @@ const data = [
     {id:'4',title:'test4',order:4},
 ]
 
-//재정렬
+interface MyScheduleListProps {
+    drag: boolean
+    setDrag: React.Dispatch<React.SetStateAction<boolean>>
+    edit: boolean
+}
 
-const MyScheduleList = () => {
+const MyScheduleList = ({drag,setDrag,edit}: MyScheduleListProps) => {
     const [myschedulData,setmySchedulData] = useState(data)
-    const [drag,setDrag] = useState(false)
 
     const onDragStart = () => {
         setDrag(true)
@@ -37,25 +41,21 @@ const MyScheduleList = () => {
 	};
 
     return (
-        <>
-           <BottomSheet dragOn={drag}>
-                <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
-                    <Droppable droppableId="column1">
-                        {(provided, snap) => (
-                            <div
-                                ref={provided.innerRef}
-                                {...provided.droppableProps}
-                            >
-                                {myschedulData.map((it, i) => (
-                                   <MyScheduleListItem data={it} index={i} key={it.id}/>
-                                ))}
-                                {provided.placeholder}
-                            </div>
-                        )}
-                    </Droppable>
-                </DragDropContext>          
-            </BottomSheet> 
-        </>
+        <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
+            <Droppable droppableId="column1" >
+                {(provided, snap) => (
+                    <ul
+                        ref={provided.innerRef}
+                        {...provided.droppableProps}
+                    >
+                        {myschedulData.map((it, i) => (
+                            <MyScheduleListItem data={it} index={i} key={it.id} edit={edit}/>
+                        ))}
+                        {provided.placeholder}
+                    </ul>
+                )}
+            </Droppable>
+        </DragDropContext> 
     )
 }
 
