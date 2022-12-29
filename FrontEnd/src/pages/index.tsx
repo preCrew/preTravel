@@ -1,6 +1,7 @@
-// import MapContainer from '@src/hooks/useKakaoMap';
-import useKakaoMap from '@src/components/common/Map/useKakaoMap';
 import { Routes, Route } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
+import useKakaoMap from '@src/components/common/Map/useKakaoMap';
+import MySchedule from './mySchedule';
 
 let test = 33.452613;
 let id = 1;
@@ -21,20 +22,48 @@ const App = () => {
     // setNowLocation()
   };
   return (
-    <>
-      <div className="absolute">
-        <div className="absolute">
-          <Map />
-        </div>
-        <div className="relative z-10 flex flex-col">
-          <button onClick={handleClickButton}> 마커 추가하기 </button>
-          <button onClick={handleClickButton2}>id 1인 마커 제거하기</button>
-          <button onClick={handleClickButton3}>서울시로 위치 이동하기</button>
-        </div>
-      </div>
-      {/* {useKakaoMap()} */}
-      {/*  */}
-    </>
+    <div className="safe-top safe-left safe-right safe-bottom">
+      <Helmet>
+        <title>여행</title>
+        <meta charSet="UTF-8" />
+        <meta
+          http-equiv="X-UA-Compatible"
+          content="IE=edge"
+        />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0"
+          viewport-fit="cover"
+        />
+      </Helmet>
+      <Routes>
+        <Route
+          path="/mySchedule/:id"
+          element={<MySchedule />}
+        />
+        <Route
+          path="/map"
+          element={
+            <>
+              <div className="absolute">
+                <div className="absolute">
+                  <Map />
+                </div>
+                <div className="relative z-10 flex flex-col">
+                  <button onClick={handleClickButton}> 마커 추가하기 </button>
+                  <button onClick={handleClickButton2}>
+                    id 1인 마커 제거하기
+                  </button>
+                  <button onClick={handleClickButton3}>
+                    서울시로 위치 이동하기
+                  </button>
+                </div>
+              </div>
+            </>
+          }
+        />
+      </Routes>
+    </div>
   );
 };
 
