@@ -4,6 +4,7 @@ const px0_100 = { ...Array.from(Array(101)).map((_, i) => `${i}px`) };
 const px0_200 = { ...Array.from(Array(201)).map((_, i) => `${i}px`) };
 const px0_3000 = { ...Array.from(Array(3001)).map((_, i) => `${i}px`) };
 const remCalculate = (px) =>  (px / 16) + 'rem';
+const contentBasicPx = 22
 
 module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}', './index.html'],
@@ -62,19 +63,25 @@ module.exports = {
         medium: 500,
         bold: 700,
       },
+      borderRadius: {
+        DEFAULT: '20px',
+      },
+      spacing: {
+        basic : remCalculate(contentBasicPx),
+      },      
       colors: {
-        primary1: '#5698F3',
-        primary2: '#D84243',
-        primary3: '#F09CD5',
-        gray1: '#787878',
-        gray2: '#F6F6F6',
-        gray3: '#eeeeee',
-        gray4: '#eeeeee',
-        gray4: '#F2F5F9',
+        primary1: 'var(--primary1)',
+        primary2: 'var(--primary2)',
+        primary3: 'var(--primary3)',
+        gray1: 'var(--gray1)',
+        gray2: 'var(--gray2)',
+        gray3: 'var(--gray3)',
+        gray4: 'var(--gray4)',
+        gray5: 'var(--gray5)',
       },
     },
   },
-
+  variants: {},
   plugins: [
     require('@tailwindcss/line-clamp'),
       plugin(function({ addUtilities }){
@@ -98,6 +105,7 @@ module.exports = {
         }
 
         addUtilities( newUtilities );
-    })    
+    },
+    require('@mertasan/tailwindcss-variables'))    
   ],
 };
