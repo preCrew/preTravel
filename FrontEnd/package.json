@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --plugin react-refresh-webpack-plugin --mode production",
+    "build": "webpack --mode production",
     "dev": "NODE_ENV=development webpack serve --env development",
     "watch": "npx tailwindcss -i ./src/styles/global.css -o ./dist/style.css --watch"
   },
