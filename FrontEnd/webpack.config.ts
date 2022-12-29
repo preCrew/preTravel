@@ -11,9 +11,10 @@ interface Configuration extends WebpackConfiguration {
   devServer?: WebpackDevServerConfiguration;
 }
 
+const isDevelopment = process.env.NODE_ENV !== 'production';
+
 const webpackConfig: Configuration = {
   name: 'preTravelPlan',
-  mode: 'development', //배포 production
   devtool: 'eval',
   resolve: {
     extensions: ['.js', '.jsx', '.tsx', '.ts'],
@@ -28,7 +29,7 @@ const webpackConfig: Configuration = {
     rules: [
       {
         loader: 'babel-loader',
-        options: { plugins: ['react-refresh/babel'] },
+        options: isDevelopment ? { plugins: ['react-refresh/babel'] } : {},
       },
       {
         test: /\.tsx?$/,
@@ -79,13 +80,13 @@ const webpackConfig: Configuration = {
     }),
   ],
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: path.join(__dirname, 'build'),
     filename: '[name].js',
-    publicPath: '/dist/',
+    publicPath: '/build/',
   },
   devServer: {
     port: 8080,
-    devMiddleware: { publicPath: '/dist' },
+    devMiddleware: { publicPath: '/build' },
     static: { directory: path.resolve(__dirname) },
     hot: true,
     historyApiFallback: true, //존재하지 않는 url일경우 -> index.html
