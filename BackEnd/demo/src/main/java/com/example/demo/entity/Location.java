@@ -24,7 +24,7 @@ import lombok.ToString;
 @ToString
 @Builder
 @Table(name = "map_t")
-public class Map {
+public class Location {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

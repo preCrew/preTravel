@@ -16,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -25,7 +24,7 @@ import com.example.demo.entity.Member;
 import com.example.demo.service.MemberService;
 
 @RestController
-@RequestMapping("naver")
+// @RequestMapping("naver")
 public class NaverLoginController {
 
     @Autowired
@@ -43,9 +42,8 @@ public class NaverLoginController {
         map.put("data",  url);
         map.put("code", "200");
         map.put("msg", "로그인 url");
-        System.out.println(map);
         JSONObject resultJo = new JSONObject(map);
-        return map.toString();
+        return resultJo.toString();
     }
    
 /**
@@ -59,7 +57,6 @@ public class NaverLoginController {
  */
     @GetMapping("/oauth/redirect_url")
 	public ResponseEntity<String> authNaver(@RequestParam String code, @RequestParam String state) {
-    // public String authNaver(@RequestParam String code, @RequestParam String state) {
 			RestTemplate restTemplate = new RestTemplate();
 			HttpHeaders httphHeaders = new HttpHeaders();
             httphHeaders.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
@@ -149,8 +146,6 @@ public class NaverLoginController {
             return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
                 .body(resultJo.toString());
-            
-            
         }
 
     }

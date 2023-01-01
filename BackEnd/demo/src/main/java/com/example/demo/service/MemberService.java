@@ -16,4 +16,5 @@ public interface MemberService {
 
     void save(Member mem);
 
+
 }
