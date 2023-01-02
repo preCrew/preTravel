@@ -47,7 +47,8 @@ const webpackConfig: Configuration = {
       },
       {
         test: /\.css$/i,
-        include: path.resolve(__dirname, 'src'),
+        // include: path.resolve(__dirname, 'src'),
+        // exclude: /node_modules/,        
         use: ['style-loader', 'css-loader', 'postcss-loader'],
       },
       {
@@ -58,6 +59,17 @@ const webpackConfig: Configuration = {
           outputPath: './src/assets/fonts/',
         },
       },
+      {
+        test: /\.(eot|woff|woff2|ttf|svg|png|jpg|gif)$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 8192,
+            },
+          },
+        ],
+      },      
     ],
   },
   plugins: [
