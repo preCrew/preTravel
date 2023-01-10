@@ -1,16 +1,22 @@
+# spring:
+#   datasource:
+#     driver-class-name: org.mariadb.jdbc.Driver
+#     url: jdbc:mariadb://mariadb:3306/schedule?characterEncoding=UTF-8&useTimezone=true&serverTimezone=Asia/Seoul
+#     username: root
+#     password: root
 spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://svc.gksl2.cloudtype.app:30575/schedule?characterEncoding=UTF-8&useTimezone=true&serverTimezone=Asia/Seoul
     username: root
     password: charmacist
-
   jpa:
     hibernate:
-    #ddl-auto: create
+      ddl-auto: none
     properties:
-      show_sql: true
-      format_sql: true
+      hibernate:
+        show_sql: true
+        format_sql: true
 
 oauth:
   kakao:
@@ -18,4 +24,4 @@ oauth:
     user_host: https://kapi.kakao.com/v2/user/me
     grant_type: authorization_code
     rest_api_key: b419b28c930a90dc96e0fd983b9025ef
-    redirect_uri: http://localhost:8080/oauth
+    redirect_uri: http://localhost:8080/oauth/kakao

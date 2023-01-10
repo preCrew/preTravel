@@ -1,7 +1,10 @@
 package com.example.demo.service;
 
+import com.example.demo.dao.MemberDao;
 import com.example.demo.dto.KakaoTokenResponse;
 import com.example.demo.dto.KakaoUserInfoResponse;
+import com.example.demo.dto.ResponseDTO;
+import com.example.demo.entity.Member;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -31,13 +35,18 @@ public class KaKaoService {
     private String REST_API_KEY; // REST_API_KEY 값
 
     @Value("${oauth.kakao.redirect_uri}")
-    private String REDIRECT;    // http://localhost:8080/oauth
+    private String REDIRECT;    // http://localhost:8080/oauth/kakao
+
+    private String WEB_HOST = "http://localhost:8080/";
 
     @Autowired
     RestTemplate restTemplate;
 
+    @Autowired
+    MemberService memberService;
+
     @Description("카카오 Access Token 가져오기")
-    public String getToken(String code) {
+    private String getToken(String code) {
         String url = TOKEN_HOST
                 + "?grant_type=" + GRANT_TYPE   // 1. grant_type
                 + "&client_id=" + REST_API_KEY  // 2. client_id (rest_api_key)
@@ -54,7 +63,7 @@ public class KaKaoService {
     }
 
     @Description("카카오TokenResponse 가져오기")
-    public KakaoTokenResponse getKakaoTokenResponse(String code) {
+    private KakaoTokenResponse getKakaoTokenResponse(String code) {
         String url = TOKEN_HOST
                 + "?grant_type=" + GRANT_TYPE   // 1. grant_type
                 + "&client_id=" + REST_API_KEY  // 2. client_id (rest_api_key)
@@ -71,7 +80,7 @@ public class KaKaoService {
     }
 
     @Description("카카오 사용자 정보 가져오기")
-    public KakaoUserInfoResponse getKakaoUserInfo(String accessToken) {
+    private KakaoUserInfoResponse getKakaoUserInfo(String accessToken) {
         // Header
         String url = USER_HOST;
         HttpHeaders headers = new HttpHeaders();
@@ -94,5 +103,45 @@ public class KaKaoService {
             e.printStackTrace();
         }
         return kakaoUserInfo;
+    }
+
+    @Description("카카오 로그인 하기")
+    public ResponseEntity<ResponseDTO> login(String code) {
+        log.info("카카오 로그인 합니다. code: {}", code);
+        KakaoTokenResponse response = getKakaoTokenResponse(code);
+        log.info("KakaoTokenResponse 대한 정보입니다. response: {}", response.toString());
+        KakaoUserInfoResponse userInfo = getKakaoUserInfo(response.getAccess_token());
+        log.info("회원 정보 입니다. {}",userInfo);
+
+        ResponseCookie cookie = ResponseCookie.from("refreshToken", response.getRefresh_token())
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(60)
+                // .domain(WEB_HOST)
+                .build();
+
+        Map<String, String> data = new HashMap<>();
+        data.put("accessToken", response.getAccess_token());
+        String email = userInfo.getKakao_account().getEmail();
+
+        if( email.isEmpty() || email.isBlank() ) {
+            return (ResponseEntity<ResponseDTO>) ResponseEntity.notFound();
+        }
+        if(memberService.findByEmail(email).isEmpty()) {
+            memberService.save(Member.builder().email(email).build());
+        } else {
+            // Last Access Time Update
+        }
+
+        return ResponseEntity
+                .ok()
+                .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .body(ResponseDTO.builder()
+                    .code(200)
+                    .msg("로그인 성공")
+                    .data(data)
+                    .build()
+                );
     }
 }
