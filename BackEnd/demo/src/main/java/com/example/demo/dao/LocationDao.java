@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.example.demo.entity.Location;
+import com.example.demo.dto.Location;
 import com.example.demo.repository.LocationRepository;
 
 @Component

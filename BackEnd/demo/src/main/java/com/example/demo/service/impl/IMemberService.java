@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dao.MemberDao;
-import com.example.demo.entity.Member;
+import com.example.demo.dto.Member;
 import com.example.demo.service.MemberService;
 
 @Service

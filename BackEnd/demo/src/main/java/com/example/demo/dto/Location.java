@@ -1,4 +1,4 @@
-package com.example.demo.entity;
+package com.example.demo.dto;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,21 +23,26 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @Builder
-@Table(name = "member_t")
-public class Member {
-    
+@Table(name = "map_t")
+public class Location {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long idx;
 
-    @Column(name="mt_id")
-    String id;
+    @Column(name = "m_si")
+    String si;
 
-    @Column(name="mt_name")
-    String name;
+    @Column(name = "m_gu")
+    String gu;
 
-    @Column(name="mt_email")
-    String email;
+    @Column(name = "m_dong")
+    String dong;
 
-    
+    @Column(name = "m_latitude")
+    String latitude;
+
+    @Column(name = "m_longitude")
+    String longitude;
+
 }

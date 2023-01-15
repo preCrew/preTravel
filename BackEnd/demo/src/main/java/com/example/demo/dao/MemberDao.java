@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.example.demo.entity.Member;
+import com.example.demo.dto.Member;
 import com.example.demo.repository.MemberRepository;
 import org.springframework.transaction.annotation.Transactional;
 
