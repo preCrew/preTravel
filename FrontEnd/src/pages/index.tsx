@@ -2,6 +2,8 @@ import { Routes, Route } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import useKakaoMap from '@src/components/common/Map/useKakaoMap';
 import MySchedule from './mySchedule';
+import Button from '@src/components/common/Button';
+import LoginButton from '@src/components/common/Button/LoginButton';
 
 let test = 33.452613;
 let id = 1;
@@ -59,6 +61,34 @@ const App = () => {
                   </button>
                 </div>
               </div>
+            </>
+          }
+        />
+        <Route
+          path="/buttons"
+          element={
+            <>
+              <Button
+                type="large"
+                color="grey"
+              >
+                첫번째 버튼
+              </Button>
+
+              <Button
+                type="medium"
+                color="grey"
+              >
+                두번째 버튼
+              </Button>
+              <Button
+                type="small"
+                color="blue"
+              >
+                세번쨰쨰
+              </Button>
+              <LoginButton where="naver" />
+              <LoginButton where="kakao" />
             </>
           }
         />
