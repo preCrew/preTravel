@@ -29,7 +29,9 @@ const webpackConfig: Configuration = {
     rules: [
       {
         loader: 'babel-loader',
-        options: isDevelopment ? { plugins: ['react-refresh/babel'] } : {},
+        options: {
+          plugins: ['react-refresh/babel'],
+        },
       },
       {
         test: /\.tsx?$/,
@@ -47,9 +49,20 @@ const webpackConfig: Configuration = {
       },
       {
         test: /\.css$/i,
-        // include: path.resolve(__dirname, 'src'),
-        // exclude: /node_modules/,
-        use: ['style-loader', 'css-loader', 'postcss-loader'],
+        use: [
+          {
+            loader: 'style-loader',
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              url: false,
+            },
+          },
+          {
+            loader: 'postcss-loader',
+          },
+        ],
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
