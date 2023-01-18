@@ -26,20 +26,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class NaverService {
 
-    @Value("${oauth.naver.token_host}")
-    private String TOKEN_HOST;
-
     @Value("${oauth.naver.client_id}")
     private String CLIENT_ID;
 
     @Value("${oauth.naver.client_secret}")
     private String CLIENT_SECRET;
-
-    @Value("${oauth.naver.redirect_uri}")
-    private String REDIRECT_URI;
-
-    @Value("${oauth.naver.response_type}")
-    private String RESPONSE_TYPE;
 
     @Autowired
     MemberService memberService;
@@ -111,8 +102,8 @@ public class NaverService {
         httphHeaders.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", "authorization_code");
-        params.add("client_id", "76Nr2e2G6KuBeyuVPqbf");
-        params.add("client_secret", "3FuWrNGOQZ");
+        params.add("client_id", CLIENT_ID);
+        params.add("client_secret", CLIENT_SECRET);
         params.add("code", code);
         params.add("state", state);
         HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<MultiValueMap<String, String>>(params,
