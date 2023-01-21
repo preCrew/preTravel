@@ -1,12 +1,23 @@
-import React from 'react';
-import '. MyScheduleCardList.style.ts';
+import MyScheduleCard, { MyScheduleCardI } from '../MyScheduleCard';
 
-interface MyScheduleCardListProps {}
+interface MyScheduleCardListProps {
+  cardList: MyScheduleCardI[];
+}
 
-// TODO: MyScheduleCard 보여줌
-const MyScheduleCardList = ({}: MyScheduleCardListProps) => {
-  const css = ``;
-  return <div className={css}></div>;
+const MyScheduleCardList = ({ cardList }: MyScheduleCardListProps) => {
+  const css = `w-[370px] flex flex-wrap gap-6 pt-3 pb-3`;
+  return (
+    <div className={css}>
+      {cardList.map((card, index) => (
+        <MyScheduleCard
+          key={card.id}
+          index={index}
+          onClick={() => console.log('click')}
+          {...card}
+        />
+      ))}
+    </div>
+  );
 };
 
 export default MyScheduleCardList;

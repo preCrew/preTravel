@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import useKakaoMap from '@src/components/common/Map/useKakaoMap';
 import MyScheduleCard from '@src/components/myScedule/MyScheduleCard';
 import MySchedule from './mySchedule';
+import MySchedule2 from './mySchedule2';
 
 let test = 33.452613;
 let id = 1;
@@ -23,7 +24,7 @@ const App = () => {
     // setNowLocation()
   };
   return (
-    <div className="safe-top safe-left safe-right safe-bottom">
+    <div className="safe-top safe-left safe-right safe-bottom w-full h-full">
       <Helmet>
         <title>여행</title>
         <meta charSet="UTF-8" />
@@ -39,60 +40,12 @@ const App = () => {
       </Helmet>
       <Routes>
         <Route
-          path="/test"
-          element={
-            <>
-              <MyScheduleCard
-                endDate=""
-                index={2}
-                region="경주"
-                startDate="2022.10.31"
-                title="경주 여행 나들이 경주 여행 나들이 경주 여행 나들이"
-                imagePaths={[
-                  'https://avatars.githubusercontent.com/u/7580112?v=4',
-                ]}
-                onClick={() => {
-                  console.log('click1');
-                }}
-                deleteMode
-              />
-              <MyScheduleCard
-                endDate="2022.10.31"
-                index={1}
-                region="경주"
-                startDate="2022.10.31"
-                title="경주 여행 나들이 "
-                onClick={() => {
-                  console.log('click2');
-                }}
-              />
-            </>
-          }
+          path="/mySchedule"
+          element={<MySchedule2 />}
         />
         <Route
           path="/mySchedule/:id"
           element={<MySchedule />}
-        />
-        <Route
-          path="/map"
-          element={
-            <>
-              <div className="absolute">
-                <div className="absolute">
-                  <Map />
-                </div>
-                <div className="relative z-10 flex flex-col">
-                  <button onClick={handleClickButton}> 마커 추가하기 </button>
-                  <button onClick={handleClickButton2}>
-                    id 1인 마커 제거하기
-                  </button>
-                  <button onClick={handleClickButton3}>
-                    서울시로 위치 이동하기
-                  </button>
-                </div>
-              </div>
-            </>
-          }
         />
       </Routes>
     </div>

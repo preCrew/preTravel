@@ -2,14 +2,17 @@ import { useState } from 'react';
 import CheckBox from './CheckBox';
 import Card from './style';
 
-interface MyScheduleCardProps {
+export interface MyScheduleCardI {
+  id: string;
   title: string;
-  index: number;
   region: string;
   startDate: string;
   endDate: string;
-  onClick: () => void;
   imagePaths?: string[];
+}
+interface MyScheduleCardProps extends MyScheduleCardI {
+  index: number;
+  onClick: () => void;
   deleteMode?: boolean;
 }
 
@@ -34,10 +37,10 @@ const MyScheduleCard = ({
 
   return (
     <div
-      className={Card.block(index)}
+      className={Card.block}
       onClick={handleClickCard}
     >
-      <div className={Card.blockInner(imagePaths ? imagePaths[0] : '')}>
+      <div className={Card.blockInner(imagePaths ? imagePaths[0] : '', index)}>
         {deleteMode && <CheckBox onClick={handleClickCheckBox} />}
         <div className={Card.flexBox}>
           <p className={Card.title}>{title}</p>
