@@ -1,20 +1,22 @@
 interface CheckBoxProps {
-  onClick: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  isChecked: boolean;
 }
 
-const CheckBox = ({ onClick }: CheckBoxProps) => {
+const CheckBox = ({ onChange, isChecked }: CheckBoxProps) => {
   const outBox = `
-    absolute w-24 h-24 ml-3 mt-3
+    absolute w-24 h-24 ml-3 mt-3 
   `;
   const checkbox = `
-    w-24 h-24 opacity-60
+    w-24 h-24 opacity-60 cursor-pointer
   `;
   return (
     <div className={outBox}>
       <input
         type="checkbox"
         className={checkbox}
-        onChange={onClick}
+        onChange={onChange}
+        checked={isChecked}
       />
     </div>
   );

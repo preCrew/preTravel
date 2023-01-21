@@ -1,19 +1,184 @@
 {
-  "schedules": [
+  "posts": [
     {
       "id": 1,
-      "title": "서울 여행",
-      "startDate": "2019-01-01",
-      "endDate": "2019-01-01",
-      "photoPaths": [
-        "https://s3.ap-northeast-2.amazonaws.com/yourbucketname/yourfilename1.jpg",
-        "https://s3.ap-northeast-2.amazonaws.com/yourbucketname/yourfilename2.jpg"
-      ]
+      "region": "제주도1",
+      "title": "제주도여행~~~",
+      "dateRange": [
+        "2022.05.24",
+        "2022.05.25"
+      ],
+      "schedule": []
     },
     {
       "id": 2,
-      "title": "두번째 메모 제목",
-      "body": "두번째 메모 내용"
+      "region": "제주도2",
+      "title": "제주도여행~~~",
+      "dateRange": [
+        "2022.05.24",
+        "2022.05.27"
+      ],
+      "schedule": []
+    },
+    {
+      "id": 3,
+      "region": "제주도3",
+      "title": "제주도여행~~~",
+      "dateRange": [
+        "2022.05.24",
+        "2022.05.27"
+      ],
+      "schedule": []
+    },
+    {
+      "id": 4,
+      "region": "제주도4",
+      "title": "제주도여행~~~",
+      "dateRange": [
+        "2022.05.24",
+        "2022.05.27"
+      ],
+      "schedule": []
+    },
+    {
+      "id": 5,
+      "region": "제주도5",
+      "title": "제주도여행~~~",
+      "dateRange": [
+        "2022.05.24",
+        "2022.05.27"
+      ],
+      "schedule": []
+    },
+    {
+      "id": 6,
+      "region": "제주도6",
+      "title": "제주도여행~~~",
+      "dateRange": [
+        "2022.05.24",
+        "2022.05.27"
+      ],
+      "schedule": []
+    },
+    {
+      "id": 7,
+      "region": "제주도7",
+      "title": "제주도여행~~~",
+      "dateRange": [
+        "2022.05.24",
+        "2022.05.27"
+      ],
+      "schedule": []
+    },
+    {
+      "id": 8,
+      "region": "제주도8",
+      "title": "제주도여행~~~",
+      "dateRange": [
+        "2022.05.24",
+        "2022.05.27"
+      ],
+      "schedule": []
+    },
+    {
+      "id": 9,
+      "region": "제주도9",
+      "title": "제주도여행~~~",
+      "dateRange": [
+        "2022.05.24",
+        "2022.05.27"
+      ],
+      "schedule": []
+    },
+    {
+      "id": 10,
+      "region": "제주도10",
+      "title": "제주도여행~~~",
+      "dateRange": [
+        "2022.05.24",
+        "2022.05.27"
+      ],
+      "schedule": []
+    },
+    {
+      "id": 11,
+      "region": "제주도11",
+      "title": "제주도여행~~~",
+      "dateRange": [
+        "2022.05.24",
+        "2022.05.27"
+      ],
+      "schedule": []
+    },
+    {
+      "id": 12,
+      "region": "제주도12",
+      "title": "제주도여행~~~",
+      "dateRange": [
+        "2022.05.24",
+        "2022.05.27"
+      ],
+      "schedule": []
+    },
+    {
+      "id": 13,
+      "region": "제주도13",
+      "title": "제주도여행~~~",
+      "dateRange": [
+        "2022.05.24",
+        "2022.05.27"
+      ],
+      "schedule": []
+    },
+    {
+      "id": 14,
+      "region": "제주도14",
+      "title": "제주도여행~~~",
+      "dateRange": [
+        "2022.05.24",
+        "2022.05.27"
+      ],
+      "schedule": []
+    },
+    {
+      "id": 16,
+      "region": "제주도16",
+      "title": "제주도여행~~~",
+      "dateRange": [
+        "2022.05.24",
+        "2022.05.27"
+      ],
+      "schedule": []
+    },
+    {
+      "id": 18,
+      "region": "제주도18",
+      "title": "제주도여행~~~",
+      "dateRange": [
+        "2022.05.24",
+        "2022.05.27"
+      ],
+      "schedule": []
+    },
+    {
+      "id": 20,
+      "region": "제주도20",
+      "title": "제주도여행~~~",
+      "dateRange": [
+        "2022.05.24",
+        "2022.05.27"
+      ],
+      "schedule": []
+    },
+    {
+      "id": 22,
+      "region": "제주도22",
+      "title": "제주도여행~~~",
+      "dateRange": [
+        "2022.05.24",
+        "2022.05.27"
+      ],
+      "schedule": []
     }
   ]
 }

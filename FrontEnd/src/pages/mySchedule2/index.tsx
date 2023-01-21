@@ -1,109 +1,49 @@
-import { MyScheduleCardI } from '@src/components/myScedule/MyScheduleCard';
+import { Suspense, useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
 
-import TopBar from '@src/components/common/TobBar';
 import MyScheduleCardList from '@src/components/myScedule/MyScheduleCardList';
-import IconButton from '@src/components/common/Button/IconButton';
-import mySchedule from './style';
+import SelectNumberBox from '../../components/myScedule/SelectNumberBox';
+import IconBox from '../../components/myScedule/IconBox';
+import TopBar from '@src/components/common/TobBar';
 
-const lists: MyScheduleCardI[] = [
-  {
-    id: '1',
-    title: '씐나는 서울여행123213122121321213131231231232131244444444',
-    startDate: '2021.10.10',
-    endDate: '2021.10.10',
-    region: '서울',
-  },
-  {
-    id: '2',
-    title: '제주제주제주여행',
-    startDate: '2021.10.10',
-    endDate: '2021.10.10',
-    region: '제주도',
-  },
-  {
-    id: '3',
-    title: '도오오오옹해',
-    startDate: '2021.10.10',
-    endDate: '2021.10.10',
-    region: '강원도',
-  },
-  {
-    id: '16',
-    title: '도오오오옹해',
-    startDate: '2021.10.10',
-    endDate: '2021.10.10',
-    region: '강원도',
-  },
-  {
-    id: '4',
-    title: '도오오오옹해',
-    startDate: '2021.10.10',
-    endDate: '2021.10.10',
-    region: '강원도',
-  },
-  {
-    id: '5',
-    title: '도오오오옹해',
-    startDate: '2021.10.10',
-    endDate: '2021.10.10',
-    region: '강원도',
-  },
-  {
-    id: '6',
-    title: '도오오오옹해',
-    startDate: '2021.10.10',
-    endDate: '2021.10.10',
-    region: '강원도',
-  },
-  {
-    id: '7',
-    title: '도오오오옹해',
-    startDate: '2021.10.10',
-    endDate: '2021.10.10',
-    region: '강원도',
-  },
-  {
-    id: '8',
-    title: '도오오오옹해',
-    startDate: '2021.10.10',
-    endDate: '2021.10.10',
-    region: '강원도',
-  },
-  {
-    id: '9',
-    title: '도오오오옹해',
-    startDate: '2021.10.10',
-    endDate: '2021.10.10',
-    region: '강원도',
-  },
-  {
-    id: '10',
-    title: '도오오오옹해',
-    startDate: '2021.10.10',
-    endDate: '2021.10.10',
-    region: '강원도',
-  },
-  {
-    id: '11',
-    title: '도오오오옹해',
-    startDate: '2021.10.10',
-    endDate: '2021.10.10',
-    region: '강원도',
-  },
-];
+import cardListAtom from '@src/recoil/cardList/atom';
+
+import useMyScheduleQuery from '@src/hooks/useMyScheduleQuery';
+import useMyScheduleDelete from '@src/hooks/useMyScheduleDelete';
+
+import mySchedule from './style';
+import Button from '@src/components/common/Button';
+import useMyScheduleAdd from '@src/hooks/useMySchedulAdd';
 
 const MySchedule2 = () => {
+  const [isRemoveMode, setIsRemoveMode] = useState(false);
+  const [selectedCardList, setSelectedCardList] = useRecoilState(cardListAtom);
+  const { data: lists, isFetched } = useMyScheduleQuery();
+  const { mutate } = useMyScheduleDelete(selectedCardList);
+  const { mutate: addSchedule } = useMyScheduleAdd(selectedCardList);
+
+  useEffect(() => {
+    // 리스트를 다 받아왔다면 recoil에 저장
+    if (isFetched) {
+      setSelectedCardList(
+        lists!.map(list => ({ id: list.id, isSeleted: false })),
+      );
+    }
+  }, []);
+
   const handleClickBackButton = () => {
     console.log('back');
     // TODO: 이전 페이지로 이동
   };
   const handleClickAddButton = () => {
-    console.log('add');
-    // TODO: 추가 페이지로 이동
+    addSchedule();
   };
-  const handleClickRemoveButton = () => {
-    console.log('remove');
-    // TODO: react-query로 서버에서 데이터 삭제
+  const handleClickTopRemoveButton = () => {
+    setIsRemoveMode(true);
+  };
+  const handleClickBottomRemoveButton = () => {
+    setIsRemoveMode(false);
+    mutate();
   };
 
   return (
@@ -112,18 +52,33 @@ const MySchedule2 = () => {
         <div className={mySchedule.childrenBox}>
           <div className={mySchedule.title}>내 일정</div>
           <div className={mySchedule.buttonBox}>
-            <IconButton
-              type="add"
-              onClick={handleClickAddButton}
-            />
-            <IconButton
-              type="remove"
-              onClick={handleClickRemoveButton}
-            />
+            {isRemoveMode ? (
+              <SelectNumberBox />
+            ) : (
+              <IconBox
+                onClickAddButton={handleClickAddButton}
+                onClickRemoveButton={handleClickTopRemoveButton}
+              />
+            )}
           </div>
         </div>
       </TopBar>
-      <MyScheduleCardList cardList={lists} />
+      <Suspense fallback={<div>로딩중</div>}>
+        <MyScheduleCardList
+          cardList={lists || []}
+          deleteMode={isRemoveMode}
+        />
+      </Suspense>
+      {isRemoveMode && (
+        <Button
+          type="large"
+          color="blue"
+          className="fixed bottom-0"
+          onClick={handleClickBottomRemoveButton}
+        >
+          삭제하기 테스트 버튼
+        </Button>
+      )}
     </div>
   );
 };
