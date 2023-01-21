@@ -102,6 +102,8 @@ module.exports = {
         gray3: 'var(--gray3)',
         gray4: 'var(--gray4)',
         gray5: 'var(--gray5)',
+        red1: 'var(--red1)',
+        green1: 'var(--green1)',
       },
     },
   },

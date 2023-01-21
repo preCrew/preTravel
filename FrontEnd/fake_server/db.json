@@ -1,9 +1,19 @@
 {
-  "memo": [
+  "schedules": [
     {
       "id": 1,
-      "title": "첫 메모 제목",
-      "body": "첫 메모 내용"
+      "title": "서울 여행",
+      "startDate": "2019-01-01",
+      "endDate": "2019-01-01",
+      "photoPaths": [
+        "https://s3.ap-northeast-2.amazonaws.com/yourbucketname/yourfilename1.jpg",
+        "https://s3.ap-northeast-2.amazonaws.com/yourbucketname/yourfilename2.jpg"
+      ]
+    },
+    {
+      "id": 2,
+      "title": "두번째 메모 제목",
+      "body": "두번째 메모 내용"
     }
   ]
 }
