@@ -7,7 +7,8 @@ const isRedLocation = (index: number) =>
   (getRow(index) + getCol(index)) % 2 ? true : false;
 
 const block = `
-  relactive grow shrink
+  relactive grow shrink 
+  select-none cursor-pointer
 `;
 
 const blockInner = (url: string, index: number) => `
