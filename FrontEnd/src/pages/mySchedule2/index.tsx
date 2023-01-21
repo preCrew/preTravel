@@ -1,5 +1,5 @@
 import { Suspense, useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import MyScheduleCardList from '@src/components/myScedule/MyScheduleCardList';
 import SelectNumberBox from '../../components/myScedule/SelectNumberBox';
@@ -14,10 +14,12 @@ import useMyScheduleDelete from '@src/hooks/useMyScheduleDelete';
 import mySchedule from './style';
 import Button from '@src/components/common/Button';
 import useMyScheduleAdd from '@src/hooks/useMySchedulAdd';
+import filteredCardListSelector from '@src/recoil/cardList/selector';
 
 const MySchedule2 = () => {
   const [isRemoveMode, setIsRemoveMode] = useState(false);
   const [selectedCardList, setSelectedCardList] = useRecoilState(cardListAtom);
+  const filterdSelectedList = useRecoilValue(filteredCardListSelector);
   const { data: lists, isFetched } = useMyScheduleQuery();
   const { mutate } = useMyScheduleDelete(selectedCardList);
   const { mutate: addSchedule } = useMyScheduleAdd(selectedCardList);
@@ -69,11 +71,11 @@ const MySchedule2 = () => {
           deleteMode={isRemoveMode}
         />
       </Suspense>
-      {isRemoveMode && (
+      {filterdSelectedList > 0 && (
         <Button
           type="large"
           color="blue"
-          className="fixed bottom-0"
+          className="fixed bottom-0 mb-6"
           onClick={handleClickBottomRemoveButton}
         >
           삭제하기 테스트 버튼
