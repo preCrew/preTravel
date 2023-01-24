@@ -31,9 +31,7 @@ public class LocationController {
     }
 
     @GetMapping("place")
-    public ResponseEntity<ResponseDTO> searchPlace(String keyword){
-        
-        service.searchPlace(keyword);
-        return null;
+    public ResponseEntity<ResponseDTO> searchPlace(String keyword, String page){
+        return service.searchPlace(keyword, page);
     }
 }
