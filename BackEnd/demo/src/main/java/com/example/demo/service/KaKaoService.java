@@ -1,6 +1,5 @@
 package com.example.demo.service;
 
-import com.example.demo.dao.MemberDao;
 import com.example.demo.dto.KakaoTokenResponse;
 import com.example.demo.dto.KakaoUserInfoResponse;
 import com.example.demo.dto.Member;

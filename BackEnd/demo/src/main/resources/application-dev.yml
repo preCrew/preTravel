@@ -25,6 +25,9 @@ oauth:
     grant_type: authorization_code
     rest_api_key: b419b28c930a90dc96e0fd983b9025ef
     redirect_uri: https://port-0-pretravel-ll32glc6adwo3.gksl2.cloudtype.app/oauth/kakao
+    map:
+      rest_api_key : 2581cd83651b3e51982587f4cb1652f5
+      host : https://dapi.kakao.com/v2/local/search/keyword.JSON
   naver:
     client_id : 76Nr2e2G6KuBeyuVPqbf
     client_secret : 3FuWrNGOQZ

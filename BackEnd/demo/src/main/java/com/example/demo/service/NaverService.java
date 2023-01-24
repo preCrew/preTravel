@@ -38,9 +38,6 @@ public class NaverService {
     @Autowired
     RestTemplate restTemplate;
 
-    @Autowired
-    HttpHeaders httphHeaders;
-
     public ResponseEntity<ResponseDTO> login(String code, String state) {
         log.info("네이버 로그인 code : {}, state : {}", code, state);
         JSONObject token = getToken(code, state);
@@ -85,11 +82,11 @@ public class NaverService {
     }
 
     private JSONObject getProfile(String accessToken, String refreshToken) {
-        httphHeaders = new HttpHeaders();
-        httphHeaders.add("Authorization", "Bearer " + accessToken);
-        httphHeaders.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Authorization", "Bearer " + accessToken);
+        httpHeaders.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
         restTemplate = new RestTemplate();
-        HttpEntity httpEntity = new HttpEntity(httphHeaders);
+        HttpEntity httpEntity = new HttpEntity(httpHeaders);
         ResponseEntity<String> profileData = restTemplate.exchange(
                 "https://openapi.naver.com/v1/nid/me",
                 HttpMethod.POST,
@@ -99,7 +96,8 @@ public class NaverService {
     }
 
     private JSONObject getToken(String code, String state) {
-        httphHeaders.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", "authorization_code");
         params.add("client_id", CLIENT_ID);
@@ -107,7 +105,7 @@ public class NaverService {
         params.add("code", code);
         params.add("state", state);
         HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<MultiValueMap<String, String>>(params,
-                httphHeaders);
+                httpHeaders);
 
         // 토큰얻기
         ResponseEntity<String> data = restTemplate.exchange("https://nid.naver.com/oauth2.0/token",

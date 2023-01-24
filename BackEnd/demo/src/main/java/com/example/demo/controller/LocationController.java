@@ -25,8 +25,15 @@ public class LocationController {
                 .ok()
                 .body(ResponseDTO.builder()
                         .code(200)
-                        .msg("로그인 성공")
+                        .msg("지역조회 결과")
                         .data(list)
                         .build());
+    }
+
+    @GetMapping("place")
+    public ResponseEntity<ResponseDTO> searchPlace(String keyword){
+        
+        service.searchPlace(keyword);
+        return null;
     }
 }

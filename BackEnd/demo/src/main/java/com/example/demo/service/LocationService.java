@@ -12,4 +12,6 @@ public interface LocationService {
 
     List<Location> searchAll(String keyword);
 
+    void searchPlace(String keyword2);
+
 }
