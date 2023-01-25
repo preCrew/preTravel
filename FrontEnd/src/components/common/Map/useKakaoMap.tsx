@@ -1,5 +1,6 @@
 // import { loadKakaoMapScript } from '@src/hooks/useKakaoMapScript';
 import { useEffect, useRef, useState } from 'react';
+import { icons } from 'react-icons/lib';
 import useScript from '../../../hooks/useScript';
 
 declare global {
@@ -26,6 +27,8 @@ const imageSrc =
 
 function useKakaoMap() {
   // const [markers, setMarkers] = useState<any[]>([]);
+  const [prevOverlay, setPrevOverlay] = useState<any[]>();
+  const [prevPolygon, setPrevPolygon] = useState<any>();
 
   const map = useRef<any>(null);
   const markers = useRef<Marker[]>([]);
@@ -38,7 +41,7 @@ function useKakaoMap() {
         let container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
         let options = {
           center: new window.kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
-          level: 3, //지도의 레벨(확대, 축소 정도)
+          level: 7, //지도의 레벨(확대, 축소 정도)
         };
 
         map.current = new window.kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
@@ -95,7 +98,77 @@ function useKakaoMap() {
     });
   };
 
-  return { Map, setNowLocation, addMarker, removeMarker };
+  const drawOverlayOnMap = (overlayArr: any) => {
+    //오버레이된 곳의 중앙을 불러와야 할것 같은데...
+    if (!map.current) {
+      return alert('로딩중 입니다');
+    }
+    const allLatitude =
+      overlayArr.reduce((acc: number, curr: any) => {
+        return acc + curr.la;
+      }, 0) / overlayArr.length;
+    const allLongitude =
+      overlayArr.reduce((acc: number, curr: any) => {
+        return acc + curr.lo;
+      }, 0) / overlayArr.length;
+
+    setNowLocation({ lat: allLatitude, lng: allLongitude });
+
+    //오버레이칸텐트
+    const content = (i: number) => `
+    <div class="marker-box bg-primary3 rounded-full flex justify-center items-center w-25 h-25 text-white text-body1Bold">
+      <span>${i}</span>
+    </div>`;
+
+    const customOverlaySetArr: any[] = [];
+    const polygonPath: any[] = [];
+    const prevPolygonTemporary = [];
+
+    //const position = new window.kakao.maps.LatLng(la, lo);
+    const customOverlay = (lat: number, lng: number, order: number) => {
+      return new window.kakao.maps.CustomOverlay({
+        position: new window.kakao.maps.LatLng(lat, lng),
+        content: content(order),
+      });
+    };
+
+    for (let i = 0; i < overlayArr.length; i++) {
+      customOverlaySetArr.push(
+        customOverlay(overlayArr[i].la, overlayArr[i].lo, overlayArr[i].order),
+      );
+      polygonPath.push(
+        new window.kakao.maps.LatLng(overlayArr[i].la, overlayArr[i].lo),
+      );
+      //오버레이 그리기
+      customOverlaySetArr[i].setMap(map.current);
+    }
+
+    // 이전 오버레이&선 삭제
+    if (prevOverlay && prevPolygon) {
+      prevOverlay.forEach(val => {
+        val.setMap(null);
+      });
+      prevPolygon[0].setMap(null);
+    }
+
+    setPrevOverlay(customOverlaySetArr);
+
+    const polygon = new window.kakao.maps.Polygon({
+      path: polygonPath, // 그려질 다각형의 좌표 배열입니다
+      strokeWeight: 2, // 선의 두께입니다
+      strokeColor: '#000', // 선의 색깔입니다
+      strokeOpacity: 0.8, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+      strokeStyle: 'solid', // 선의 스타일입니다
+      fillColor: '#A2FF99', // 채우기 색깔입니다
+      fillOpacity: 0, // 채우기 불투명도 입니다
+    });
+    prevPolygonTemporary.push(polygon);
+    setPrevPolygon(prevPolygonTemporary);
+    //선그리기
+    prevPolygonTemporary[0].setMap(map.current);
+  };
+
+  return { Map, setNowLocation, addMarker, removeMarker, drawOverlayOnMap };
 }
 
 export default useKakaoMap;
