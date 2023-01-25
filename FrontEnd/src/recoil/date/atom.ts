@@ -50,13 +50,5 @@ const selectedDayAtom = atom({
   key: 'selectedDayAtom',
   default: 0,
 });
-const calendarSelectedDayOnAtom = atom({
-  key: 'calendarSelectedDayOnAtom',
-  default: false,
-});
 
-const DrowDifferentDateOnMapAtop = atom({
-  key: 'DrowDifferentDateOnMapAtop',
-});
-
-export { selectedDayAtom, currentScheduleAtom, calendarSelectedDayOnAtom };
+export { selectedDayAtom, currentScheduleAtom };

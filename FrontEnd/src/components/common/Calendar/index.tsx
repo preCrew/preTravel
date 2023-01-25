@@ -6,11 +6,8 @@ import { DayClickEventHandler, DateRange, DayPicker } from 'react-day-picker';
 import ko from 'date-fns/locale/ko';
 import 'react-day-picker/dist/style.css';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import dateAtom from '@src/recoil/date/atom';
-import { modalAtom } from '@src/recoil/modal/atom';
-
-//여행날짜 1일차
-const pastMonth = new Date(2022, 5, 15);
+import { calendarIsOpenAtom, modalAtom } from '@src/recoil/modal/atom';
+import { currentScheduleAtom, selectedDayAtom } from '@src/recoil/date/atom';
 
 const css = `
     .rdp-button:hover:not([disabled]):not(.rdp-day_selected),
@@ -19,29 +16,39 @@ const css = `
         color: white;
     }
 `;
+interface CalendarProps {}
 
 const Calendar = () => {
-  //1일차 날짜
-  const firstDay = new Date(2022, 5, 20);
-  const endDay = new Date(2022, 5, 24);
-  const [selectedDay, setSelectedDay] = useState<Date | undefined>(firstDay);
-  const diffDay = useRecoilValue(dateAtom);
-  const [dateVlaue, setDateValue] = useRecoilState(dateAtom);
-  const setOpen = useSetRecoilState(modalAtom);
+  const currentScheduleState = useRecoilValue(currentScheduleAtom);
+  const [selectedDayState, setSelectedDayState] =
+    useRecoilState(selectedDayAtom);
 
-  useEffect(() => {
-    //console.log(+endDay - +firstDay, diffDay);
-  }, [selectedDay]);
+  const [selectedDay, setSelectedDay] = useState<any>(
+    new Date(currentScheduleState.dateRange[0]),
+  );
+  const [calendarIsOpenState, setCalendarIsOpenState] =
+    useRecoilState(calendarIsOpenAtom);
+
+  const getDateDiff = (date1: any, date2: Date) => {
+    const startDay = new Date(date1);
+
+    let selectedDayYear = date2.getFullYear();
+    let selectedDayMonth: any = date2.getMonth() + 1;
+    let selectedDate = date2.getDate();
+
+    selectedDayMonth =
+      selectedDayMonth >= 10 ? selectedDayMonth : '0' + selectedDayMonth;
+    const onSelectedDay = new Date(
+      selectedDayYear + '-' + selectedDayMonth + '-' + selectedDate,
+    );
+
+    const diffDate = startDay.getTime() - onSelectedDay.getTime();
+    return Math.abs(diffDate / (1000 * 60 * 60 * 24));
+  };
 
   const handleDayClick: DayClickEventHandler = day => {
-    setDateValue(prevValue => ({
-      ...prevValue,
-      selectedDayDiff:
-        (day.getTime() - firstDay.getTime()) / 1000 / 60 / 60 / 24,
-      selectedDayOn: false,
-    }));
-    //setOpen(false);
-    //(day.getTime() - firstDay.getTime()) / 1000 / 60 / 60 / 24;
+    setCalendarIsOpenState(false);
+    setSelectedDayState(getDateDiff(currentScheduleState.dateRange[0], day));
   };
 
   return (
@@ -50,8 +57,8 @@ const Calendar = () => {
       <DayPicker
         defaultMonth={selectedDay}
         disabled={{
-          after: new Date(2022, 5, 24),
-          before: new Date(2022, 5, 20),
+          after: new Date(currentScheduleState.dateRange[1]), //마지막날짜
+          before: new Date(currentScheduleState.dateRange[0]), //시작날짜
         }}
         mode="single"
         selected={selectedDay}

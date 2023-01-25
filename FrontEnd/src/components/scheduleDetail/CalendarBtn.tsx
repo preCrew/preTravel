@@ -1,31 +1,30 @@
-import dateAtom from '@src/recoil/date/atom';
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useCallback, useState } from 'react';
 import { BiCalendar } from 'react-icons/bi';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { IoMdClose } from 'react-icons/io';
+import { calendarIsOpenAtom } from '@src/recoil/modal/atom';
 
-interface CalendarBtnProps {
-  //SetCalendarOpen: React.Dispatch<React.SetStateAction<boolean>>
-}
+interface CalendarBtnProps {}
 
-const CalendarBtn = ({}: CalendarBtnProps) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const setCalendarOpen = useSetRecoilState(dateAtom);
+const CalendarBtn = () => {
+  const [calendarIsOpenState, setCalendarIsOpenState] =
+    useRecoilState(calendarIsOpenAtom);
 
   const onClick = () => {
-    setIsOpen(prevState => !prevState);
-    setCalendarOpen(prevState => ({
-      ...prevState,
-      selectedDayOn: true,
-    }));
+    setCalendarIsOpenState(prev => !prev);
   };
 
   return (
     <button
       type="button"
       onClick={onClick}
-      className="absolute top-0 left-0 border border-black rounded-full w-30 h-30"
+      className="absolute top-0 left-0 bg-white border border-black rounded-full w-30 h-30"
     >
-      <BiCalendar className="m-auto" />
+      {calendarIsOpenState ? (
+        <IoMdClose className="m-auto" />
+      ) : (
+        <BiCalendar className="m-auto" />
+      )}
     </button>
   );
 };
