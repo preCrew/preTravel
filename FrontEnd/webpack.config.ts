@@ -92,8 +92,14 @@ const webpackConfig: Configuration = {
     historyApiFallback: true, //존재하지 않는 url일경우 -> index.html
     client: {
       overlay: true,
-      webSocketURL: 'ws://0.0.0.0:80/ws',
+      //webSocketURL: 'ws://0.0.0.0:80/ws',
     },
+    // proxy: {
+    //   '/api/': {
+    //     target: 'http://localhost:8000',
+    //     changeOrigin: true,
+    //   },
+    // },
   },
 };
 
