@@ -18,16 +18,19 @@ import filteredCardListSelector from '@src/recoil/cardList/selector';
 
 const MySchedule2 = () => {
   const [isRemoveMode, setIsRemoveMode] = useState(false);
-  const [selectedCardList, setSelectedCardList] = useRecoilState(cardListAtom);
-  const filterdSelectedList = useRecoilValue(filteredCardListSelector);
+
+  const [selectedCardListState, setSelectedCardListState] =
+    useRecoilState(cardListAtom);
+  const filterdSelectedListState = useRecoilValue(filteredCardListSelector);
+
   const { data: lists, isFetched } = useMyScheduleQuery();
-  const { mutate } = useMyScheduleDelete(selectedCardList);
-  const { mutate: addSchedule } = useMyScheduleAdd(selectedCardList);
+  const { mutate } = useMyScheduleDelete(selectedCardListState);
+  const { mutate: addSchedule } = useMyScheduleAdd(selectedCardListState);
 
   useEffect(() => {
     // 리스트를 다 받아왔다면 recoil에 저장
     if (isFetched) {
-      setSelectedCardList(
+      setSelectedCardListState(
         lists!.map(list => ({ id: list.id, isSeleted: false })),
       );
     }
@@ -71,7 +74,7 @@ const MySchedule2 = () => {
           deleteMode={isRemoveMode}
         />
       </Suspense>
-      {filterdSelectedList > 0 && (
+      {filterdSelectedListState > 0 && (
         <Button
           type="large"
           color="blue"
