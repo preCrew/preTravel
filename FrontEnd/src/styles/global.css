@@ -14,6 +14,7 @@
   #docs-root{
     width: 100%;
     height: 100%;
+    --contentX: 22px;
     --primary1: #5698F3;
     --primary2: #D84243;
     --primary3: #F09CD5;
@@ -29,6 +30,9 @@
 }
 
 @layer components {
+  .content-inner{
+    padding: var(--contentX);
+  }  
   .tab__slide .slick-track{
     margin: 0;
   }
@@ -36,5 +40,6 @@
     background-color: var(--primary1);
     color: white;
   }
+
 }
 
