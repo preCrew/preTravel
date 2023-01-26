@@ -29,7 +29,18 @@ const webpackConfig: Configuration = {
     rules: [
       {
         loader: 'babel-loader',
-        options: isDevelopment ? { plugins: ['react-refresh/babel'] } : {},
+        options: {
+          plugins: [
+            'react-refresh/babel',
+            'babel-plugin-twin',
+            'babel-plugin-macros',
+          ],
+          presets: [
+            ['@babel/preset-react', { runtime: 'automatic' }],
+            '@emotion/babel-preset-css-prop',
+            '@babel/preset-typescript',
+          ],
+        },
       },
       {
         test: /\.tsx?$/,
