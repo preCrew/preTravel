@@ -8,7 +8,6 @@ interface TopBarProps {
 const TopBar = ({ onClickBackButton, children }: TopBarProps) => {
   const css = `
     w-full h-70 p-4 
-    sticky top-0
     flex items-center
     bg-white
   `;

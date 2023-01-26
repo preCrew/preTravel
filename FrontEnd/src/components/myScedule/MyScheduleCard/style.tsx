@@ -1,6 +1,7 @@
 // 가로줄 = index % 2
 // 세로줄 = Math.floor(index / 2) % 2
 // 계산식 = (index % 2 + Math.floor(index / 2) % 2) %2
+
 const getRow = (index: number) => index % 2;
 const getCol = (index: number) => Math.floor(index / 2) % 2;
 const isRedLocation = (index: number) =>
@@ -12,30 +13,29 @@ const block = `
 `;
 
 const blockInner = (url: string, index: number) => `
-  w-170 h-170 rounded-3xl
-  text-white text-center
-  bg-cover bg-[url('${url}')]
-  ${isRedLocation(index) ? 'bg-red1' : 'bg-green1'}
+  rounded px-3.5 py-5 relative 
+  min-w-[30vw] min-h-[23vh] h-full
+  before:content-[''] before:absolute before:left-0 before:top-0 before:w-full before:h-full before:bg-black before:opacity-20 before:rounded
 `;
-const flexBox = `
-  w-full h-full rounded-3xl
-  bg-[rgba(0,0,0,0.26)]
-  flex flex-col justify-end items-center
+// bg-cover bg-[url('${url}')]2
+const content = `
+  text-white text-center flex flex-col h-full relative z-[5]
 `;
 const title = `
-  w-140 h-50 text-h5Bold
+  text-h5Bold
   line-clamp-2
 `;
 const region = `
-  h-40
+  text-body2Bold mt-2
+  line-clamp-2  
 `;
 const date = `
-  w-90 h-60 break-words
+  break-words text-body3 w-[55%] mt-auto mx-auto text-center
 `;
 const Card = {
   block,
   blockInner,
-  flexBox,
+  content,
   title,
   region,
   date,

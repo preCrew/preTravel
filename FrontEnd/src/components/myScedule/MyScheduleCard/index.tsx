@@ -1,6 +1,7 @@
 import cardListAtom from '@src/recoil/cardList/atom';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useRecoilState } from 'recoil';
+import { isCaseOrDefaultClause } from 'typescript';
 import CheckBox from './CheckBox';
 import Card from './style';
 
@@ -49,13 +50,20 @@ const MyScheduleCard = ({
       console.log(id);
     }
   };
+  console.log('var(--contentInner)');
+  const generateNum = Math.floor(Math.random() * 4 + 1);
+  const bgColor = ['#fedcf5', '#c7ecf4', '#d6ede5', '#7ca3de', '#ffcfdb'];
+  const bgColorValue = useMemo(() => bgColor[generateNum], []);
 
   return (
-    <div
+    <li
       className={Card.block}
       onClick={handleClickCard}
     >
-      <div className={Card.blockInner(imagePaths ? imagePaths[0] : '', index)}>
+      <div
+        className={Card.blockInner(imagePaths ? imagePaths[0] : '', index)}
+        style={{ backgroundColor: bgColorValue }}
+      >
         {/* 삭제모드면 체크박스 표시 */}
         {deleteMode && (
           <CheckBox
@@ -63,8 +71,8 @@ const MyScheduleCard = ({
             isChecked={isSeleted}
           />
         )}
-        {/* 언제나 카드 표시 */}
-        <div className={Card.flexBox}>
+        <div className={Card.content}>
+          {/* 언제나 카드 표시 */}
           <p className={Card.title}>{title}</p>
           <p className={Card.region}>{region}</p>
           <p className={Card.date}>{`${dateRange[0]}${
@@ -72,7 +80,7 @@ const MyScheduleCard = ({
           }`}</p>
         </div>
       </div>
-    </div>
+    </li>
   );
 };
 

@@ -87,6 +87,9 @@ module.exports = {
         medium: 500,
         bold: 700,
       },
+      padding:{
+        inner: remCalculate(contentBasicPx),
+      },
       borderRadius: {
         DEFAULT: '20px',
       },

@@ -15,6 +15,7 @@ import mySchedule from './style';
 import Button from '@src/components/common/Button';
 import useMyScheduleAdd from '@src/hooks/useMySchedulAdd';
 import filteredCardListSelector from '@src/recoil/cardList/selector';
+import CancelBtn from '@src/components/myScedule/CancelBtn';
 
 const MySchedule2 = () => {
   const [isRemoveMode, setIsRemoveMode] = useState(false);
@@ -49,13 +50,16 @@ const MySchedule2 = () => {
   };
 
   return (
-    <div className={mySchedule.page}>
+    <div>
       <TopBar onClickBackButton={handleClickBackButton}>
         <div className={mySchedule.childrenBox}>
           <div className={mySchedule.title}>내 일정</div>
           <div className={mySchedule.buttonBox}>
             {isRemoveMode ? (
-              <SelectNumberBox />
+              <div className="flex">
+                <CancelBtn />
+                <SelectNumberBox />
+              </div>
             ) : (
               <IconBox
                 onClickAddButton={handleClickAddButton}
@@ -75,7 +79,7 @@ const MySchedule2 = () => {
         <Button
           type="large"
           color="blue"
-          className="fixed bottom-0 mb-6"
+          className=""
           onClick={handleClickBottomRemoveButton}
         >
           삭제하기 테스트 버튼

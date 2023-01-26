@@ -10,10 +10,8 @@ const MyScheduleCardList = ({
   cardList,
   deleteMode,
 }: MyScheduleCardListProps) => {
-  const css = `w-[370px] flex flex-wrap gap-6 pt-3 pb-3`;
-
   return (
-    <div className={css}>
+    <ul className="grid grid-cols-2 gap-4 content-inner">
       {cardList.map((card, index) => (
         <MyScheduleCard
           key={card.id}
@@ -22,7 +20,7 @@ const MyScheduleCardList = ({
           {...card}
         />
       ))}
-    </div>
+    </ul>
   );
 };
 
