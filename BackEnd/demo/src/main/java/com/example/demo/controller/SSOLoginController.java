@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("oauth")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @Slf4j
 public class SSOLoginController {
 
