@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("oauth")
 
-@CrossOrigin(origins = {"http://localhost:8080", "http://web-fronttest-ll32glc6adwo3.gksl2.cloudtype.app"})
 @Slf4j
 public class SSOLoginController {
 
