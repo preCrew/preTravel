@@ -33,6 +33,7 @@ public WebMvcConfigurer webMvcConfigurer() {
                     .allowedOrigins("http://localhost:8080", "http://web-fronttest-ll32glc6adwo3.gksl2.cloudtype.app")
                     .allowedMethods("GET", "POST")
                     .allowCredentials(true)
+					.allowedHeaders("application/json")
                     .maxAge(3600);
         }
     };
