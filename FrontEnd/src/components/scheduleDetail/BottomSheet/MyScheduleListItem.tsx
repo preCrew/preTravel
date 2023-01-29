@@ -6,8 +6,8 @@ import MyScheduleListEditBtn from './MyScheduleListEditBtn';
 
 interface MyScheduleListItemProps {
   data: {
-    id: string;
-    title: string;
+    id: string | number;
+    placeName: string;
     order: number;
   };
   index: number;
@@ -16,12 +16,13 @@ interface MyScheduleListItemProps {
 
 const MyScheduleListItem = ({ data, index, edit }: MyScheduleListItemProps) => {
   const modalDragOn = useRecoilValue(modalDragAtom);
+  const edtiBtnOn = edit && modalDragOn;
 
   return (
     <>
       <Draggable
         key={data.order}
-        draggableId={data.id}
+        draggableId={data.id + ''}
         index={index}
         isDragDisabled={modalDragOn}
       >
@@ -32,8 +33,9 @@ const MyScheduleListItem = ({ data, index, edit }: MyScheduleListItemProps) => {
             {...provided.dragHandleProps}
             className="flex mb-3 pl-7 text-body2"
             style={{
-              backgroundColor: snap.isDragging ? '#4fe' : 'pink',
-
+              backgroundColor: snap.isDragging
+                ? 'var(--primary2)'
+                : 'transparent',
               ...provided.draggableProps.style,
             }}
           >
@@ -41,8 +43,8 @@ const MyScheduleListItem = ({ data, index, edit }: MyScheduleListItemProps) => {
               {index + 1}
             </span>
             <div className="flex grow">
-              <p className="px-2 break-words grow">{data.title}</p>
-              {edit && <MyScheduleListEditBtn />}
+              <p className="px-2 break-words grow">{data.placeName}</p>
+              {edtiBtnOn && <MyScheduleListEditBtn />}
             </div>
           </li>
         )}

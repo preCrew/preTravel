@@ -1,6 +1,6 @@
-import atom from './atom';
-import widthDiffArr from './withDiffArr';
+// import atom from './atom';
+// import widthDiffArr from './withDiffArr';
 
-export { widthDiffArr };
+// export { widthDiffArr };
 
-export default atom;
+// export default atom;
