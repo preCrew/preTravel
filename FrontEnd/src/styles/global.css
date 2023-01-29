@@ -12,8 +12,8 @@
   .root,
   #root,
   #docs-root{
-    /* width: 100%;
-    height: 100%; */
+    width: 100%;
+    height: 100%;
     --primary1: #5698F3;
     --primary2: #D84243;
     --primary3: #F09CD5;

@@ -18,6 +18,6 @@
     },
     "jsxImportSource": "@emotion/react" // Add the css prop
   },
-  "include": ["src", "@types"],
+  "include": ["src", "@types","client.tsx"],
 
 }

@@ -3,6 +3,7 @@ import ReactRefreshPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import { Configuration as WebpackConfiguration, DefinePlugin } from 'webpack';
 import { Configuration as WebpackDevServerConfiguration } from 'webpack-dev-server';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 
 import dotenv from 'dotenv';
 dotenv.config();
@@ -12,6 +13,10 @@ interface Configuration extends WebpackConfiguration {
 }
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
+
+const commonPlugins = ['babel-plugin-twin', 'babel-plugin-macros'];
+const devPlugins = [...commonPlugins, 'react-refresh/babel'];
+const productionPlugins = [...commonPlugins];
 
 const webpackConfig: Configuration = {
   name: 'preTravelPlan',
@@ -28,13 +33,10 @@ const webpackConfig: Configuration = {
   module: {
     rules: [
       {
+        test: /\.(tsx|ts|jsx|js)?$/,
         loader: 'babel-loader',
         options: {
-          plugins: [
-            'react-refresh/babel',
-            'babel-plugin-twin',
-            'babel-plugin-macros',
-          ],
+          plugins: isDevelopment ? devPlugins : productionPlugins,
           presets: [
             ['@babel/preset-react', { runtime: 'automatic' }],
             '@emotion/babel-preset-css-prop',
@@ -89,15 +91,19 @@ const webpackConfig: Configuration = {
     new DefinePlugin({
       'process.env': JSON.stringify(process.env),
     }),
+    new HtmlWebpackPlugin({
+      // 생성자를 이용한 플러그인 생성
+      template: './index.html', // 템플릿 연결
+    }),
   ],
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: path.join(__dirname, 'build'),
     filename: '[name].js',
-    publicPath: '/dist/',
+    publicPath: '/',
   },
   devServer: {
     port: 8080,
-    devMiddleware: { publicPath: '/dist' },
+    devMiddleware: { publicPath: '/build' },
     static: { directory: path.resolve(__dirname) },
     hot: true,
     historyApiFallback: true, //존재하지 않는 url일경우 -> index.html
