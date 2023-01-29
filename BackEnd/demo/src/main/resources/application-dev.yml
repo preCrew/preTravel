@@ -24,7 +24,8 @@ oauth:
     user_host: https://kapi.kakao.com/v2/user/me
     grant_type: authorization_code
     rest_api_key: b419b28c930a90dc96e0fd983b9025ef
-    redirect_uri: https://port-0-pretravel-ll32glc6adwo3.gksl2.cloudtype.app/oauth/kakao
+    redirect_uri: https://web-fronttest-ll32glc6adwo3.gksl2.cloudtype.app/ouath/kakao
+#    redirect_uri: https://port-0-pretravel-ll32glc6adwo3.gksl2.cloudtype.app/oauth/kakao
     map:
       rest_api_key : 2581cd83651b3e51982587f4cb1652f5
       host : https://dapi.kakao.com/v2/local/search/keyword.JSON
