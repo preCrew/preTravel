@@ -2,5 +2,6 @@
 .env.local
 node_modules/
 *.DS_Store
+fake_server/
 dist/
 build/

@@ -4,8 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.example.demo.entity.Member;
-import org.springframework.transaction.annotation.Transactional;
+import com.example.demo.dto.Member;
 
 
 @Service

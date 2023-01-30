@@ -1,9 +1,9 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.KakaoTokenResponse;
-import com.example.demo.dto.KakaoUserInfoResponse;
 import com.example.demo.dto.ResponseDTO;
 import com.example.demo.service.KaKaoService;
+import com.example.demo.service.NaverService;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Description;
@@ -12,10 +12,14 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("oauth")
+
 @Slf4j
 public class SSOLoginController {
 
     KaKaoService kaKaoService;
+
+    @Autowired
+    NaverService naverService;
 
     @Autowired
     public SSOLoginController(KaKaoService kaKaoService) {
@@ -29,4 +33,10 @@ public class SSOLoginController {
     public ResponseEntity<ResponseDTO> kakaoOauth(@RequestParam("code") String code) {
         return kaKaoService.login(code);
     }
+
+    @GetMapping("/naver")
+    public ResponseEntity<ResponseDTO> naverOauth(@RequestParam String code, @RequestParam String state) {
+        return naverService.login(code, state);
+    }
+
 }

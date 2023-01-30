@@ -1,10 +1,10 @@
 package com.example.demo.service;
 
-import com.example.demo.dao.MemberDao;
 import com.example.demo.dto.KakaoTokenResponse;
 import com.example.demo.dto.KakaoUserInfoResponse;
+import com.example.demo.dto.Member;
 import com.example.demo.dto.ResponseDTO;
-import com.example.demo.entity.Member;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

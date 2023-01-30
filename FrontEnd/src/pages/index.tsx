@@ -1,6 +1,9 @@
 import { Routes, Route } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import useKakaoMap from '@src/components/common/Map/useKakaoMap';
+import MyScheduleCard from '@src/components/myScedule/MyScheduleCard';
 import MySchedule from './mySchedule';
+import MySchedule2 from './mySchedule2';
 import LoginPage from './LoginPage';
 import OauthPage from './OauthPage';
 
@@ -21,6 +24,10 @@ const App = () => {
         />
       </Helmet>
       <Routes>
+        <Route
+          path="/mySchedule"
+          element={<MySchedule2 />}
+        />
         <Route
           path="/mySchedule/:id"
           element={<MySchedule />}

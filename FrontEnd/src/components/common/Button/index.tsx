@@ -4,24 +4,16 @@ interface ButtonProps {
   color?: 'grey' | 'blue';
   className?: string;
   onClick?: () => void;
-  noStyle?: boolean;
 }
 
-const Button = ({
-  children,
-  type,
-  color,
-  className,
-  onClick,
-  noStyle,
-}: ButtonProps) => {
+const Button = ({ children, type, color, className, onClick }: ButtonProps) => {
   const defaultClassName = `
     p-2 rounded-3xl 
     flex justify-center items-center`;
   const sizes = {
     small: 'w-80 h-30 text-body3',
     medium: 'w-160 h-50 text-body1Bold',
-    large: 'w-330 h-50 text-body1Bold',
+    large: `w-[calc(100%-var(--contentX))] h-50 text-body1Bold m-auto fixed bottom-0 left-0 right-0 z-[10] text-white`,
     none: '',
   };
   const colors = {
@@ -32,13 +24,12 @@ const Button = ({
     ${defaultClassName} 
     ${sizes[type]} 
     ${color && colors[color]}
-    ${className} 
   `;
 
   return (
     <button
       onClick={onClick}
-      className={noStyle ? '' : buttonClassName}
+      className={`${type === 'none' ? '' : buttonClassName} ${className}`}
     >
       {children}
     </button>
