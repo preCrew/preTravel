@@ -9,3 +9,8 @@ export const modalDragAtom = atom({
   key: 'modalDragAtom', //고유한 키, 아톰 구분
   default: true,
 });
+
+export const calendarIsOpenAtom = atom({
+  key: 'calendarIsOpenAtom',
+  default: false,
+});

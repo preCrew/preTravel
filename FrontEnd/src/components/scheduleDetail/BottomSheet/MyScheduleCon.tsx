@@ -3,23 +3,24 @@ import React, { useState } from 'react';
 import BottomSheetWrap from './BottomSheetWrap';
 import Button from './Button';
 import MyScheduleList from './MyScheduleList';
-import { data } from './data';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import dateAtom from '@src/recoil/date/atom';
+import { currentScheduleAtom, selectedDayAtom } from '@src/recoil/date/atom';
 import { modalDragAtom } from '@src/recoil/modal/atom';
+import withSelectedDay from '@src/recoil/date/withSelectedDay';
 
 const MyScheduleCon = () => {
   const [drag, setDrag] = useState(false);
-  const { selectedDayDiff } = useRecoilValue(dateAtom);
-  const [myschedulData, setmySchedulData] = useState(
-    data.schedule[selectedDayDiff],
-  );
+  const currentScheduleState = useRecoilValue(currentScheduleAtom);
+  const withSelectedDayState = useRecoilValue(withSelectedDay);
+  const selectedDayState = useRecoilValue(selectedDayAtom);
+  const [modalDragOn, setModalDraOn] = useRecoilState(modalDragAtom);
+  const [edit, setEdit] = useState(false);
+  const edtiBtnOn = edit && modalDragOn;
 
   const onClickAddSchedule = () => {
     console.log(1);
   };
 
-  const [edit, setEdit] = useState(false);
   const onClickEdit = () => {
     console.log(1);
     setEdit(true);
@@ -27,9 +28,9 @@ const MyScheduleCon = () => {
 
   const onClickBack = () => {
     setEdit(false);
+    setModalDraOn(true);
   };
 
-  const [modalDragOn, setModalDraOn] = useRecoilState(modalDragAtom);
   const onClickOrderChange = () => {
     setModalDraOn(false);
   };
@@ -41,10 +42,10 @@ const MyScheduleCon = () => {
   return (
     <BottomSheetWrap drag={drag}>
       <div className="flex justify-between">
-        <h4 className="flex items-end mb-8 text-body1Bold">
-          {myschedulData.date}
+        <h4 className="flex items-end text-body1Bold">
+          {currentScheduleState.schedule[selectedDayState]?.date}
           <sub className="p-1 ml-2 rounded bg-gray4 text-body4Bold text-primary1">
-            1일차
+            {withSelectedDayState}일차
           </sub>
         </h4>
         <div className="[&>button+button]:ml-2">
@@ -93,6 +94,12 @@ const MyScheduleCon = () => {
           )}
         </div>
       </div>
+      {!modalDragOn && (
+        <p className="mt-2 text-body4Bold text-gray1">
+          순서를 변경하고 싶은 목록을 드래그 하세요.
+        </p>
+      )}
+
       <MyScheduleList
         drag={drag}
         setDrag={setDrag}

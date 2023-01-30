@@ -18,7 +18,7 @@ public class DemoApplication {
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
-
+    
     @Bean
     public WebMvcConfigurer webMvcConfigurer() {
         return new WebMvcConfigurer() {
@@ -34,5 +34,5 @@ public class DemoApplication {
                         .maxAge(3600);
             }
         };
-    }
+    
 }

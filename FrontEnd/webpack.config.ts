@@ -29,7 +29,11 @@ const webpackConfig: Configuration = {
     rules: [
       {
         loader: 'babel-loader',
-        options: isDevelopment ? { plugins: ['react-refresh/babel'] } : {},
+        options: {
+          plugins: [
+            isDevelopment && require.resolve('react-refresh/babel'),
+          ].filter(Boolean),
+        },
       },
       {
         test: /\.tsx?$/,
@@ -47,9 +51,20 @@ const webpackConfig: Configuration = {
       },
       {
         test: /\.css$/i,
-        // include: path.resolve(__dirname, 'src'),
-        // exclude: /node_modules/,
-        use: ['style-loader', 'css-loader', 'postcss-loader'],
+        use: [
+          {
+            loader: 'style-loader',
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              url: false,
+            },
+          },
+          {
+            loader: 'postcss-loader',
+          },
+        ],
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
@@ -80,13 +95,13 @@ const webpackConfig: Configuration = {
     }),
   ],
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: path.join(__dirname, 'build'),
     filename: '[name].js',
-    publicPath: '/dist/',
+    publicPath: '/build/',
   },
   devServer: {
     port: 8080,
-    devMiddleware: { publicPath: '/dist' },
+    devMiddleware: { publicPath: '/build' },
     static: { directory: path.resolve(__dirname) },
     hot: true,
     historyApiFallback: true, //존재하지 않는 url일경우 -> index.html
