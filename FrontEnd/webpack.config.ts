@@ -12,12 +12,6 @@ interface Configuration extends WebpackConfiguration {
   devServer?: WebpackDevServerConfiguration;
 }
 
-const isDevelopment = process.env.NODE_ENV !== 'production';
-
-const commonPlugins = ['babel-plugin-twin', 'babel-plugin-macros'];
-const devPlugins = [...commonPlugins, 'react-refresh/babel'];
-const productionPlugins = [...commonPlugins];
-
 const webpackConfig: Configuration = {
   name: 'preTravelPlan',
   devtool: 'eval',
@@ -33,21 +27,14 @@ const webpackConfig: Configuration = {
   module: {
     rules: [
       {
-        test: /\.(tsx|ts|jsx|js)?$/,
-        loader: 'babel-loader',
-        options: {
-          plugins: isDevelopment ? devPlugins : productionPlugins,
-          presets: [
-            ['@babel/preset-react', { runtime: 'automatic' }],
-            '@emotion/babel-preset-css-prop',
-            '@babel/preset-typescript',
-          ],
-        },
+        test: /\.[jt]sx?$/,
+        exclude: /node_modules/,
+        loader: require.resolve('babel-loader'),
       },
       {
         test: /\.tsx?$/,
         loader: 'ts-loader',
-        exclude: path.join(__dirname, 'node_modules'),
+        exclude: path.resolve(__dirname, 'node_modules'),
       },
       {
         test: /\.(png|jpg|gif)$/,
@@ -108,21 +95,21 @@ const webpackConfig: Configuration = {
     }),
   ],
   output: {
-    path: path.join(__dirname, 'build'),
-    filename: '[name].js',
-    publicPath: '/build/',
+    path: path.resolve(__dirname, 'build'),
+    filename: '[name].bundle.[hash].js',
+    publicPath: '/',
   },
   devServer: {
     port: 8080,
-    devMiddleware: { publicPath: '/build' },
-    static: { directory: path.resolve(__dirname) },
+    // devMiddleware: { publicPath: '/build' },
+    // static: { directory: path.resolve(__dirname) },
     hot: true,
     historyApiFallback: true, //존재하지 않는 url일경우 -> index.html
-    client: {
-      overlay: true,
-      webSocketURL: 'ws://0.0.0.0:80/ws',
-    },
-  },
+    // client: {
+    //   overlay: true,
+    //   webSocketURL: 'ws://0.0.0.0:80/ws',
+    // },
+  }
 };
 
 export default webpackConfig;

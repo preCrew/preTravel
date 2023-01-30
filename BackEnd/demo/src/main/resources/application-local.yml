@@ -1,17 +1,21 @@
+# @format
+
+server:
+  port: 9090
+
+#spring:
+#  datasource:
+#    driver-class-name: org.mariadb.jdbc.Driver
+#    # url: jdbc:mariadb://mariadb:3306/schedule?characterEncoding=UTF-8&useTimezone=true&serverTimezone=Asia/Seoul
+#    url: jdbc:mariadb://svc.gksl2.cloudtype.app:30575/schedule?characterEncoding=UTF-8&useTimezone=true&serverTimezone=Asia/Seoul
+#    username: root
+#    password: root
 spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    # url: jdbc:mariadb://mariadb:3306/schedule?characterEncoding=UTF-8&useTimezone=true&serverTimezone=Asia/Seoul
-    url: jdbc:mariadb://localhost:3306/schedule?characterEncoding=UTF-8&useTimezone=true&serverTimezone=Asia/Seoul
-    
+    url: jdbc:mariadb://svc.gksl2.cloudtype.app:30575/schedule?characterEncoding=UTF-8&useTimezone=true&serverTimezone=Asia/Seoul
     username: root
-    password: root
-# spring:
-#   datasource:
-#     driver-class-name: org.mariadb.jdbc.Driver
-#     url: jdbc:mariadb://svc.gksl2.cloudtype.app:30575/schedule?characterEncoding=UTF-8&useTimezone=true&serverTimezone=Asia/Seoul
-#     username: root
-#     password: charmacist
+    password: charmacist
   jpa:
     hibernate:
       ddl-auto: none
@@ -27,6 +31,9 @@ oauth:
     grant_type: authorization_code
     rest_api_key: b419b28c930a90dc96e0fd983b9025ef
     redirect_uri: http://localhost:8080/oauth/kakao
+    map:
+      rest_api_key: 2581cd83651b3e51982587f4cb1652f5
+      host: https://dapi.kakao.com/v2/local/search/keyword.JSON
   naver:
-    client_id : 76Nr2e2G6KuBeyuVPqbf
-    client_secret : 3FuWrNGOQZ
+    client_id: 76Nr2e2G6KuBeyuVPqbf
+    client_secret: 3FuWrNGOQZ

@@ -16,8 +16,9 @@
     "paths": {
       "@src/*": ["src/*"],
     },
-    "jsxImportSource": "@emotion/react" // Add the css prop
+    "jsxImportSource": "@emotion/react"
   },
   "include": ["src", "@types","client.tsx"],
+  "exclude": ["node_modules"]
 
 }

@@ -2,7 +2,7 @@
   "posts": [
     {
       "id": 1,
-      "title":"제주도여행~~~",
+      "title": "제주도여행~~~",
       "dateRange": ["2022-05-24", "2022-05-30"],
       "schedule": [
         {
@@ -186,12 +186,12 @@
               "lo": 126.51241760696178
             }
           ]
-        }                                          
+        }
       ]
     },
     {
       "id": 2,
-      "title":"제주도여행~~~",      
+      "title": "제주도여행~~~",
       "dateRange": ["2022-05-24", "2022-05-27"],
       "schedule": [
         {
@@ -297,8 +297,26 @@
               "lo": 126.51241760696178
             }
           ]
-        }                     
+        }
       ]
-    }    
+    }
+  ],
+  "oauth": [
+    {
+      "where": "naver",
+      "code": 200,
+      "msg": "로그인 성공",
+      "data": {
+        "accessToken": "tBeYiIpNnfHNp4BKE1Pen277PaXo2uLBfWqNLHNACiolUwAAAYWfACag"
+      }
+    },
+    {
+      "where": "kakao",
+      "code": 200,
+      "msg": "로그인 성공",
+      "data": {
+        "accessToken": "tBeYiIpNnfHNp4BKE1Pen277PaXo2uLBfWqNLHNACiolUwAAAYWfACag"
+      }
+    }
   ]
 }
