@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("oauth")
-
 @Slf4j
 public class SSOLoginController {
 
