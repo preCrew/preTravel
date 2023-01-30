@@ -31,6 +31,9 @@ const OauthPage = ({}: OauthPageProps) => {
 
       const res = await axios.get(reqUrl[where], {
         withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
       const data = JSON.stringify(res.data);
 
