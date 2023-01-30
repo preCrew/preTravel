@@ -30,7 +30,7 @@ public WebMvcConfigurer webMvcConfigurer() {
         @Override
         public void addCorsMappings(CorsRegistry registry) {
             registry.addMapping("/**")
-                    .allowedOrigins("http://localhost:8080", "http://web-fronttest-ll32glc6adwo3.gksl2.cloudtype.app")
+                    .allowedOrigins("http://localhost:8080", "https://web-fronttest-ll32glc6adwo3.gksl2.cloudtype.app")
                     .allowedMethods("GET", "POST")
                     .allowCredentials(true)
                     .maxAge(3600);
