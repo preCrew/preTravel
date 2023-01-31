@@ -66,7 +66,7 @@ public class NaverService {
                     .email(email).build());
         }
         ResponseCookie cookie = ResponseCookie.from("refreshToken", (String) token.get("refresh_token"))
-                .httpOnly(false)
+                .httpOnly(true)
                 .secure(true)
                 .path("/")
                 .domain(".gksl2.cloudtype.app")
