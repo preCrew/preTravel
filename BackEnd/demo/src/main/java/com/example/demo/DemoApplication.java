@@ -26,7 +26,7 @@ public class DemoApplication {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
                         .allowedOrigins("http://localhost:8080",
-                                "http://web-fronttest-ll32glc6adwo3.gksl2.cloudtype.app")
+                                "https://web-fronttest-ll32glc6adwo3.gksl2.cloudtype.app")
                         .allowedMethods("GET", "POST")
                         .allowCredentials(true)
                         .exposedHeaders("Set-Cookie")

@@ -69,7 +69,7 @@ public class NaverService {
                 .httpOnly(false)
                 .secure(true)
                 .path("/")
-                .domain("web-fronttest-ll32glc6adwo3.gksl2.cloudtype.app")
+                .domain(".gksl2.cloudtype.app")
                 .maxAge(60)
                 .build();
 
