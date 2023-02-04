@@ -3,8 +3,8 @@ package com.example.demo.service;
 import java.util.HashMap;
 import java.util.Map;
 
+
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -19,6 +19,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.example.demo.dto.Member;
 import com.example.demo.dto.ResponseDTO;
+import com.example.demo.util.ResponseUtil;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -37,6 +38,9 @@ public class NaverService {
 
     @Autowired
     RestTemplate restTemplate;
+
+    @Autowired
+    ResponseUtil responseUtil;
 
     public ResponseEntity<ResponseDTO> login(String code, String state) {
         log.info("네이버 로그인 code : {}, state : {}", code, state);
@@ -65,6 +69,7 @@ public class NaverService {
                 .httpOnly(true)
                 .secure(true)
                 .path("/")
+                .domain(".gksl2.cloudtype.app")
                 .maxAge(60)
                 .build();
 
@@ -92,7 +97,7 @@ public class NaverService {
                 HttpMethod.POST,
                 httpEntity,
                 String.class);
-        return ResponseToJson(profileData);
+        return responseUtil.responseToJson(profileData);
     }
 
     private JSONObject getToken(String code, String state) {
@@ -112,19 +117,6 @@ public class NaverService {
                 HttpMethod.POST,
                 httpEntity,
                 String.class);
-        return ResponseToJson(data);
+        return responseUtil.responseToJson(data);
     }
-
-    private JSONObject ResponseToJson(ResponseEntity<String> target) {
-        JSONObject jo = new JSONObject();
-        try {
-            JSONParser jsonParser = new JSONParser();
-            jo = (JSONObject) jsonParser.parse(target.getBody());
-        } catch (Exception e) {
-            e.printStackTrace();
-            log.info("ResponseToJson Parsing Error");
-        }
-        return jo;
-    }
-
 }

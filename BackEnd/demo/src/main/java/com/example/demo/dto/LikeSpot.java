@@ -41,6 +41,4 @@ public class LikeSpot {
 
     @Column(name="ls_longitude")
     String longitude;
-
-    
 }

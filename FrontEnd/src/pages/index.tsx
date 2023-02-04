@@ -37,6 +37,10 @@ const App = () => {
           element={<MySchedule2 />}
         />
         <Route
+          path="/mySchedule"
+          element={<MySchedule2 />}
+        />
+        <Route
           path="/mySchedule/:id"
           element={<MySchedule />}
         />
