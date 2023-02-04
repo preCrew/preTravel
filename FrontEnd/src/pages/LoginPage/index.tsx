@@ -1,25 +1,33 @@
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { useRecoilValue } from 'recoil';
+import { userAtom } from '@src/recoil/user/atom';
+
 import LoginButton from '@src/components/common/Button/LoginButton';
 import useRedirect from '@src/hooks/useRedirect';
 import { getLoginUri } from '@src/utils/getLoginUri';
-import { useNavigate } from 'react-router-dom';
+
 import { loginPageCss } from './style';
 
 interface LoginPageProps {}
 
 const LoginPage = ({}: LoginPageProps) => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
+  // const userState = useRecoilValue(userAtom);
+
   const { redirect } = useRedirect();
 
   const handleClickKakaoLoginButton = () => {
-    // navigate('/redirect', { state: { url: getLoginUri('kakao') } });
-    // window.open(getLoginUri('kakao'));
     redirect(getLoginUri('kakao'));
   };
   const handleClickNaverLoginButton = () => {
-    // navigate('/redirect', { state: { url: getLoginUri('naver') } });
-    // window.open(getLoginUri('naver'));
     redirect(getLoginUri('naver'));
   };
+
+  useEffect(() => {
+    //TODO: 로그인 상태면 메인페이지로 이동
+  }, []);
 
   return (
     <div css={loginPageCss}>

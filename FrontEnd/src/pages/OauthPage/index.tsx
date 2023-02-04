@@ -38,11 +38,11 @@ const OauthPage = ({}: OauthPageProps) => {
 
       const data = res.data.data;
       if (data) {
-        setUserState({
-          ...userState,
+        setUserState(state => ({
+          ...state,
           accessToken: data.accessToken,
           isLogin: true,
-        });
+        }));
         navigate('/');
       } else {
         throw new Error('서버에서 데이터를 받아오지 못했습니다.');
