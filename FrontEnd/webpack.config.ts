@@ -14,7 +14,7 @@ interface Configuration extends WebpackConfiguration {
 
 const webpackConfig: Configuration = {
   name: 'preTravelPlan',
-  devtool: 'eval',
+  devtool: 'source-map',
   resolve: {
     extensions: ['.js', '.jsx', '.tsx', '.ts'],
     alias: {
@@ -81,6 +81,12 @@ const webpackConfig: Configuration = {
           },
         ],
       },
+      {
+        test: /\.[jt]sx?$/,
+        enforce: 'pre',
+        exclude: /node_modules/,
+        use: ['source-map-loader'],
+      },
     ],
   },
   plugins: [
@@ -109,7 +115,7 @@ const webpackConfig: Configuration = {
     //   overlay: true,
     //   webSocketURL: 'ws://0.0.0.0:80/ws',
     // },
-  }
+  },
 };
 
 export default webpackConfig;

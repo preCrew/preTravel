@@ -37,7 +37,7 @@ server.use('/oauth/:where', async (req, res) => {
     'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers',
   );
 
-  res.cookie('refreshToken', 'lsakdjfklj14kl1j4lk21j4', {
+  res.cookie('refreshToken', 'testRefreshTokenValue', {
     httpOnly: true,
     secure: true,
     domain: 'localhost',

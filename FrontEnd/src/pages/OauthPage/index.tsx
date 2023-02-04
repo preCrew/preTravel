@@ -1,7 +1,10 @@
+import { userAtom } from '@src/recoil/user/atom';
 import { getLoginUri } from '@src/utils/getLoginUri';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { CleanPlugin } from 'webpack';
 
 interface OauthPageProps {}
 
@@ -10,8 +13,7 @@ const OauthPage = ({}: OauthPageProps) => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [data, setData] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [userState, setUserState] = useRecoilState(userAtom);
 
   const get = async () => {
     const baseUrl = getLoginUri('base');
@@ -21,10 +23,7 @@ const OauthPage = ({}: OauthPageProps) => {
     const code = href.get('code');
     const state = href.get('state');
 
-    console.log("oauth page")
     try {
-      setIsLoading(true);
-
       const reqUrl = {
         kakao: `${baseUrl}/oauth/${where}?code=${code}`,
         naver: `${baseUrl}/oauth/${where}?code=${code}&state=${state}`,
@@ -36,20 +35,21 @@ const OauthPage = ({}: OauthPageProps) => {
           'Content-Type': 'application/json',
         },
       });
-      // const data = JSON.parse(res.data.data);
-      const data = res.data.data;
 
-      setIsLoading(false);
-      setData(data.accessToken);
-      // TODO: 로그인 성공시 메인페이지로 이동
-      // alert('TEST: 로그인 성공, access')
-      // navigate('/');
-      
+      const data = res.data.data;
+      if (data) {
+        setUserState({
+          ...userState,
+          accessToken: data.accessToken,
+          isLogin: true,
+        });
+        navigate('/');
+      } else {
+        throw new Error('서버에서 데이터를 받아오지 못했습니다.');
+      }
     } catch (e) {
-      // TODO: 로그인 실패시 로그인 페이지 그대로, alert로 error 메세지 출력
-      console.log('error: ', e);
-      // alert('로그인에 실패했습니다. 로그인 페이지로 돌아갑니다.');
-      // navigate(-1);
+      alert(`${e} \n로그인에 실패했습니다. \n이전 페이지로 돌아갑니다.`);
+      navigate(-1);
     }
   };
 
@@ -57,12 +57,7 @@ const OauthPage = ({}: OauthPageProps) => {
     get();
   }, []);
 
-  return (
-    <>
-      <p>here is oauth page {params.where}</p>
-      <p>{isLoading ? 'now loading data...' : `accessToken-> ${data}`}</p>
-    </>
-  );
+  return null;
 };
 
 export default OauthPage;
