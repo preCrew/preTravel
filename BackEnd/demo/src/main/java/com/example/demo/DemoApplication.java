@@ -11,8 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
 public class DemoApplication {
@@ -21,22 +19,25 @@ public class DemoApplication {
         SpringApplication.run(DemoApplication.class, args);
     }
 
-	@Bean
-	public RestTemplate restTemplate() {
-		return new RestTemplate();
-	}
-
-	@Bean
-public WebMvcConfigurer webMvcConfigurer() {
-    return new WebMvcConfigurer() {
-        @Override
-        public void addCorsMappings(CorsRegistry registry) {
-            registry.addMapping("/**")
-                    .allowedOrigins("http://localhost:8080", "http://web-fronttest-ll32glc6adwo3.gksl2.cloudtype.app")
-                    .allowedMethods("GET", "POST")
-                    .allowCredentials(true)
-                    .maxAge(3600);
-        }
-    };
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
+    
+    @Bean
+    public WebMvcConfigurer webMvcConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedOrigins("http://localhost:8080",
+                                "https://web-fronttest-ll32glc6adwo3.gksl2.cloudtype.app")
+                        .allowedMethods("GET", "POST")
+                        .allowCredentials(true)
+                        .exposedHeaders("Set-Cookie")
+                        // .allowedHeaders("application/json")
+                        .maxAge(3600);
+            }
+        };
 }
 }
