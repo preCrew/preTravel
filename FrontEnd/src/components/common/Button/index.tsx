@@ -1,12 +1,18 @@
 interface ButtonProps {
   children: React.ReactNode;
-  type: 'small' | 'medium' | 'large' | 'none';
+  sizeType: 'small' | 'medium' | 'large' | 'none';
   color?: 'grey' | 'blue';
   className?: string;
   onClick?: () => void;
 }
 
-const Button = ({ children, type, color, className, onClick }: ButtonProps) => {
+const Button = ({
+  children,
+  sizeType,
+  color,
+  className,
+  onClick,
+}: ButtonProps) => {
   const defaultClassName = `
     p-2 rounded-3xl 
     flex justify-center items-center`;
@@ -22,14 +28,14 @@ const Button = ({ children, type, color, className, onClick }: ButtonProps) => {
   };
   const buttonClassName = `
     ${defaultClassName} 
-    ${sizes[type]} 
+    ${sizes[sizeType]} 
     ${color && colors[color]}
   `;
 
   return (
     <button
       onClick={onClick}
-      className={`${type === 'none' ? '' : buttonClassName} ${className}`}
+      className={`${sizeType === 'none' ? '' : buttonClassName} ${className}`}
     >
       {children}
     </button>

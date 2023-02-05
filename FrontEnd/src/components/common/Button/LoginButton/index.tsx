@@ -27,11 +27,11 @@ const LoginButton = ({ where, onClick }: LoginButtonProps) => {
   return (
     <>
       <Button
-        type="large"
+        sizeType="large"
         onClick={onClick}
         className={`${source[where].bg} ${source[where].textColor}`}
       >
-        <div className="w-50 flex justify-center ">
+        <div className="flex justify-center w-50 ">
           <img
             src={source[where].src}
             className={source[where].imageSize}

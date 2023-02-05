@@ -4,6 +4,7 @@ import useKakaoMap from '@src/components/common/Map/useKakaoMap';
 import MyScheduleCard from '@src/components/myScedule/MyScheduleCard';
 import MySchedule from './mySchedule';
 import MySchedule2 from './mySchedule2';
+import SchedulePlan from './schedulePlan';
 
 let test = 33.452613;
 let id = 1;
@@ -24,7 +25,7 @@ const App = () => {
     // setNowLocation()
   };
   return (
-    <div className="safe-top safe-left safe-right safe-bottom w-full h-full">
+    <div className="w-full h-full safe-top safe-left safe-right safe-bottom">
       <Helmet>
         <title>여행</title>
         <meta charSet="UTF-8" />
@@ -42,6 +43,10 @@ const App = () => {
         <Route
           path="/mySchedule"
           element={<MySchedule2 />}
+        />
+        <Route
+          path="/schedulePlan"
+          element={<SchedulePlan />}
         />
         <Route
           path="/mySchedule/:id"

@@ -13,7 +13,7 @@ const IconButton = ({ type, onClick }: IconButtonProps) => {
     <>
       <Button
         onClick={onClick}
-        type="none"
+        sizeType="none"
       >
         {type === 'back' && <IoIosArrowBack size={25} />}
         {type === 'add' && <HiPlusSm size={25} />}
