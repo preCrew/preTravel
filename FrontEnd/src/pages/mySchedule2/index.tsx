@@ -80,7 +80,7 @@ const MySchedule2 = () => {
       </Suspense>
       {filterdSelectedListState > 0 && (
         <Button
-          type="large"
+          sizeType="large"
           color="blue"
           className=""
           onClick={handleClickBottomRemoveButton}
