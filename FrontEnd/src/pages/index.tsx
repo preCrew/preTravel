@@ -1,30 +1,23 @@
 import { Routes, Route } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import useKakaoMap from '@src/components/common/Map/useKakaoMap';
-import MyScheduleCard from '@src/components/myScedule/MyScheduleCard';
+
 import MySchedule from './mySchedule';
 import MySchedule2 from './mySchedule2';
-
-let test = 33.452613;
-let id = 1;
+import LoginPage from './LoginPage';
+import OauthPage from './OauthPage';
+import { useEffect } from 'react';
 
 const App = () => {
-  const { Map, setNowLocation, addMarker, removeMarker } = useKakaoMap();
-  const handleClickButton = () => {
-    addMarker({ lat: test, lng: 126.570738 }, '근린공원', id);
-    test -= 0.0005;
-    id++;
-  };
-  const handleClickButton2 = () => {
-    removeMarker(1);
-  };
-  const handleClickButton3 = () => {
-    // 서울시 강남구의 위치로 이동
-    setNowLocation({ lat: 37.566826, lng: 126.9786567 });
-    // setNowLocation()
-  };
+  useEffect(() => {
+    console.log('다시시작');
+    // TODO:
+    //  - 새로고침 될때 혹은 주소창에 직접 url을 입력할 때
+    //    쿠키에 저장된 리프레시 토큰을 서버가 확인후 액세스 토큰을 설정해줘야함
+    //  - useSilentRefresh 훅을 생성해서 요청하면 될듯.
+  });
+
   return (
-    <div className="safe-top safe-left safe-right safe-bottom w-full h-full">
+    <div className="h-full w-full safe-top safe-left safe-right safe-bottom">
       <Helmet>
         <title>여행</title>
         <meta charSet="UTF-8" />
@@ -44,8 +37,20 @@ const App = () => {
           element={<MySchedule2 />}
         />
         <Route
+          path="/mySchedule"
+          element={<MySchedule2 />}
+        />
+        <Route
           path="/mySchedule/:id"
           element={<MySchedule />}
+        />
+        <Route
+          path="/login"
+          element={<LoginPage />}
+        />
+        <Route
+          path="/oauth/:where"
+          element={<OauthPage />}
         />
       </Routes>
     </div>

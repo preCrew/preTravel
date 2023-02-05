@@ -1,0 +1,14 @@
+{
+  "name": "fakeserver",
+  "version": "1.0.0",
+  "scripts": {
+    "server": "nodemon fakeServer.js --routes routes.json"
+  },
+  "type": "module",
+  "dependencies": {
+    "@types/json-server": "^0.14.4",
+    "json-server": "^0.17.1",
+    "lowdb": "^5.1.0",
+    "nodemon": "^2.0.20"
+  }
+}

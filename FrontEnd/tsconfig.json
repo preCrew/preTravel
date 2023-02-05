@@ -15,6 +15,10 @@
     "baseUrl": ".",
     "paths": {
       "@src/*": ["src/*"],
-    }      
-  }
+    },
+    "jsxImportSource": "@emotion/react"
+  },
+  "include": ["src", "@types","client.tsx"],
+  "exclude": ["node_modules"]
+
 }

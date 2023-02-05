@@ -3,6 +3,7 @@ import ReactRefreshPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import { Configuration as WebpackConfiguration, DefinePlugin } from 'webpack';
 import { Configuration as WebpackDevServerConfiguration } from 'webpack-dev-server';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 
 import dotenv from 'dotenv';
 dotenv.config();
@@ -11,11 +12,9 @@ interface Configuration extends WebpackConfiguration {
   devServer?: WebpackDevServerConfiguration;
 }
 
-const isDevelopment = process.env.NODE_ENV !== 'production';
-
 const webpackConfig: Configuration = {
   name: 'preTravelPlan',
-  devtool: 'eval',
+  devtool: 'source-map',
   resolve: {
     extensions: ['.js', '.jsx', '.tsx', '.ts'],
     alias: {
@@ -28,17 +27,14 @@ const webpackConfig: Configuration = {
   module: {
     rules: [
       {
-        loader: 'babel-loader',
-        options: {
-          plugins: [
-            isDevelopment && require.resolve('react-refresh/babel'),
-          ].filter(Boolean),
-        },
+        test: /\.[jt]sx?$/,
+        exclude: /node_modules/,
+        loader: require.resolve('babel-loader'),
       },
       {
         test: /\.tsx?$/,
         loader: 'ts-loader',
-        exclude: path.join(__dirname, 'node_modules'),
+        exclude: path.resolve(__dirname, 'node_modules'),
       },
       {
         test: /\.(png|jpg|gif)$/,
@@ -85,6 +81,12 @@ const webpackConfig: Configuration = {
           },
         ],
       },
+      {
+        test: /\.[jt]sx?$/,
+        enforce: 'pre',
+        exclude: /node_modules/,
+        use: ['source-map-loader'],
+      },
     ],
   },
   plugins: [
@@ -93,22 +95,26 @@ const webpackConfig: Configuration = {
     new DefinePlugin({
       'process.env': JSON.stringify(process.env),
     }),
+    new HtmlWebpackPlugin({
+      // 생성자를 이용한 플러그인 생성
+      template: './index.html', // 템플릿 연결
+    }),
   ],
   output: {
-    path: path.join(__dirname, 'build'),
-    filename: '[name].js',
-    publicPath: '/build/',
+    path: path.resolve(__dirname, 'build'),
+    filename: '[name].bundle.[hash].js',
+    publicPath: '/',
   },
   devServer: {
     port: 8080,
-    devMiddleware: { publicPath: '/build' },
-    static: { directory: path.resolve(__dirname) },
+    // devMiddleware: { publicPath: '/build' },
+    // static: { directory: path.resolve(__dirname) },
     hot: true,
     historyApiFallback: true, //존재하지 않는 url일경우 -> index.html
-    client: {
-      overlay: true,
-      webSocketURL: 'ws://0.0.0.0:80/ws',
-    },
+    // client: {
+    //   overlay: true,
+    //   webSocketURL: 'ws://0.0.0.0:80/ws',
+    // },
   },
 };
 

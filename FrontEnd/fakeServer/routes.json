@@ -1,0 +1,3 @@
+{
+  "/oauth/:where": "/oauth?where=:where"
+}
