@@ -36,15 +36,15 @@ const webpackConfig: Configuration = {
         loader: 'ts-loader',
         exclude: path.resolve(__dirname, 'node_modules'),
       },
-      {
-        test: /\.(png|jpg|gif)$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {},
-          },
-        ],
-      },
+      // {
+      //   test: /\.(png|jpg|gif)$/,
+      //   use: [
+      //     {
+      //       loader: 'file-loader',
+      //       options: {},
+      //     },
+      //   ],
+      // },
       {
         test: /\.css$/i,
         use: [
@@ -64,22 +64,43 @@ const webpackConfig: Configuration = {
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
-        loader: 'file-loader',
-        options: {
-          name: '[name].[ext]',
-          outputPath: './src/assets/fonts/',
+        type: 'asset/inline',
+        // generator: {
+        // filename
+        // }
+
+        // loader: 'file-loader',
+        // options: {
+        // name: '[name].[ext]',
+        // outputPath: './src/assets/fonts/',
+        // },
+      },
+      {
+        test: /\.svg$/,
+        type: 'asset/resource',
+        generator: {
+          filename: 'assets/svgs/[hash][ext][query]',
         },
       },
       {
-        test: /\.(eot|woff|woff2|ttf|svg|png|jpg|gif)$/,
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              limit: 8192,
-            },
-          },
-        ],
+        test: /\.(eot|woff|woff2|ttf|png|jpg|gif)$/,
+        // 8kb 이상은 asset/resource (webpack4에서 file-loader),
+        // 8kb 이하는 asset/inline (webpack4에서 url-loader)
+        type: 'asset',
+        // parser: {
+        //   dataUrlCondition: {
+        //     maxSize: 4 * 1024 // 8kb
+        //   }
+        // }
+
+        // use: [
+        //   {
+        //     loader: 'url-loader',
+        //     options: {
+        //       limit: 8192,
+        //     },
+        //   },
+        // ],
       },
       {
         test: /\.[jt]sx?$/,
@@ -107,8 +128,11 @@ const webpackConfig: Configuration = {
   },
   devServer: {
     port: 8080,
-    // devMiddleware: { publicPath: '/build' },
-    // static: { directory: path.resolve(__dirname) },
+    // devMiddleware: {
+    // con
+    // }
+    // devMiddleware: { publicPath: '/' },
+    static: { directory: path.join(__dirname, 'build') },
     hot: true,
     historyApiFallback: true, //존재하지 않는 url일경우 -> index.html
     // client: {
