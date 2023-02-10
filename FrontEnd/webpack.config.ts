@@ -63,44 +63,32 @@ const webpackConfig: Configuration = {
         ],
       },
       {
-        test: /\.(woff|woff2|eot|ttf|otf)$/,
-        type: 'asset/inline',
-        // generator: {
-        // filename
-        // }
-
-        // loader: 'file-loader',
-        // options: {
-        // name: '[name].[ext]',
-        // outputPath: './src/assets/fonts/',
-        // },
-      },
-      {
         test: /\.svg$/,
-        type: 'asset/resource',
-        generator: {
-          filename: 'assets/svgs/[hash][ext][query]',
-        },
+        oneOf: [
+          {
+            use: ['@svgr/webpack'],
+            issuer: /\.[jt]sx?$/,
+            resourceQuery: { not: [/url/] },
+          },
+          {
+            type: 'asset',
+            resourceQuery: /url/, // *.svg?url
+          },
+        ],
       },
       {
-        test: /\.(eot|woff|woff2|ttf|png|jpg|gif)$/,
+        test: /\.(woff|woff2|eot|ttf|otf|png|jpg|gif)$/,
         // 8kb 이상은 asset/resource (webpack4에서 file-loader),
         // 8kb 이하는 asset/inline (webpack4에서 url-loader)
         type: 'asset',
         // parser: {
         //   dataUrlCondition: {
-        //     maxSize: 4 * 1024 // 8kb
+        //     maxSize: 4 * 1024 // 4kb
         //   }
         // }
-
-        // use: [
-        //   {
-        //     loader: 'url-loader',
-        //     options: {
-        //       limit: 8192,
-        //     },
+        //   generator: {
+        //     filename: 'assets/svgs/[hash][ext][query]',
         //   },
-        // ],
       },
       {
         test: /\.[jt]sx?$/,
@@ -125,6 +113,7 @@ const webpackConfig: Configuration = {
     path: path.resolve(__dirname, 'build'),
     filename: '[name].bundle.[hash].js',
     publicPath: '/',
+    assetModuleFilename: 'assets/[hash][ext][query]',
   },
   devServer: {
     port: 8080,

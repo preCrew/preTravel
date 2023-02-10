@@ -1,6 +1,7 @@
 import Button from '..';
-import kakao from '@src/assets/svgs/kakao.svg';
-import naver from '@src/assets/svgs/naver.svg';
+import kakao from '@src/assets/svgs/kakao.svg?url';
+import naver from '@src/assets/svgs/naver.svg?url';
+import Kakao from '@src/assets/svgs/kakao.svg';
 
 interface LoginButtonProps {
   where: 'kakao' | 'naver';
@@ -39,6 +40,7 @@ const LoginButton = ({ where, onClick }: LoginButtonProps) => {
         </div>
         <p>{source[where].text}</p>
       </Button>
+      <Kakao />
     </>
   );
 };
