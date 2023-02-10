@@ -8,7 +8,7 @@ interface CheckBoxProps {
 }
 
 const CheckBox = ({ onChange, isChecked }: CheckBoxProps) => {
-  const checkbox = css([
+  const checkbox = [
     tw`
     absolute w-24 h-24 left-3.5 top-3.5 
     cursor-pointer rounded-lg appearance-none border-2 border-solid border-white z-[9] overflow-hidden
@@ -21,7 +21,7 @@ const CheckBox = ({ onChange, isChecked }: CheckBoxProps) => {
         background-image: url(${checkicon});
       }
     `,
-  ]);
+  ];
 
   return (
     <>
