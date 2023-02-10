@@ -63,23 +63,32 @@ const webpackConfig: Configuration = {
         ],
       },
       {
-        test: /\.(woff|woff2|eot|ttf|otf)$/,
-        loader: 'file-loader',
-        options: {
-          name: '[name].[ext]',
-          outputPath: './src/assets/fonts/',
-        },
-      },
-      {
-        test: /\.(eot|woff|woff2|ttf|svg|png|jpg|gif)$/,
-        use: [
+        test: /\.svg$/,
+        oneOf: [
           {
-            loader: 'url-loader',
-            options: {
-              limit: 8192,
-            },
+            use: ['@svgr/webpack'],
+            issuer: /\.[jt]sx?$/,
+            resourceQuery: { not: [/url/] },
+          },
+          {
+            type: 'asset',
+            resourceQuery: /url/, // *.svg?url
           },
         ],
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf|png|jpg|gif)$/,
+        // 8kb 이상은 asset/resource (webpack4에서 file-loader),
+        // 8kb 이하는 asset/inline (webpack4에서 url-loader)
+        type: 'asset',
+        // parser: {
+        //   dataUrlCondition: {
+        //     maxSize: 4 * 1024 // 4kb
+        //   }
+        // }
+        //   generator: {
+        //     filename: 'assets/svgs/[hash][ext][query]',
+        //   },
       },
       {
         test: /\.[jt]sx?$/,
@@ -104,11 +113,15 @@ const webpackConfig: Configuration = {
     path: path.resolve(__dirname, 'build'),
     filename: '[name].bundle.[hash].js',
     publicPath: '/',
+    assetModuleFilename: 'assets/[hash][ext][query]',
   },
   devServer: {
     port: 8080,
-    // devMiddleware: { publicPath: '/build' },
-    // static: { directory: path.resolve(__dirname) },
+    // devMiddleware: {
+    // con
+    // }
+    // devMiddleware: { publicPath: '/' },
+    // static: { directory: path.join(__dirname, 'build') },
     hot: true,
     historyApiFallback: true, //존재하지 않는 url일경우 -> index.html
     // client: {
