@@ -34,5 +34,7 @@ oauth:
       rest_api_key : 2581cd83651b3e51982587f4cb1652f5
       host : https://dapi.kakao.com/v2/local/search/keyword.JSON
   naver:
+    token_host : https://nid.naver.com/oauth2.0/token
+    user_host : https://openapi.naver.com/v1/nid/me
     client_id : 76Nr2e2G6KuBeyuVPqbf
     client_secret : 3FuWrNGOQZ
