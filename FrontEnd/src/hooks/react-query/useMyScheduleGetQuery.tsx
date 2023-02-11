@@ -9,9 +9,9 @@ const getData = () =>
       resolve(data.data);
     }, 200);
   });
-const useMyScheduleQuery = () =>
+const useMyScheduleGetQuery = () =>
   useQuery(['mySchedule'], {
     queryFn: getData,
   });
 
-export default useMyScheduleQuery;
+export default useMyScheduleGetQuery;

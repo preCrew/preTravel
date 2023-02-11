@@ -11,9 +11,9 @@ const del = (list: CardListI[]) => {
     ),
   );
 };
-const useMyScheduleDelete = (list: CardListI[]) =>
+const useMyScheduleDeleteQuery = (list: CardListI[]) =>
   useMutation(['myScheduleDelete'], {
     mutationFn: () => del(list),
   });
 
-export default useMyScheduleDelete;
+export default useMyScheduleDeleteQuery;

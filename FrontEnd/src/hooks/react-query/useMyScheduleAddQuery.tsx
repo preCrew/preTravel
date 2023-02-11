@@ -13,7 +13,7 @@ const add = (list: CardListI[]) => {
     schedule: [],
   });
 };
-const useMyScheduleAdd = (list: CardListI[]) =>
+const useMyScheduleAddQuery = (list: CardListI[]) =>
   useMutation(['myScheduleAdd'], {
     mutationFn: () => add(list),
     onSuccess: () => {
@@ -29,7 +29,7 @@ const useMyScheduleAdd = (list: CardListI[]) =>
       console.log('!!!@#@!#');
     },
   });
-export default useMyScheduleAdd;
+export default useMyScheduleAddQuery;
 
 // const useMyScheduleDelete = (list: CardListI[]) =>
 //   useMutation(['myScheduleDelete'], {
