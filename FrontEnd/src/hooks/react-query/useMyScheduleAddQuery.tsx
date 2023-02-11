@@ -1,11 +1,13 @@
 import { CardListI } from '@src/recoil/cardList/atom';
+import getServerUri from '@src/utils/getServerUri';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 
+const serverUri = getServerUri();
 const add = (list: CardListI[]) => {
   const lastId = list.at(-1)!.id + 1;
 
-  return axios.post('http://localhost:3001/posts/', {
+  return axios.post(`${serverUri}/posts/`, {
     id: lastId,
     region: `제주도${lastId}`,
     title: '제주도여행~~~',

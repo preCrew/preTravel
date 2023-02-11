@@ -1,13 +1,13 @@
 import { MyScheduleCardI } from '@src/components/myScedule/MyScheduleCard';
+import getServerUri from '@src/utils/getServerUri';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
+const serverUri = getServerUri();
 const getData = () =>
-  new Promise<MyScheduleCardI[]>(resolve => {
-    setTimeout(async () => {
-      const data = await axios.get('http://localhost:3001/posts');
-      resolve(data.data);
-    }, 200);
+  new Promise<MyScheduleCardI[]>(async resolve => {
+    const data = await axios.get(`${getServerUri}/posts`);
+    resolve(data.data);
   });
 const useMyScheduleGetQuery = () =>
   useQuery(['mySchedule'], {
