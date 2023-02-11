@@ -7,7 +7,7 @@ interface TopBarProps {
 
 const TopBar = ({ onClickBackButton, children }: TopBarProps) => {
   const css = `
-    w-full h-70 p-4 
+    w-full h-70 pl-4
     flex items-center
     bg-white
   `;
