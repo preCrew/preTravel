@@ -23,7 +23,8 @@ oauth:
     token_host: https://kauth.kakao.com/oauth/token
     user_host: https://kapi.kakao.com/v2/user/me
     grant_type: authorization_code
-    rest_api_key: b419b28c930a90dc96e0fd983b9025ef
+    # rest_api_key: b419b28c930a90dc96e0fd983b9025ef
+    rest_api_key: 2581cd83651b3e51982587f4cb1652f5 #신영수정
     redirect_uri: https://web-fronttest-ll32glc6adwo3.gksl2.cloudtype.app/oauth/kakao
 #    redirect_uri: https://port-0-pretravel-ll32glc6adwo3.gksl2.cloudtype.app/oauth/kakao
     map:

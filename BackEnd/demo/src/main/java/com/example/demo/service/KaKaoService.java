@@ -85,7 +85,7 @@ public class KaKaoService {
         String url = USER_HOST;
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(accessToken);
-         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         // Body
         HashMap<String, ArrayList> param = new HashMap<>();
         ArrayList<String> propertyKeys = new ArrayList<>();
