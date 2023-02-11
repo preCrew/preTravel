@@ -87,7 +87,7 @@ module.exports = {
         medium: 500,
         bold: 700,
       },
-      padding:{
+      padding: {
         inner: remCalculate(contentBasicPx),
       },
       borderRadius: {
@@ -100,6 +100,7 @@ module.exports = {
         primary1: 'var(--primary1)',
         primary2: 'var(--primary2)',
         primary3: 'var(--primary3)',
+        primary8: 'var(--primary8)',
         gray1: 'var(--gray1)',
         gray2: 'var(--gray2)',
         gray3: 'var(--gray3)',
@@ -107,6 +108,20 @@ module.exports = {
         gray5: 'var(--gray5)',
         red1: 'var(--red1)',
         green1: 'var(--green1)',
+      },
+      keyframes: {
+        down: {
+          '0%': { transform: 'translateY(-150%)' },
+          '100%': { transform: 'translateY(0)' },
+        },
+        up: {
+          '0%': { transform: 'translateY(0)' },
+          '100%': { transform: 'translateY(-150%)' },
+        },
+      },
+      animation: {
+        down: 'down 0.4s ease-in-out',
+        up: 'up 0.4s ease-in-out',
       },
     },
   },
@@ -116,20 +131,28 @@ module.exports = {
     plugin(function ({ addUtilities }) {
       const newUtilities = {
         '.safe-top': {
-          paddingTop: 'constant(safe-area-inset-top)',
-          paddingTop: 'env(safe-area-inset-top)',
+          paddingTop: 'constant(safe-area-inset-top) env(safe-area-inset-top)',
+          // paddingTop: 'env(safe-area-inset-top)',
         },
         '.safe-left': {
-          paddingLeft: 'constant(safe-area-inset-left)',
-          paddingLeft: 'env(safe-area-inset-left)',
+          paddingLeft:
+            'constant(safe-area-inset-left) env(safe-area-inset-left)',
+          // paddingLeft: 'env(safe-area-inset-left)',
         },
         '.safe-right': {
-          paddingRight: 'constant(safe-area-inset-right)',
-          paddingRight: 'env(safe-area-inset-right)',
+          paddingRight:
+            'constant(safe-area-inset-right) env(safe-area-inset-right)',
+          // paddingRight: 'env(safe-area-inset-right)',
         },
         '.safe-bottom': {
-          paddingBottom: 'constant(safe-area-inset-bottom)',
-          paddingBottom: 'env(safe-area-inset-bottom)',
+          paddingBottom:
+            'constant(safe-area-inset-bottom) env(safe-area-inset-bottom)',
+          // paddingBottom: 'env(safe-area-inset-bottom)',
+        },
+        '.flex-with-center': {
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
         },
       };
 
