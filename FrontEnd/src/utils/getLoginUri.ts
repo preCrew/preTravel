@@ -9,7 +9,7 @@ export const getLoginUri = (where: 'naver' | 'kakao' | 'base') => {
     kakao: {
       development: 'http://localhost:3001/getCode/kakao',
       production:
-        'https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=b419b28c930a90dc96e0fd983b9025ef&redirect_uri=https://web-fronttest-ll32glc6adwo3.gksl2.cloudtype.app/oauth/kakao',
+        'https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=2581cd83651b3e51982587f4cb1652f5&redirect_uri=https://web-fronttest-ll32glc6adwo3.gksl2.cloudtype.app/oauth/kakao',
     },
     base: {
       development: 'http://localhost:3001',

@@ -20,6 +20,7 @@ const useLocationState = () => {
   const resetLocationState = () => {
     setState(prev => ({ nowPage: 'map', place: '', region: '' }));
   };
+
   return {
     locationState,
     setLocationState,
