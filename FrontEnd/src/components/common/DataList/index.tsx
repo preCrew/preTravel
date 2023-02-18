@@ -1,31 +1,26 @@
-import tw, { TwStyle } from 'twin.macro';
+import tw from 'twin.macro';
 
-export type Data = {
-  id: string;
-  [key: string]: string;
+export type Data<T> = {
+  idx: string;
+  showData: unknown;
+  data?: unknown;
 };
 
-interface DataListProps<T extends Data> {
-  data: T[];
-  dataName: string;
-  onClickData?: (data: Data) => void;
+interface DataListProps<T> {
+  data: Data<T>[];
+  onClickData?: (data: Data<T>) => void;
 }
 
-const DataList = <T extends Data>({
-  data,
-  dataName,
-  onClickData,
-}: DataListProps<T>) => {
-  console.log(data);
+const DataList = ({ data, onClickData }: DataListProps<unknown>) => {
   return (
     <div css={tw`text-body1 select-none cursor-pointer`}>
       {data.map(item => (
         <div
-          key={`${item.id}`}
+          key={`${item.idx}`}
           onClick={() => onClickData && onClickData(item)}
         >
           <div css={tw`border-b-2 h-40 mt-5 mb-5 pl-4 pr-4`}>
-            {item[dataName]}
+            {item.showData as string}
           </div>
         </div>
       ))}

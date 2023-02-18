@@ -1,5 +1,10 @@
-import { locationAtom, LocationNowPage } from '@src/recoil/location/atom';
+import {
+  locationAtom,
+  LocationNowPage,
+  // SelectLocation,
+} from '@src/recoil/location/atom';
 import { useRecoilState } from 'recoil';
+import { PlaceData } from '../react-query/usePlaceGetQuery';
 
 const useLocationState = () => {
   const [locationState, setState] = useRecoilState(locationAtom);
@@ -17,16 +22,21 @@ const useLocationState = () => {
     setState(prev => ({ ...prev, place: place }));
   };
 
-  const resetLocationState = () => {
-    setState(prev => ({ nowPage: 'map', place: '', region: '' }));
+  const setSelectData = (data: PlaceData) => {
+    setState(prev => ({ ...prev, selectData: data }));
   };
+
+  // const resetLocationState = () => {
+  //   setState(prev => ({ nowPage: 'map', place: '', region: '' }));
+  // };
 
   return {
     locationState,
     setLocationState,
-    resetLocationState,
+    // resetLocationState,
     setLocationRegion,
     setLocationPlace,
+    setSelectData,
   };
 };
 

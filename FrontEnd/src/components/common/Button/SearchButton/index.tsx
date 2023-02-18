@@ -1,27 +1,26 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import tw, { TwComponentMap, TwFn } from 'twin.macro';
+import { useState } from 'react';
+import tw from 'twin.macro';
 
 import { BiSearch } from 'react-icons/bi';
 import Button, { ButtonColors } from '..';
 
 import useLocationState from '@src/hooks/recoil/useLocationState';
-import useOnChange from '@src/hooks/useOnChange';
 
 interface SearchButtonProps {
   onClickSearchButton?: (e?: React.MouseEvent<HTMLButtonElement>) => void;
-  onClickSearchIcon?: () => void;
-  onKeydownInput?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  inputVal?: string;
+  onChangeInput?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onSubmit?: (inputVal?: string) => void;
   nowPage: 'map' | 'search';
-  // isCompleteInputRegion?: boolean;
   inputRef?: React.RefObject<HTMLInputElement>;
 }
 
 const SearchButton = ({
   onClickSearchButton,
-  onClickSearchIcon,
-  onKeydownInput,
+  inputVal,
+  onChangeInput,
+  onSubmit,
   nowPage,
-  // isCompleteInputRegion,
   inputRef,
 }: SearchButtonProps) => {
   const [state, _] = useState({
@@ -34,9 +33,8 @@ const SearchButton = ({
       place: '장소를 입력해주세요',
     },
   });
-  const { value: inputVal, onChange: onChangeInput } = useOnChange();
+
   const { locationState } = useLocationState();
-  console.log(locationState);
 
   return (
     <Button
@@ -45,13 +43,12 @@ const SearchButton = ({
       color={state.bgColor[nowPage] as ButtonColors}
       css={[
         tw`flex items-center justify-start text-black cursor-text w-[calc(100%-var(--contentX))] h-40 z-[10] m-2 rounded-3xl`,
-        ,
-        ` margin-right: ${nowPage === 'search' ? '0.45rem' : '0'};`,
+        `margin-right: ${nowPage === 'search' ? '0.45rem' : '0'};`,
       ]}
     >
       <div
         css={tw`p-2 cursor-pointer`}
-        onClick={onClickSearchIcon}
+        onClick={() => onSubmit && onSubmit()}
       >
         <BiSearch className="text-2xl" />
       </div>
@@ -68,7 +65,7 @@ const SearchButton = ({
         }
         onKeyUp={e => {
           if (e.key === 'Enter') {
-            onKeydownInput && onKeydownInput(e);
+            onSubmit && onSubmit();
           }
         }}
       />
