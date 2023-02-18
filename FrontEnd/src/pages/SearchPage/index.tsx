@@ -106,7 +106,7 @@ const SearchPage = ({ setMsg, showToast }: SearchPageProps) => {
                 .flatMap(page => page?.boardPage)
                 .map(v => (
                   <Data
-                    key={v?.idx}
+                    key={v?.name}
                     onClickData={() => handleClickItem(v)}
                   >
                     {v?.body}
