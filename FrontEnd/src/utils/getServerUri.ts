@@ -1,9 +1,9 @@
 const getServerUri = () => {
   const mode = process.env.NODE_ENV as 'development' | 'production';
   if (mode === 'development') {
-    return 'http://localhost:3001';
+    return process.env.DEVELOPMENT_SERVER_URL;
   } else {
-    return 'https://port-0-pretravel-ll32glc6adwo3.gksl2.cloudtype.app';
+    return process.env.PORDUCTION_SERVER_URL;
   }
 };
 
