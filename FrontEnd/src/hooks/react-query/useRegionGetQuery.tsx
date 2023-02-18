@@ -1,30 +1,35 @@
-import { Data } from '@src/components/common/DataList';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-interface RegionData {
+export interface RegionData {
   idx: number;
-  si: string;
-  gu: string;
-  dong: string;
+  body: string;
   latitude: string;
   longitude: string;
 }
-// interface RegionResponseData {
-//   code: number;
-//   msg: string;
-//   data: Data[];
-// }
+interface RegionResponseData {
+  code: number;
+  msg: string;
+  data: {
+    idx: number;
+    si: string;
+    gu: string;
+    dong: string;
+    latitude: string;
+    longitude: string;
+  }[];
+}
 
 const getData = (region: string) =>
-  new Promise<Data<RegionData>[]>(async resolve => {
-    const res = await axios.get(
+  new Promise<RegionData[]>(async resolve => {
+    const res = await axios.get<RegionResponseData>(
       `${process.env.REAL_SERVER_URL}/map?keyword=${region}`,
     );
-    const data = res.data.data.map((r: RegionData) => ({
+    const data = res.data.data.map(r => ({
+      ...r,
       idx: r.idx,
-      showData: `${r.si} ${r.gu} ${r.dong}`,
-      data: r,
+      body: `${r.si} ${r.gu} ${r.dong}`,
     }));
+
     resolve(data);
   });
 const useRegionGetQuery = (region: string) =>

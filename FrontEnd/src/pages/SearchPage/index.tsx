@@ -1,17 +1,21 @@
-import { Suspense, useEffect, useRef } from 'react';
+import { Suspense, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import tw from 'twin.macro';
 
 import useLocationState from '../../hooks/recoil/useLocationState';
 import useOnChange from '@src/hooks/useOnChange';
-import useRegionGetQuery from '@src/hooks/react-query/useRegionGetQuery';
+import useRegionGetQuery, {
+  RegionData,
+} from '@src/hooks/react-query/useRegionGetQuery';
 import usePlaceGetQuery, {
   PlaceData,
 } from '@src/hooks/react-query/usePlaceGetQuery';
 
 import TopBar from '@src/components/common/TobBar';
 import SearchButton from '@src/components/common/Button/SearchButton';
-import DataList, { Data } from '@src/components/common/DataList';
+import DataList from '@src/components/common/DataList';
+import Data from '@src/components/common/DataList/Data';
+import useInfinityScroll from '@src/hooks/useInfinityScroll';
 
 interface SearchPageProps {
   setMsg: (msg: string) => void;
@@ -21,6 +25,8 @@ const SearchPage = ({ setMsg, showToast }: SearchPageProps) => {
   const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const { value: inputVal, onChange: onChangeInput } = useOnChange();
+
   const {
     locationState: { region, nowPage },
     setLocationRegion,
@@ -28,14 +34,18 @@ const SearchPage = ({ setMsg, showToast }: SearchPageProps) => {
     setSelectData,
   } = useLocationState();
 
-  const { value: inputVal, onChange: onChangeInput } = useOnChange();
-
   const { data: regionData, refetch: refetchRegion } =
     useRegionGetQuery(inputVal);
 
-  const { data: placeData, refetch: refetchPlace } = usePlaceGetQuery(
-    `${region} ${inputVal}`,
-  );
+  const {
+    data: PlaceData,
+    fetchNextPage: fetchNextPagePlace,
+    remove: removePlaceData,
+  } = usePlaceGetQuery(`${region} ${inputVal}`);
+
+  useInfinityScroll(() => {
+    fetchNextPagePlace();
+  });
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -53,23 +63,24 @@ const SearchPage = ({ setMsg, showToast }: SearchPageProps) => {
   const handleSubmit = () => {
     inputRef.current?.blur();
     if (region) {
-      refetchPlace();
+      removePlaceData();
+      fetchNextPagePlace();
     } else {
       refetchRegion();
     }
   };
 
-  const handleClickItem = (data: Data<unknown>) => {
-    const placeData = data.data as PlaceData;
-    // console.log('place: ', placeData);
-    // console.log(nowPage);
+  const handleClickItem = (data: unknown) => {
     // 지역을 입력헀었다면
     if (region) {
+      const placeData = data as PlaceData;
       setSelectData(placeData);
       navigate(`/map/info?showButton=false`);
     } else {
-      setLocationRegion(data.showData as string);
-      setMsg(`지역이 ${data.showData} 입니다. 장소를 입력해주세요.`);
+      const regionData = data as RegionData;
+      console.log(data);
+      setLocationRegion(regionData.body);
+      setMsg(`지역이 ${regionData.body} 입니다. 장소를 입력해주세요.`);
       showToast();
       navigate(-1);
       inputRef.current?.focus();
@@ -88,12 +99,29 @@ const SearchPage = ({ setMsg, showToast }: SearchPageProps) => {
             inputVal={inputVal}
           />
         </TopBar>
-        <Suspense fallback={<div>loading...</div>}>
-          <DataList
-            data={region ? placeData ?? [] : regionData ?? []}
-            onClickData={handleClickItem}
-          />
-        </Suspense>
+        <DataList>
+          {region
+            ? /* 장소 리스트가 나옴*/
+              PlaceData?.pages
+                .flatMap(page => page?.boardPage)
+                .map(v => (
+                  <Data
+                    key={v?.idx}
+                    onClickData={() => handleClickItem(v)}
+                  >
+                    {v?.body}
+                  </Data>
+                ))
+            : /* 지역 리스트가 나옴*/
+              regionData?.map(v => (
+                <Data
+                  key={v.idx}
+                  onClickData={() => handleClickItem(v)}
+                >
+                  {v.body}
+                </Data>
+              ))}
+        </DataList>
       </div>
     </>
   );

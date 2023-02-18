@@ -1,5 +1,5 @@
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import tw from 'twin.macro';
 
 import useToast from '@src/hooks/useToast';
@@ -36,22 +36,24 @@ const MapPage = ({}: MapPageProps) => {
           />
         </div>
       )}
-      <Toast />
-      <Routes>
-        <Route
-          path="/search"
-          element={
-            <SearchPage
-              setMsg={setMsg}
-              showToast={showToast}
-            />
-          }
-        />
-        <Route
-          path="/info"
-          element={<MapInfoPage />}
-        />
-      </Routes>
+      <Suspense fallback={<div>loading...</div>}>
+        <Toast />
+        <Routes>
+          <Route
+            path="/search"
+            element={
+              <SearchPage
+                setMsg={setMsg}
+                showToast={showToast}
+              />
+            }
+          />
+          <Route
+            path="/info"
+            element={<MapInfoPage />}
+          />
+        </Routes>
+      </Suspense>
     </div>
   );
 };

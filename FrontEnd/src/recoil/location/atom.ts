@@ -19,6 +19,8 @@ export const locationAtom = atom<LocationAtom>({
       roadAddress: '',
       x: '',
       y: '',
+      body: '',
+      idx: '',
     },
   },
 });
