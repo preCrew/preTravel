@@ -58,6 +58,10 @@ const App = () => {
           path="/map/*"
           element={<MapPage />}
         />
+        <Route
+          path="/*"
+          element={<div>잘못된접근</div>}
+        />
       </Routes>
     </div>
   );

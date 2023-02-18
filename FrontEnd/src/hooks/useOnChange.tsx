@@ -5,7 +5,7 @@ const useOnChange = () => {
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
   };
-  return { value, onChange };
+  return { value, onChange, setValue };
 };
 
 export default useOnChange;

@@ -1,24 +1,26 @@
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import tw from 'twin.macro';
 
-import useLocationState from '@src/hooks/recoil/useLocationState';
+import useToast from '@src/hooks/useToast';
 
 import SearchButton from '@src/components/common/Button/SearchButton';
-import useToast from '@src/hooks/useToast';
-import { Route, Routes, useNavigate } from 'react-router-dom';
 import SearchPage from '@src/pages/SearchPage';
-import { useEffect, useState } from 'react';
+import MapInfoPage from '../MapInfoPage';
 
 interface MapPageProps {}
 
 const MapPage = ({}: MapPageProps) => {
-  const { setLocationState, locationState } = useLocationState();
-  const [toastMsg, setToastMsg] = useState('');
-  const { Toast, showToast } = useToast();
+  const { Toast, setMsg, showToast } = useToast();
+  const [isShowSearchButton, setIsShowSearchButton] = useState(true);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-    locationState.region && showToast();
-  }, [locationState.region]);
+    const href = new URLSearchParams(location.search);
+    const isShowButton = href.get('showButton');
+    setIsShowSearchButton(isShowButton === 'false' ? false : true);
+  }, [location.search]);
 
   const handleClickSearchButton = () => {
     navigate('/map/search');
@@ -26,17 +28,28 @@ const MapPage = ({}: MapPageProps) => {
 
   return (
     <div css={tw`w-full h-full flex flex-col items-center`}>
-      <div css={tw`h-70 w-full flex justify-center items-center relative`}>
-        <SearchButton
-          nowPage={'map'}
-          onClickSearchButton={handleClickSearchButton}
-        />
-      </div>
+      {isShowSearchButton && (
+        <div css={tw`h-70 w-full flex justify-center items-center relative`}>
+          <SearchButton
+            nowPage={'map'}
+            onClickSearchButton={handleClickSearchButton}
+          />
+        </div>
+      )}
       <Toast />
       <Routes>
         <Route
           path="/search"
-          element={<SearchPage />}
+          element={
+            <SearchPage
+              setMsg={setMsg}
+              showToast={showToast}
+            />
+          }
+        />
+        <Route
+          path="/info"
+          element={<MapInfoPage />}
         />
       </Routes>
     </div>
