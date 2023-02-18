@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("oauth")
-
 @Slf4j
 public class SSOLoginController {
 
@@ -34,9 +33,19 @@ public class SSOLoginController {
         return kaKaoService.login(code);
     }
 
+    @PostMapping("/kakao/access")
+    public ResponseEntity<ResponseDTO> getKakaoToken(String refreshToken) {
+        return kaKaoService.getAccessToken(refreshToken);
+    }
+
     @GetMapping("/naver")
     public ResponseEntity<ResponseDTO> naverOauth(@RequestParam String code, @RequestParam String state) {
         return naverService.login(code, state);
+    }
+
+    @PostMapping("/naver/access")
+    public ResponseEntity<ResponseDTO> getNaverToken(String refreshToken) {
+        return naverService.getAccessToken(refreshToken);
     }
 
 }

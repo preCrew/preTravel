@@ -1,5 +1,5 @@
 server:
-  port: 9090
+  port: 8080
 
 #spring:
 #  datasource:
@@ -27,11 +27,14 @@ oauth:
     token_host: https://kauth.kakao.com/oauth/token
     user_host: https://kapi.kakao.com/v2/user/me
     grant_type: authorization_code
-    rest_api_key: b419b28c930a90dc96e0fd983b9025ef
+    # rest_api_key: b419b28c930a90dc96e0fd983b9025ef
+    rest_api_key : 2581cd83651b3e51982587f4cb1652f5 #신영수정
     redirect_uri: http://localhost:8080/oauth/kakao
     map:
       rest_api_key : 2581cd83651b3e51982587f4cb1652f5
       host : https://dapi.kakao.com/v2/local/search/keyword.JSON
   naver:
+    token_host : https://nid.naver.com/oauth2.0/token
+    user_host : https://openapi.naver.com/v1/nid/me
     client_id : 76Nr2e2G6KuBeyuVPqbf
     client_secret : 3FuWrNGOQZ
