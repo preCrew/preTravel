@@ -7,14 +7,15 @@ import useToastState from './recoil/useToastState';
 
 const ToastDiv = styled.div<{ playCloseAnimation: boolean }>(
   ({ playCloseAnimation }) => [
-    tw`w-[calc(100%-var(--contentX))] h-30 bg-gray4 rounded-3xl`,
+    tw`w-[calc(100%-var(--contentX))] h-30 bg-gray4 rounded-3xl z-10`,
     tw`flex items-center text-body3 pl-5`,
     playCloseAnimation ? tw`animate-up` : tw`animate-down`,
   ],
 );
 
 const useToast = () => {
-  const { toastState, setIsToastOpen, setPlayCloseAnimation } = useToastState();
+  const { toastState, setIsToastOpen, setPlayCloseAnimation, setMsg } =
+    useToastState();
 
   const showToast = () => {
     setIsToastOpen(true);
@@ -41,7 +42,7 @@ const useToast = () => {
     );
   };
 
-  return { Toast, showToast };
+  return { Toast, showToast, setMsg };
 };
 
 export default useToast;
