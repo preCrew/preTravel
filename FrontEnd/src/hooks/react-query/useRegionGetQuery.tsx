@@ -19,21 +19,21 @@ interface RegionResponseData {
   }[];
 }
 
-const getData = (region: string) =>
-  new Promise<RegionData[]>(async resolve => {
-    const res = await axios.get<RegionResponseData>(
-      `${process.env.REAL_SERVER_URL}/map?keyword=${region}`,
-    );
-    const data = res.data.data.map(r => ({
-      ...r,
-      idx: r.idx,
-      body: `${r.si} ${r.gu} ${r.dong}`,
-    }));
+const getData = async (region: string) => {
+  const res = await axios.get<RegionResponseData>(
+    `${process.env.REAL_SERVER_URL}/map?keyword=${region}`,
+  );
+  const data = res.data.data.map(r => ({
+    ...r,
+    idx: r.idx,
+    body: `${r.si} ${r.gu} ${r.dong}`,
+  }));
 
-    resolve(data);
-  });
+  return data;
+};
+
 const useRegionGetQuery = (region: string) =>
-  useQuery(['region'], {
+  useQuery(['region', region], {
     queryFn: () => getData(region),
     enabled: false,
   });

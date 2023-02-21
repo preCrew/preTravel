@@ -11,7 +11,7 @@ import MapInfoPage from '../MapInfoPage';
 interface MapPageProps {}
 
 const MapPage = ({}: MapPageProps) => {
-  const { Toast, setMsg, showToast } = useToast();
+  const { Toast } = useToast();
   const [isShowSearchButton, setIsShowSearchButton] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
@@ -36,24 +36,18 @@ const MapPage = ({}: MapPageProps) => {
           />
         </div>
       )}
-      <Suspense fallback={<div>loading...</div>}>
-        <Toast />
-        <Routes>
-          <Route
-            path="/search"
-            element={
-              <SearchPage
-                setMsg={setMsg}
-                showToast={showToast}
-              />
-            }
-          />
-          <Route
-            path="/info"
-            element={<MapInfoPage />}
-          />
-        </Routes>
-      </Suspense>
+
+      <Toast />
+      <Routes>
+        <Route
+          path="/search"
+          element={<SearchPage />}
+        />
+        <Route
+          path="/info"
+          element={<MapInfoPage />}
+        />
+      </Routes>
     </div>
   );
 };

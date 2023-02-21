@@ -8,19 +8,21 @@ import useLocationState from '@src/hooks/recoil/useLocationState';
 
 interface SearchButtonProps {
   onClickSearchButton?: (e?: React.MouseEvent<HTMLButtonElement>) => void;
-  inputVal?: string;
   onChangeInput?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onSubmit?: (inputVal?: string) => void;
+  onSubmit?: () => void;
+  setIsCommit?: (isCommit: boolean) => void;
   nowPage: 'map' | 'search';
+  inputVal?: string;
   inputRef?: React.RefObject<HTMLInputElement>;
 }
 
 const SearchButton = ({
   onClickSearchButton,
-  inputVal,
   onChangeInput,
   onSubmit,
+  setIsCommit,
   nowPage,
+  inputVal,
   inputRef,
 }: SearchButtonProps) => {
   const [state, _] = useState({
@@ -34,7 +36,14 @@ const SearchButton = ({
     },
   });
 
-  const { locationState } = useLocationState();
+  const {
+    locationState: { region },
+  } = useLocationState();
+
+  const handleSubmit = () => {
+    onSubmit?.();
+    setIsCommit?.(true);
+  };
 
   return (
     <Button
@@ -48,7 +57,7 @@ const SearchButton = ({
     >
       <div
         css={tw`p-2 cursor-pointer`}
-        onClick={() => onSubmit && onSubmit()}
+        onClick={handleSubmit}
       >
         <BiSearch className="text-2xl" />
       </div>
@@ -59,15 +68,9 @@ const SearchButton = ({
         ref={inputRef}
         css={tw`bg-transparent w-full h-full outline-none text-body1Bold`}
         placeholder={
-          locationState.region
-            ? state.placeHolders.place
-            : state.placeHolders.region
+          region ? state.placeHolders.place : state.placeHolders.region
         }
-        onKeyUp={e => {
-          if (e.key === 'Enter') {
-            onSubmit && onSubmit();
-          }
-        }}
+        onKeyUp={e => (e.key === 'Enter' ? handleSubmit() : null)}
       />
     </Button>
   );

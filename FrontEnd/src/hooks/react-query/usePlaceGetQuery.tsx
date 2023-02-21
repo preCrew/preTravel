@@ -1,4 +1,4 @@
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
 export interface PlaceData {
@@ -28,35 +28,28 @@ interface RegionResponseData {
   };
 }
 const getData = async (pageParam: number, place: string) => {
-  // new Promise<PlaceDataExport>(async resolve => {
-  try {
-    const url = `${process.env.REAL_SERVER_URL}/map/place?keyword=${place}&page=${pageParam}`;
-    const res = await axios.get<RegionResponseData>(url);
+  const url = `${process.env.REAL_SERVER_URL}/map/place?keyword=${place}&page=${pageParam}`;
+  const res = await axios.get<RegionResponseData>(url);
 
-    const data = res.data.data.reuslt
-      .filter(r => r.roadAddress)
-      .map(r => ({
-        ...r,
-        idx: r.roadAddress,
-        body: r.name,
-      }));
-    console.log(data.length, res.data.data.page.total);
-    return {
-      boardPage: data,
-      currentPage: pageParam + 1,
-      isLast: res.data.data.reuslt.length < 10,
-    };
-  } catch (e) {
-    console.log(e);
-  }
+  const data = res.data.data.reuslt
+    .filter(r => r.roadAddress)
+    .map(r => ({
+      ...r,
+      idx: r.roadAddress,
+      body: r.name,
+    }));
+
+  return {
+    boardPage: data,
+    currentPage: pageParam + 1,
+    isLast: res.data.data.reuslt.length < 10,
+  };
 };
-// );
 
-// });
-const usePlaceGetQuery = (place: string) => {
-  const { data, fetchNextPage, remove } = useInfiniteQuery(
-    ['place'],
-    ({ pageParam = 1 }) => getData(pageParam, place),
+const usePlaceGetQuery = (region: string, place: string) => {
+  const { data, fetchNextPage, remove, isFetching } = useInfiniteQuery(
+    ['place', region, place],
+    ({ pageParam = 1 }) => getData(pageParam, `${region} ${place}`),
     {
       getNextPageParam: lastPage => {
         if (lastPage?.isLast) return undefined;
@@ -67,7 +60,7 @@ const usePlaceGetQuery = (place: string) => {
     },
   );
 
-  return { data, fetchNextPage, remove };
+  return { data: data, fetchNextPage, isFetching, remove };
 };
 
 export default usePlaceGetQuery;
