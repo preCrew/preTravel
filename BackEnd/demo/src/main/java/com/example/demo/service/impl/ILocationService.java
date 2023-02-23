@@ -47,8 +47,8 @@ public class ILocationService implements LocationService {
     }
 
     @Override
-    public ResponseEntity<ResponseDTO> searchPlace(String keyword, String page) {
-        String size = "10"; 
+    public Map<String, Object> searchPlace(String keyword, String page) {
+        String size = "15"; 
         JSONObject jo = getPlaceData(keyword, page, size);
         List<Object> list = (List<Object>) jo.get("documents");
         Map<String, Object> meta = (Map<String, Object>) jo.get("meta");
@@ -56,10 +56,7 @@ public class ILocationService implements LocationService {
         pageMap.put("page", page);
         pageMap.put("size", size);
         pageMap.put("total", meta.get("total_count"));
-        /**
-         * 1. 마지막 페이지인지 알 수 있는 파라미터 추가
-         * 2. 찜한장소에 넣을 수 있도록 json구성
-         */
+        pageMap.put("is_end", meta.get("is_end"));
 
         List<Object> dataList = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
@@ -76,13 +73,7 @@ public class ILocationService implements LocationService {
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("reuslt", dataList);
         resultMap.put("page", pageMap);
-        return ResponseEntity
-                .ok()
-                .body(ResponseDTO.builder()
-                        .code(200)
-                        .msg("로그인 성공")
-                        .data(resultMap)
-                        .build());
+        return resultMap;
     }
 
     private JSONObject getPlaceData(String keyword, String page, String size) {
