@@ -1,22 +1,31 @@
-import toastAtom from '@src/recoil/toast/atom';
+import toastAtom, { ToastState } from '@src/recoil/toast/atom';
 import { useRecoilState } from 'recoil';
 
 const useToastState = () => {
   const [toastState, setToastState] = useRecoilState(toastAtom);
 
-  const setIsToastOpen = (isToastOpen: boolean) => {
-    setToastState(prev => ({ ...prev, isToastOpen }));
+  const addToast = (id: string, msg: string) => {
+    const newToast: ToastState = {
+      id,
+      msg,
+      playCloseAnimation: false,
+    };
+    setToastState(prev => [...prev, newToast]);
   };
 
-  const setPlayCloseAnimation = (playCloseAnimation: boolean) => {
-    setToastState(prev => ({ ...prev, playCloseAnimation }));
+  const removeToast = (id: string) => {
+    setToastState(prev => prev.filter(toast => toast.id !== id));
   };
 
-  const setMsg = (msg: string) => {
-    setToastState(prev => ({ ...prev, msg }));
+  const setPlayCloseAnimation = (id: string, playCloseAnimation: boolean) => {
+    setToastState(prev =>
+      prev.map(toast =>
+        toast.id === id ? { ...toast, playCloseAnimation } : { ...toast },
+      ),
+    );
   };
 
-  return { toastState, setIsToastOpen, setPlayCloseAnimation, setMsg };
+  return { toastState, addToast, removeToast, setPlayCloseAnimation };
 };
 
 export default useToastState;

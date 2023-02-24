@@ -111,17 +111,23 @@ module.exports = {
       },
       keyframes: {
         down: {
-          '0%': { transform: 'translateY(-150%)' },
-          '100%': { transform: 'translateY(0)' },
+          '0%': { opacity: 0 },
+          '100%': { opacity: 1 },
         },
         up: {
-          '0%': { transform: 'translateY(0)' },
-          '100%': { transform: 'translateY(-150%)' },
+          '0%': { opacity: 1 },
+          '100%': { opacity: 0 },
+        },
+        skeletonData: {
+          to: {
+            backgroundPosition: '100% 13px, 16px 13px, 0 49px',
+          },
         },
       },
       animation: {
-        down: 'down 0.4s ease-in-out',
-        up: 'up 0.4s ease-in-out',
+        down: 'down 1.0s ease-in-out',
+        up: 'up 1.0s ease-in-out',
+        skeletonData: 'skeletonData 1.5s infinite ',
       },
     },
   },
@@ -153,6 +159,26 @@ module.exports = {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
+        },
+        '.skeleton-data': {
+          '--data-num': 'calc(100%/50)',
+          '--data-height': 'calc(50 * var(--data-num))',
+
+          // margin: 'auto',
+          width: '100%',
+          height: 'var(--data-height)',
+          paddingLeft: '1rem',
+          paddingTop: '1.25rem',
+
+          backgroundImage:
+            'linear-gradient( 90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.5) 40%, rgba(255, 255, 255, 0) 70% ), linear-gradient(var(--gray3) 20px, transparent 0), linear-gradient(var(--gray3) 1px, transparent 0)',
+          backgroundPosition: '16px 13px, 16px 13px, 0 49px',
+          backgroundSize: '50px 50px, 60% 50px, 100% 50px',
+          backgroundRepeat: 'repeat-y',
+          animation: 'skeletonData 2s infinite',
+        },
+        '.no-scroll': {
+          overflow: 'hidden',
         },
       };
 

@@ -1,48 +1,48 @@
-import { useEffect, useState } from 'react';
 import tw, { styled } from 'twin.macro';
 import { TbAlertCircle } from 'react-icons/tb';
-import { useRecoilState } from 'recoil';
-import toastAtom from '@src/recoil/toast/atom';
 import useToastState from './recoil/useToastState';
 
 const ToastDiv = styled.div<{ playCloseAnimation: boolean }>(
   ({ playCloseAnimation }) => [
-    tw`w-[calc(100%-var(--contentX))] h-30 bg-gray4 rounded-3xl z-10`,
+    tw`w-[calc(100%-var(--contentX))] h-30 bg-gray4 rounded-3xl z-[25]`,
     tw`flex items-center text-body3 pl-5`,
     playCloseAnimation ? tw`animate-up` : tw`animate-down`,
   ],
 );
 
 const useToast = () => {
-  const { toastState, setIsToastOpen, setPlayCloseAnimation, setMsg } =
+  const { toastState, addToast, removeToast, setPlayCloseAnimation } =
     useToastState();
 
-  const showToast = () => {
-    setIsToastOpen(true);
+  const showToast = (id: string, msg: string) => {
+    addToast(id, msg);
 
     setTimeout(() => {
-      setPlayCloseAnimation(true);
-    }, 2600);
+      setPlayCloseAnimation(id, true);
+    }, 2000);
     setTimeout(() => {
-      setIsToastOpen(false);
-      setPlayCloseAnimation(false);
+      removeToast(id);
+      setPlayCloseAnimation(id, false);
     }, 3000);
   };
 
   const Toast = () => {
     return (
       <>
-        {toastState.isToastOpen && (
-          <ToastDiv playCloseAnimation={toastState.playCloseAnimation}>
+        {toastState.map(toast => (
+          <ToastDiv
+            playCloseAnimation={toast.playCloseAnimation}
+            key={toast.id}
+          >
             <TbAlertCircle css={tw`text-primary8 text-xl mr-2`} />
-            {toastState.msg}
+            {toast.msg}
           </ToastDiv>
-        )}
+        ))}
       </>
     );
   };
 
-  return { Toast, showToast, setMsg };
+  return { Toast, showToast };
 };
 
 export default useToast;
