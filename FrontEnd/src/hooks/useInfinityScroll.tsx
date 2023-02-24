@@ -1,17 +1,5 @@
-import {
-  MutableRefObject,
-  RefObject,
-  startTransition,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
-
-interface args {
-  onIntersect: () => void;
-  options?: IntersectionObserverInit;
-}
+import { useCallback, useEffect, useRef } from 'react';
+import tw from 'twin.macro';
 
 const defaultOptions: IntersectionObserverInit = {
   // root: null,
@@ -29,7 +17,7 @@ const useInfinityScroll = (
   const handleIntersect = useCallback(
     (entries: IntersectionObserverEntry[]) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
+        if (entry.intersectionRatio >= 1.0) {
           onIntersect();
         }
       });
@@ -45,7 +33,14 @@ const useInfinityScroll = (
     }
   }, [lastScrollRef.current]);
 
-  return { lastScrollRef };
+  const InfiniteScrollPositionComponent = () => (
+    <div
+      ref={lastScrollRef}
+      css={tw`w-full h-1`}
+    />
+  );
+
+  return { InfiniteScrollPositionComponent, lastScrollRef };
 };
 
 export default useInfinityScroll;

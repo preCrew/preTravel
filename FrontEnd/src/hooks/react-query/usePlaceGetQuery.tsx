@@ -24,6 +24,7 @@ interface RegionResponseData {
       total: number;
       size: string;
       page: string;
+      is_end: boolean;
     };
   };
 }
@@ -42,12 +43,20 @@ const getData = async (pageParam: number, place: string) => {
   return {
     boardPage: data,
     currentPage: pageParam + 1,
-    isLast: res.data.data.reuslt.length < 10,
+    isLast: res.data.data.page.is_end,
   };
 };
 
 const usePlaceGetQuery = (region: string, place: string) => {
-  const { data, fetchNextPage, remove, isFetching } = useInfiniteQuery(
+  const {
+    data,
+    fetchNextPage,
+    isFetchingNextPage,
+    isLoading,
+    isFetched,
+    isFetching,
+    hasNextPage,
+  } = useInfiniteQuery(
     ['place', region, place],
     ({ pageParam = 1 }) => getData(pageParam, `${region} ${place}`),
     {
@@ -60,7 +69,15 @@ const usePlaceGetQuery = (region: string, place: string) => {
     },
   );
 
-  return { data: data, fetchNextPage, isFetching, remove };
+  return {
+    data: data,
+    fetchNextPage,
+    isFetchingNextPage,
+    isLoading,
+    isFetched,
+    isFetching,
+    hasNextPage,
+  };
 };
 
 export default usePlaceGetQuery;
