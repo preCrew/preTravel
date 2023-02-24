@@ -6,6 +6,8 @@ import MySchedule2 from './mySchedule2';
 import LoginPage from './LoginPage';
 import OauthPage from './OauthPage';
 import { useEffect } from 'react';
+import MapPage from './MapPage';
+import SearchPage from './SearchPage';
 
 const App = () => {
   useEffect(() => {
@@ -51,6 +53,14 @@ const App = () => {
         <Route
           path="/oauth/:where"
           element={<OauthPage />}
+        />
+        <Route
+          path="/map/*"
+          element={<MapPage />}
+        />
+        <Route
+          path="/*"
+          element={<div>잘못된접근</div>}
         />
       </Routes>
     </div>

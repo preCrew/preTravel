@@ -11,7 +11,7 @@ const MyScheduleCardList = ({
   deleteMode,
 }: MyScheduleCardListProps) => {
   return (
-    <ul className="grid grid-cols-2 gap-4 content-inner">
+    <ul className="content-inner grid grid-cols-2 gap-4">
       {cardList.map((card, index) => (
         <MyScheduleCard
           key={card.id}

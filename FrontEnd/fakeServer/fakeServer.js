@@ -5,7 +5,7 @@ import routes from './routes.json' assert { type: 'json' };
 
 // json-server 관련
 const server = jsonServer.create();
-const router = jsonServer.router('db.json');
+const router = jsonServer.router('./db.json');
 const rewriter = jsonServer.rewriter(routes);
 const middlewares = jsonServer.defaults();
 

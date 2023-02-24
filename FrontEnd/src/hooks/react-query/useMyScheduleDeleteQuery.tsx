@@ -7,13 +7,13 @@ const del = (list: CardListI[]) => {
     list.map(
       item =>
         item.isSeleted &&
-        axios.delete(`http://localhost:3001/posts/${item.id}`),
+        axios.delete(`${process.env.SERVEL_URL}/posts/${item.id}`),
     ),
   );
 };
-const useMyScheduleDelete = (list: CardListI[]) =>
+const useMyScheduleDeleteQuery = (list: CardListI[]) =>
   useMutation(['myScheduleDelete'], {
     mutationFn: () => del(list),
   });
 
-export default useMyScheduleDelete;
+export default useMyScheduleDeleteQuery;

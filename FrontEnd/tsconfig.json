@@ -5,6 +5,7 @@
     "lib":[
         "ES5",
         "ES2015",
+        "ES2022",
         "DOM"//web 사용
     ],
     "forceConsistentCasingInFileNames":false,
@@ -16,9 +17,15 @@
     "paths": {
       "@src/*": ["src/*"],
     },
-    "jsxImportSource": "@emotion/react"
+    "jsxImportSource": "@emotion/react",
+    "module": "esnext",
   },
   "include": ["src", "@types","client.tsx"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+  "ts-node": {
+    "compilerOptions": {
+      "module": "CommonJS"
+    }
+  }
 
 }

@@ -8,14 +8,13 @@ import TopBar from '@src/components/common/TobBar';
 
 import cardListAtom from '@src/recoil/cardList/atom';
 
-import useMyScheduleQuery from '@src/hooks/useMyScheduleQuery';
-import useMyScheduleDelete from '@src/hooks/useMyScheduleDelete';
-
 import mySchedule from './style';
 import Button from '@src/components/common/Button';
-import useMyScheduleAdd from '@src/hooks/useMySchedulAdd';
+import useMyScheduleAddQuery from '@src/hooks/react-query/useMyScheduleAddQuery';
 import filteredCardListSelector from '@src/recoil/cardList/selector';
 import CancelBtn from '@src/components/myScedule/CancelBtn';
+import useMyScheduleGetQuery from '@src/hooks/react-query/useMyScheduleGetQuery';
+import useMyScheduleDeleteQuery from '@src/hooks/react-query/useMyScheduleDeleteQuery';
 
 const MySchedule2 = () => {
   const [isRemoveMode, setIsRemoveMode] = useState(false);
@@ -24,9 +23,9 @@ const MySchedule2 = () => {
     useRecoilState(cardListAtom);
   const filterdSelectedListState = useRecoilValue(filteredCardListSelector);
 
-  const { data: lists, isFetched } = useMyScheduleQuery();
-  const { mutate } = useMyScheduleDelete(selectedCardListState);
-  const { mutate: addSchedule } = useMyScheduleAdd(selectedCardListState);
+  const { data: lists, isFetched } = useMyScheduleGetQuery();
+  const { mutate } = useMyScheduleDeleteQuery(selectedCardListState);
+  const { mutate: addSchedule } = useMyScheduleAddQuery(selectedCardListState);
 
   useEffect(() => {
     // 리스트를 다 받아왔다면 recoil에 저장
@@ -81,7 +80,7 @@ const MySchedule2 = () => {
       {filterdSelectedListState > 0 && (
         <Button
           type="large"
-          color="blue"
+          color="primary1"
           className=""
           onClick={handleClickBottomRemoveButton}
         >

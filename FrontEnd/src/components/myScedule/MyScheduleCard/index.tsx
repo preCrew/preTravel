@@ -1,7 +1,6 @@
 import cardListAtom from '@src/recoil/cardList/atom';
 import { useMemo, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { isCaseOrDefaultClause } from 'typescript';
 import CheckBox from './CheckBox';
 import Card from './style';
 
