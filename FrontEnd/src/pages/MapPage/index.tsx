@@ -33,6 +33,7 @@ const MapPage = ({}: MapPageProps) => {
           <SearchButton
             nowPage={'map'}
             onClickSearchButton={handleClickSearchButton}
+            css={tw`z-[15]`}
           />
         </div>
       )}

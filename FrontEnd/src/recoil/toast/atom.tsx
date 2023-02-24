@@ -1,17 +1,13 @@
 import { atom } from 'recoil';
-interface ToastState {
+export interface ToastState {
+  id: string;
   msg: string;
-  isToastOpen: boolean;
   playCloseAnimation: boolean;
 }
 
-const toastAtom = atom<ToastState>({
+const toastAtom = atom<ToastState[]>({
   key: 'toastAtom',
-  default: {
-    msg: '',
-    isToastOpen: false,
-    playCloseAnimation: false,
-  },
+  default: [],
 });
 
 export default toastAtom;

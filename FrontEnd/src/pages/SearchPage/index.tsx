@@ -9,6 +9,7 @@ import useLocationState from '../../hooks/recoil/useLocationState';
 import TopBar from '@src/components/common/TobBar';
 import SearchButton from '@src/components/common/Button/SearchButton';
 import RegionPlaceList from '@src/components/RegionPlaceList';
+import LoadingData from '@src/components/common/DataList/LoadingData';
 
 interface SearchPageProps {}
 const SearchPage = ({}: SearchPageProps) => {
@@ -32,10 +33,11 @@ const SearchPage = ({}: SearchPageProps) => {
 
   const handleSubmit = () => {
     inputRef.current?.blur();
+    setIsCommit(true);
   };
 
   return (
-    <div css={tw`w-full h-full absolute z-10 top-0 bg-white`}>
+    <div css={tw`w-full h-full absolute z-20 top-0 bg-white`}>
       <TopBar onClickBackButton={handleClickBackButton}>
         <SearchButton
           nowPage={'search'}
@@ -43,10 +45,9 @@ const SearchPage = ({}: SearchPageProps) => {
           onChangeInput={onChangeInput}
           inputVal={inputVal}
           onSubmit={handleSubmit}
-          setIsCommit={setIsCommit}
         />
       </TopBar>
-      <Suspense fallback={<div>loading...</div>}>
+      <Suspense fallback={<LoadingData />}>
         <RegionPlaceList
           inputRef={inputRef}
           inputVal={inputVal}

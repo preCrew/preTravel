@@ -13,6 +13,9 @@ import useToast from '@src/hooks/useToast';
 
 import DataList from '../common/DataList';
 import Data from '../common/DataList/Data';
+import LoadingData from '../common/DataList/LoadingData';
+import useInfinityScroll from '@src/hooks/useInfinityScroll';
+import tw from 'twin.macro';
 
 interface RegionPlaceListProps {
   inputVal: string;
@@ -28,7 +31,7 @@ const RegionPlaceList = ({
   setIsCommit,
 }: RegionPlaceListProps) => {
   const navigate = useNavigate();
-  const { setMsg, showToast } = useToast();
+  const { showToast } = useToast();
   const {
     locationState: { region },
     setLocationRegion,
@@ -37,65 +40,97 @@ const RegionPlaceList = ({
 
   const { data: regionData, refetch: refetechRegionData } =
     useRegionGetQuery(inputVal);
-  const { data: placeData, fetchNextPage: fetchNextPlaceData } =
-    usePlaceGetQuery(region, inputVal);
+  const {
+    data: placeData,
+    fetchNextPage: fetchNextPlaceData,
+    isFetchingNextPage: isFetchingNextPlaceData,
+    hasNextPage: hasNextPlaceData,
+  } = usePlaceGetQuery(region, inputVal);
+
+  const { InfiniteScrollPositionComponent } = useInfinityScroll(() => {
+    if (!hasNextPlaceData) return;
+    fetchNextPlaceData();
+  });
 
   useEffect(() => {
     if (!isCommit) return;
 
+    const getNextPlaceData = async () => {
+      const placeArray = await fetchNextPlaceData();
+      if (!placeArray?.data?.pages[0].boardPage.length) {
+        showToast('searchPlaceData', '검색 결과가 없습니다. 다시 입력해주세요');
+      }
+    };
+    const getRegionData = async () => {
+      const regionArray = await refetechRegionData();
+      if (!regionArray?.data?.length) {
+        showToast('searchRegion', '검색 결과가 없습니다. 다시 입력해주세요');
+      }
+    };
+
     if (region) {
-      fetchNextPlaceData();
+      getNextPlaceData();
     } else {
-      refetechRegionData();
+      getRegionData();
     }
     setIsCommit(false);
   }, [isCommit]);
 
-  const handleClickItem = (data: unknown) => {
+  const handleClickItem = async (data: unknown) => {
     // 지역을 입력헀었다면
     if (region) {
-      const placeData = data as PlaceData;
+      const placeData = (await data) as PlaceData;
       setSelectData(placeData);
       navigate(`/map/info?showButton=false`);
     } else {
-      const regionData = data as RegionData;
+      const regionData = (await data) as RegionData;
       setLocationRegion(regionData.body);
 
-      setMsg(`지역이 ${regionData.body} 입니다. 장소를 입력해주세요.`);
-      showToast();
+      showToast(
+        'region',
+        `지역이 ${regionData.body} 입니다. 장소를 입력해주세요.`,
+      );
+      // setMsg(`지역이 ${regionData.body} 입니다. 장소를 입력해주세요.`);
+      // showToast();
 
       navigate(-1);
 
       inputRef.current?.focus();
     }
   };
+
   return (
-    <DataList>
-      {region
-        ? /* 장소 리스트가 나옴*/
-          placeData?.pages
-            .flatMap(page => page?.boardPage)
-            .map(v => (
-              <Data
-                key={`${v?.name} + ${v?.roadAddress}`}
-                onClickData={() => handleClickItem(v)}
-              >
-                {v?.body}
-              </Data>
-            ))
-        : /* 지역 리스트가 나옴*/
-          regionData?.map(
-            v =>
-              (
+    <>
+      <DataList css={tw`no-scroll`}>
+        {region
+          ? /* 장소 리스트가 나옴*/
+            placeData?.pages
+              .flatMap(page => page?.boardPage)
+              .map(v => (
                 <Data
-                  key={v.idx}
+                  key={`${v?.name} + ${v?.roadAddress}`}
                   onClickData={() => handleClickItem(v)}
                 >
-                  {v.body}
+                  {v?.body}
                 </Data>
-              ) ?? [],
-          )}
-    </DataList>
+              ))
+          : /* 지역 리스트가 나옴*/
+            regionData?.map(
+              v =>
+                (
+                  <Data
+                    key={v.idx}
+                    onClickData={() => handleClickItem(v)}
+                  >
+                    {v.body}
+                  </Data>
+                ) ?? [],
+            )}
+      </DataList>
+      {/* {placeData?.pages && <InfiniteScrollPositionComponent />} */}
+      <InfiniteScrollPositionComponent />
+      {isFetchingNextPlaceData && <LoadingData />}
+    </>
   );
 };
 
