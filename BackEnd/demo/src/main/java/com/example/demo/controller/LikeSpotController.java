@@ -26,7 +26,6 @@ public class LikeSpotController {
     @GetMapping("")
     public ResponseEntity<ResponseDTO> findByMemberIdx(String memberIdx) {
         log.info("회원별 찜한장소 조회");
-        System.out.println(memberIdx);
         List<LikeSpot> list = service.findByMemberIdx(memberIdx);
         return ResponseEntity
                 .ok()

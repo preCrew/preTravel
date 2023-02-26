@@ -19,7 +19,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.example.demo.dao.LocationDao;
 import com.example.demo.dto.Location;
-import com.example.demo.dto.ResponseDTO;
 import com.example.demo.service.LocationService;
 import com.example.demo.util.ResponseUtil;
 
@@ -56,7 +55,7 @@ public class ILocationService implements LocationService {
         pageMap.put("page", page);
         pageMap.put("size", size);
         pageMap.put("total", meta.get("total_count"));
-        pageMap.put("is_end", meta.get("is_end"));
+        pageMap.put("isEnd", meta.get("is_end"));
 
         List<Object> dataList = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
