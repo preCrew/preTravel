@@ -4,29 +4,28 @@ import { HiPlusSm } from 'react-icons/hi';
 import { TbTrash } from 'react-icons/tb';
 import { BsHeartFill } from 'react-icons/bs';
 import { BsHeart } from 'react-icons/bs';
-import { Interpolation, Theme } from '@emotion/react';
+import { IoIosClose } from 'react-icons/io';
 
 interface IconButtonProps {
-  type: 'back' | 'add' | 'remove' | 'heart' | 'heartFill';
+  type: 'back' | 'add' | 'remove' | 'heart' | 'heartFill' | 'close';
   onClick?: () => void;
-  css?: Interpolation<Theme>;
+  className?: string;
 }
 
-const IconButton = ({ type, onClick, css }: IconButtonProps) => {
+const IconButton = ({ type, onClick, className }: IconButtonProps) => {
   return (
-    <>
-      <Button
-        onClick={onClick}
-        type="none"
-        css={css}
-      >
-        {type === 'back' && <IoIosArrowBack size={25} />}
-        {type === 'add' && <HiPlusSm size={25} />}
-        {type === 'remove' && <TbTrash size={25} />}
-        {type === 'heart' && <BsHeart fill="red" />}
-        {type === 'heartFill' && <BsHeartFill fill="red" />}
-      </Button>
-    </>
+    <Button
+      onClick={onClick}
+      type="none"
+      className={className}
+    >
+      {type === 'back' && <IoIosArrowBack size={25} />}
+      {type === 'add' && <HiPlusSm size={25} />}
+      {type === 'remove' && <TbTrash size={25} />}
+      {type === 'heart' && <BsHeart fill="red" />}
+      {type === 'heartFill' && <BsHeartFill fill="red" />}
+      {type === 'close' && <IoIosClose fill="white" />}
+    </Button>
   );
 };
 
