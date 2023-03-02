@@ -2,6 +2,7 @@ import { RatingNum } from '@src/components/common/Rating';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import useLocationState from '../recoil/useLocationState';
 
 export interface File {
   url: string;
@@ -14,14 +15,18 @@ const updateReview = async (
   rating: RatingNum,
   textValue: string,
   imgFiles: File[],
+  region: string,
 ) => {
+  const { locationState } = useLocationState();
   const form = new FormData();
 
   const dataSet = {
     isRevisit,
     rating,
     textValue,
+    region,
   };
+  console.log(locationState);
 
   form.append('data', JSON.stringify(dataSet));
   imgFiles.forEach(imgFile => {
@@ -38,10 +43,10 @@ const useReviewUpdateQuery = (
   rating: RatingNum,
   textValue: string,
   imgFiles: File[],
-  // onSuccess: () => void,
+  region: string,
 ) =>
-  useMutation(() => updateReview(isRevisit, rating, textValue, imgFiles), {
-    // onSuccess,
-  });
+  useMutation(() =>
+    updateReview(isRevisit, rating, textValue, imgFiles, region),
+  );
 
 export default useReviewUpdateQuery;

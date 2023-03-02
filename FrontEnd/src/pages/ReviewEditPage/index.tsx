@@ -15,6 +15,7 @@ import Button from '@src/components/common/Button';
 import useModal from '@src/hooks/useModal';
 import LoadingModal from '@src/components/Modal/LoadingModal';
 import { useNavigate } from 'react-router-dom';
+import useLocationState from '@src/hooks/recoil/useLocationState';
 interface ReviewEditPageProps {}
 
 const ReviewEditPage = ({}: ReviewEditPageProps) => {
@@ -24,6 +25,8 @@ const ReviewEditPage = ({}: ReviewEditPageProps) => {
 
   const { onChange: onChangeText, value: textValue } = useOnChange();
   const { files: imgFiles, setFiles: setImgFiles } = useUploadFiles();
+
+  const { locationState } = useLocationState();
   const { Modal, showModal } = useModal('loadingModal');
 
   const { data, mutate, isLoading, isSuccess } = useReviewUpdateQuery(
@@ -31,6 +34,7 @@ const ReviewEditPage = ({}: ReviewEditPageProps) => {
     rating,
     textValue,
     imgFiles,
+    locationState.region,
   );
 
   useEffect(() => {
