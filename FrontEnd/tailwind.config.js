@@ -160,6 +160,10 @@ module.exports = {
           alignItems: 'center',
           justifyContent: 'center',
         },
+        '.w-h-full': {
+          width: '100%',
+          height: '100%',
+        },
         '.skeleton-data': {
           '--data-num': 'calc(100%/50)',
           '--data-height': 'calc(50 * var(--data-num))',
