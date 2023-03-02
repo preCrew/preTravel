@@ -32,7 +32,8 @@
   "tailwindCSS.includeLanguages": {
     "typescript": "javascript",
     "typescriptreact": "javascript"
-  }
+  },
+  "java.compile.nullAnalysis.mode": "automatic"
 
   
 }

@@ -5,7 +5,7 @@ import axios from 'axios';
 const add = (list: CardListI[]) => {
   const lastId = list.at(-1)!.id + 1;
 
-  return axios.post('http://localhost:3001/posts/', {
+  return axios.post(`${process.env.SERVEL_URL}/posts/`, {
     id: lastId,
     region: `제주도${lastId}`,
     title: '제주도여행~~~',
@@ -13,7 +13,7 @@ const add = (list: CardListI[]) => {
     schedule: [],
   });
 };
-const useMyScheduleAdd = (list: CardListI[]) =>
+const useMyScheduleAddQuery = (list: CardListI[]) =>
   useMutation(['myScheduleAdd'], {
     mutationFn: () => add(list),
     onSuccess: () => {
@@ -29,7 +29,7 @@ const useMyScheduleAdd = (list: CardListI[]) =>
       console.log('!!!@#@!#');
     },
   });
-export default useMyScheduleAdd;
+export default useMyScheduleAddQuery;
 
 // const useMyScheduleDelete = (list: CardListI[]) =>
 //   useMutation(['myScheduleDelete'], {

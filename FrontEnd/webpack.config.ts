@@ -6,7 +6,13 @@ import { Configuration as WebpackDevServerConfiguration } from 'webpack-dev-serv
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 
 import dotenv from 'dotenv';
-dotenv.config();
+// dotenv.config();
+
+if (process.env.NODE_ENV === 'development') {
+  dotenv.config({ path: './.env.development' });
+} else if (process.env.NODE_ENV === 'production') {
+  dotenv.config({ path: './.env.production' });
+}
 
 interface Configuration extends WebpackConfiguration {
   devServer?: WebpackDevServerConfiguration;
@@ -36,15 +42,15 @@ const webpackConfig: Configuration = {
         loader: 'ts-loader',
         exclude: path.resolve(__dirname, 'node_modules'),
       },
-      {
-        test: /\.(png|jpg|gif)$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {},
-          },
-        ],
-      },
+      // {
+      //   test: /\.(png|jpg|gif)$/,
+      //   use: [
+      //     {
+      //       loader: 'file-loader',
+      //       options: {},
+      //     },
+      //   ],
+      // },
       {
         test: /\.css$/i,
         use: [
@@ -121,7 +127,7 @@ const webpackConfig: Configuration = {
     // con
     // }
     // devMiddleware: { publicPath: '/' },
-    // static: { directory: path.join(__dirname, 'build') },
+    static: { directory: path.join(__dirname, 'build') },
     hot: true,
     historyApiFallback: true, //존재하지 않는 url일경우 -> index.html
     // client: {

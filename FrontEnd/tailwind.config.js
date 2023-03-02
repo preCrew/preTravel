@@ -87,7 +87,7 @@ module.exports = {
         medium: 500,
         bold: 700,
       },
-      padding:{
+      padding: {
         inner: remCalculate(contentBasicPx),
       },
       borderRadius: {
@@ -100,6 +100,7 @@ module.exports = {
         primary1: 'var(--primary1)',
         primary2: 'var(--primary2)',
         primary3: 'var(--primary3)',
+        primary8: 'var(--primary8)',
         gray1: 'var(--gray1)',
         gray2: 'var(--gray2)',
         gray3: 'var(--gray3)',
@@ -107,6 +108,26 @@ module.exports = {
         gray5: 'var(--gray5)',
         red1: 'var(--red1)',
         green1: 'var(--green1)',
+      },
+      keyframes: {
+        down: {
+          '0%': { opacity: 0 },
+          '100%': { opacity: 1 },
+        },
+        up: {
+          '0%': { opacity: 1 },
+          '100%': { opacity: 0 },
+        },
+        skeletonData: {
+          to: {
+            backgroundPosition: '100% 13px, 16px 13px, 0 49px',
+          },
+        },
+      },
+      animation: {
+        down: 'down 1.0s ease-in-out',
+        up: 'up 1.0s ease-in-out',
+        skeletonData: 'skeletonData 1.5s infinite ',
       },
     },
   },
@@ -116,20 +137,48 @@ module.exports = {
     plugin(function ({ addUtilities }) {
       const newUtilities = {
         '.safe-top': {
-          paddingTop: 'constant(safe-area-inset-top)',
-          paddingTop: 'env(safe-area-inset-top)',
+          paddingTop: 'constant(safe-area-inset-top) env(safe-area-inset-top)',
+          // paddingTop: 'env(safe-area-inset-top)',
         },
         '.safe-left': {
-          paddingLeft: 'constant(safe-area-inset-left)',
-          paddingLeft: 'env(safe-area-inset-left)',
+          paddingLeft:
+            'constant(safe-area-inset-left) env(safe-area-inset-left)',
+          // paddingLeft: 'env(safe-area-inset-left)',
         },
         '.safe-right': {
-          paddingRight: 'constant(safe-area-inset-right)',
-          paddingRight: 'env(safe-area-inset-right)',
+          paddingRight:
+            'constant(safe-area-inset-right) env(safe-area-inset-right)',
+          // paddingRight: 'env(safe-area-inset-right)',
         },
         '.safe-bottom': {
-          paddingBottom: 'constant(safe-area-inset-bottom)',
-          paddingBottom: 'env(safe-area-inset-bottom)',
+          paddingBottom:
+            'constant(safe-area-inset-bottom) env(safe-area-inset-bottom)',
+          // paddingBottom: 'env(safe-area-inset-bottom)',
+        },
+        '.flex-with-center': {
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        },
+        '.skeleton-data': {
+          '--data-num': 'calc(100%/50)',
+          '--data-height': 'calc(50 * var(--data-num))',
+
+          // margin: 'auto',
+          width: '100%',
+          height: 'var(--data-height)',
+          paddingLeft: '1rem',
+          paddingTop: '1.25rem',
+
+          backgroundImage:
+            'linear-gradient( 90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.5) 40%, rgba(255, 255, 255, 0) 70% ), linear-gradient(var(--gray3) 20px, transparent 0), linear-gradient(var(--gray3) 1px, transparent 0)',
+          backgroundPosition: '16px 13px, 16px 13px, 0 49px',
+          backgroundSize: '50px 50px, 60% 50px, 100% 50px',
+          backgroundRepeat: 'repeat-y',
+          animation: 'skeletonData 2s infinite',
+        },
+        '.no-scroll': {
+          overflow: 'hidden',
         },
       };
 
