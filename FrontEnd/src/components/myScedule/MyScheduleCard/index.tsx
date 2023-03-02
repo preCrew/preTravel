@@ -64,12 +64,7 @@ const MyScheduleCard = ({
         style={{ backgroundColor: bgColorValue }}
       >
         {/* 삭제모드면 체크박스 표시 */}
-        {deleteMode && (
-          <CheckBox
-            onChange={handleClickCheckBox}
-            isChecked={isSeleted}
-          />
-        )}
+        {deleteMode && <CheckBox onChange={handleClickCheckBox} />}
         <div className={Card.content}>
           {/* 언제나 카드 표시 */}
           <p className={Card.title}>{title}</p>

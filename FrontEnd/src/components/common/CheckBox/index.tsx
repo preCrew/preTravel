@@ -5,10 +5,9 @@ import tw from 'twin.macro';
 interface CheckBoxProps {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onClick?: () => void;
-  isChecked: boolean;
 }
 
-const CheckBox = ({ onChange, isChecked, onClick }: CheckBoxProps) => {
+const CheckBox = ({ onChange, onClick }: CheckBoxProps) => {
   const checkbox = [
     tw`
     relative w-24 h-24 
@@ -32,7 +31,6 @@ const CheckBox = ({ onChange, isChecked, onClick }: CheckBoxProps) => {
         css={checkbox}
         onClick={onClick}
         onChange={onChange}
-        checked={isChecked}
       />
     </>
   );
