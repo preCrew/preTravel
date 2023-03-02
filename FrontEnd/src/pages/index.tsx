@@ -8,6 +8,7 @@ import OauthPage from './OauthPage';
 import { useEffect } from 'react';
 import MapPage from './MapPage';
 import SearchPage from './SearchPage';
+import ReviewPage from './ReviewPage';
 
 const App = () => {
   useEffect(() => {
@@ -57,6 +58,11 @@ const App = () => {
         <Route
           path="/map/*"
           element={<MapPage />}
+        />
+
+        <Route
+          path="/review/*"
+          element={<ReviewPage />}
         />
         <Route
           path="/*"

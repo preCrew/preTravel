@@ -46,6 +46,19 @@ server.use('/oauth/:where', async (req, res) => {
   res.send(resData);
 });
 
+// review update
+server.post('/review/edit/:id', (req, res) => {
+  const { id } = req.params;
+  res.send(id);
+});
+// review create
+server.post('/review/edit', (req, res) => {
+  // const body = req.body;
+  setTimeout(() => {
+    res.send('30');
+  }, 2000);
+});
+
 server.use(rewriter);
 server.use(router);
 server.listen(3001, () => {
