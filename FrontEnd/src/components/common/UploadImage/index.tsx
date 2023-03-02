@@ -1,17 +1,11 @@
+import { File } from '@src/hooks/react-query/useReviewUpdateQuery';
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import tw, { css } from 'twin.macro';
 import ImageBox from './ImageBox';
 
 interface UploadImageProps {
-  files: { url: string; key: string }[];
-  setFiles: Dispatch<
-    SetStateAction<
-      {
-        url: string;
-        key: string;
-      }[]
-    >
-  >;
+  files: File[];
+  setFiles: Dispatch<SetStateAction<File[]>>;
 }
 
 const errorMessages = {
@@ -53,12 +47,13 @@ const UploadImage = ({
     const files = e.target.files;
     if (!files) return;
     const duplicateFiles: { name: string; size: number }[] = [];
-    const notDuplicateFiles: { url: string; key: string }[] = [];
+    const notDuplicateFiles: File[] = [];
 
     // 1. 중복된 파일을 걸러냄
     for (let i = 0; i < files.length; i++) {
       const current = {
         url: URL.createObjectURL(files[i]),
+        file: files[i],
         key: files[i].name + files[i].size,
       };
 
