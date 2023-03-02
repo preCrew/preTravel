@@ -1,7 +1,7 @@
 import cardListAtom from '@src/recoil/cardList/atom';
 import { useMemo, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import CheckBox from './CheckBox';
+import CheckBox from '../../common/CheckBox';
 import Card from './style';
 
 export interface MyScheduleCardI {
