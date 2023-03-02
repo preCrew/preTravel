@@ -18,7 +18,6 @@ const App = () => {
     //    쿠키에 저장된 리프레시 토큰을 서버가 확인후 액세스 토큰을 설정해줘야함
     //  - useSilentRefresh 훅을 생성해서 요청하면 될듯.
   });
-
   return (
     <div className="h-full w-full safe-top safe-left safe-right safe-bottom">
       <Helmet>

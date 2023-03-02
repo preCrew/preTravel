@@ -1,9 +1,11 @@
+import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import tw from 'twin.macro';
 
 import useOnChange from '@src/hooks/useOnChange';
 import useUploadFiles from '@src/hooks/useUploadFiles';
 import useReviewUpdateQuery from '@src/hooks/react-query/useReviewUpdateQuery';
+import useLocationState from '@src/hooks/recoil/useLocationState';
 
 import Row from '@src/components/common/FlexBox/Row';
 import Column from '@src/components/common/FlexBox/Column';
@@ -14,8 +16,6 @@ import FormText from '@src/components/common/Text/FormText';
 import Button from '@src/components/common/Button';
 import useModal from '@src/hooks/useModal';
 import LoadingModal from '@src/components/Modal/LoadingModal';
-import { useNavigate } from 'react-router-dom';
-import useLocationState from '@src/hooks/recoil/useLocationState';
 interface ReviewEditPageProps {}
 
 const ReviewEditPage = ({}: ReviewEditPageProps) => {
@@ -61,6 +61,7 @@ const ReviewEditPage = ({}: ReviewEditPageProps) => {
           <Rating
             rating={rating}
             setRating={setRating}
+            starSize={12}
           />
         </Column>
 

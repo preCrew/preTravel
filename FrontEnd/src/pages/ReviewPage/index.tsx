@@ -1,11 +1,12 @@
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import tw from 'twin.macro';
 
+import ReviewEditPage from '../ReviewEditPage';
+import ReviewViewPage from '../ReviewViewPage';
+
 import TopBar from '@src/components/common/TobBar';
 import TopText from '@src/components/common/Text/TopText';
-import ReviewEditPage from '../ReviewEditPage';
 import useLocationState from '@src/hooks/recoil/useLocationState';
-import { Suspense } from 'react';
 
 interface ReviewPageProps {}
 
@@ -32,6 +33,10 @@ const ReviewPage = ({}: ReviewPageProps) => {
           <Route
             path="/edit"
             element={<ReviewEditPage />}
+          />
+          <Route
+            path=":id"
+            element={<ReviewViewPage />}
           />
         </Routes>
       </div>

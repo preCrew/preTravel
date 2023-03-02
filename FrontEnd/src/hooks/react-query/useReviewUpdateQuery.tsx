@@ -17,7 +17,6 @@ const updateReview = async (
   imgFiles: File[],
   region: string,
 ) => {
-  const { locationState } = useLocationState();
   const form = new FormData();
 
   const dataSet = {
@@ -26,7 +25,6 @@ const updateReview = async (
     textValue,
     region,
   };
-  console.log(locationState);
 
   form.append('data', JSON.stringify(dataSet));
   imgFiles.forEach(imgFile => {
