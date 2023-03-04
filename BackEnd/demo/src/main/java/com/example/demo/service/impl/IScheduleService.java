@@ -31,7 +31,7 @@ public class IScheduleService implements ScheduleService{
 
     @Override
     public void deleteById(Long idx) {
-        spotService.deleteBySctIdx(idx);
+        spotService.deleteBySctIdx(idx); //0226 스케줄 지워질때 지우면 리뷰도 같이날라가서 리뷰는 따로 테이블에 관리해야함
         dao.deleteById(idx);
     }
 

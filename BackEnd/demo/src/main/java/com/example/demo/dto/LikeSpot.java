@@ -36,9 +36,12 @@ public class LikeSpot {
     @Column(name="ls_name")
     String name;
 
+    @Column(name="ls_address")
+    String address;
+
     @Column(name="ls_latitude")
-    String latitude;
+    Integer latitude;
 
     @Column(name="ls_longitude")
-    String longitude;
+    Integer longitude;
 }

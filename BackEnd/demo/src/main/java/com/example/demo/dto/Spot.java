@@ -53,6 +53,9 @@ public class Spot {
     @Column(name="spt_name")
     String name;
 
+    @Column(name="spt_address")
+    String address;
+
     @Column(name="spt_latitude")
     String latitude;
 

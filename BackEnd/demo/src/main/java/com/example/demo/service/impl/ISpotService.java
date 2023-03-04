@@ -60,7 +60,6 @@ public class ISpotService implements SpotService{
             for (Spot spot : spotList) {
                 Map<String, Object> daySchedule = new HashMap<>();
                 String day = spot.getDay().format(formatter);
-                System.out.println("day : "+day+" targetDate : "+targetDate);
                 if (day != null && targetDate.equals(day)) {
                     daySchedule = makeScheduleMap(spot);
                     detailList.add(daySchedule);
@@ -88,17 +87,17 @@ public class ISpotService implements SpotService{
         List<Map<String, Object>> mapList = (List<Map<String, Object>>) map.get("list");
 
         for (Map<String,Object> item : mapList) {
-            System.out.println(item);
             String name = (String) item.get("placeName");
             String orderString = (String) item.get("order");
+            String address = (String) item.get("address");
             Integer order = Integer.parseInt(orderString);
             String la = (String) item.get("la");
             String lo = (String) item.get("lo");
-            
             Spot spot = new Spot();
             spot.setSctIdx(sctIdx);
             spot.setDay(date);
             spot.setName(name);
+            spot.setAddress(address);
             spot.setSeq(order);
             spot.setLatitude(la);
             spot.setLongitude(lo);
@@ -110,7 +109,6 @@ public class ISpotService implements SpotService{
         resultMap.put("sctIdx", sctIdx);
         List<Object> detailList = new ArrayList<>();
         for (Spot spot : saveList) {
-            System.out.println(spot);
             Spot saveSpot = dao.save(spot);
             Map<String, Object> saveMap = makeScheduleMap(saveSpot);
             detailList.add(saveMap);
@@ -130,6 +128,7 @@ public class ISpotService implements SpotService{
         map.put("idx", spot.getIdx());
         map.put("placeName", spot.getName());
         map.put("order", spot.getSeq());
+        map.put("address", spot.getAddress());
         map.put("la", spot.getLatitude());
         map.put("lo", spot.getLongitude());
 
