@@ -1,13 +1,14 @@
 import { Routes, Route } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import { useEffect } from 'react';
 
 import MySchedule from './mySchedule';
 import MySchedule2 from './mySchedule2';
 import LoginPage from './LoginPage';
 import OauthPage from './OauthPage';
-import { useEffect } from 'react';
 import MapPage from './MapPage';
-import SearchPage from './SearchPage';
+import Main from './Main';
+
 
 const App = () => {
   useEffect(() => {
@@ -19,7 +20,7 @@ const App = () => {
   });
 
   return (
-    <div className="h-full w-full safe-top safe-left safe-right safe-bottom">
+    <div className="w-full h-full safe-top safe-left safe-right safe-bottom">
       <Helmet>
         <title>여행</title>
         <meta charSet="UTF-8" />
@@ -34,6 +35,10 @@ const App = () => {
         />
       </Helmet>
       <Routes>
+        <Route
+          path="/"
+          element={<Main />}
+        />
         <Route
           path="/mySchedule"
           element={<MySchedule2 />}
