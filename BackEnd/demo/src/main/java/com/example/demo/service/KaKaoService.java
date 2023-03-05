@@ -16,9 +16,11 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -156,6 +158,51 @@ public class KaKaoService {
     public ResponseEntity<ResponseDTO> getAccessToken(String refreshToken) {
         log.info("카카오 AccessToken갱신 refreshToken : {}", refreshToken);
 
+        JSONObject token = new JSONObject();
+        try {
+            token = getUpdateTokenJson(refreshToken);
+        } catch (HttpClientErrorException e) {
+            String message = e.getMessage();
+            if (message.contains("KOE322")){
+                log.info("Refresh 토큰이 만료되었습니다.");
+
+                Map<String, String> result = new HashMap<>();
+                result.put("code", "KOE322");
+                
+                return ResponseEntity
+                        .ok()
+                        .body(ResponseDTO.builder()
+                                .code(200)
+                                .msg("refresh 토큰 만료")
+                                .data(result)
+                                .build());
+            }
+        }
+
+        Map<String, String> result = new HashMap<>();
+        String accessToken = (String) token.get("access_token");
+        result.put("accessToken", accessToken);
+
+
+        String newRefreshToken = (String) token.get("refresh_token");
+        if (!newRefreshToken.isBlank()) {
+            log.info("refresh token 갱신");
+            log.info("refresh_token: {};",newRefreshToken);
+            result.put("refreshToken", newRefreshToken);
+        }
+
+        return ResponseEntity
+                .ok()
+                .body(ResponseDTO.builder()
+                        .code(200)
+                        .msg("토큰갱신")
+                        .data(result)
+                        .build());
+
+    }
+
+    private JSONObject getUpdateTokenJson(String refreshToken) throws HttpClientErrorException {
+
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
@@ -165,21 +212,14 @@ public class KaKaoService {
         HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<MultiValueMap<String, String>>(
                 params,
                 httpHeaders);
-        ResponseEntity<String> data = restTemplate.exchange(TOKEN_HOST,
+
+        ResponseEntity<String> data  = restTemplate.exchange(TOKEN_HOST,
                 HttpMethod.POST,
                 httpEntity,
                 String.class);
-        JSONObject token = responseUtil.responseToJson(data);
-        String accessToken = (String) token.get("access_token");
-        Map<String, String> result = new HashMap<>();
-        result.put("accessToken", accessToken);
+        JSONObject result = responseUtil.responseToJson(data);
 
-        return ResponseEntity
-                .ok()
-                .body(ResponseDTO.builder()
-                        .code(200)
-                        .msg("토큰갱신")
-                        .data(result)
-                        .build());
+        return result;
     }
+
 }
