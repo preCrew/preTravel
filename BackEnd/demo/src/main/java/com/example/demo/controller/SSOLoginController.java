@@ -7,6 +7,7 @@ import com.example.demo.service.NaverService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Description;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,6 +37,11 @@ public class SSOLoginController {
     @PostMapping("/kakao/access")
     public ResponseEntity<ResponseDTO> getKakaoToken(String refreshToken) {
         return kaKaoService.getAccessToken(refreshToken);
+    }
+
+    @GetMapping("/kakao/logout")
+    public HttpEntity<Object> kakaoLogout() {
+        return kaKaoService.logout();
     }
 
     @GetMapping("/naver")
