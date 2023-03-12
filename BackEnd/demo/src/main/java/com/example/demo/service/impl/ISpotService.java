@@ -19,25 +19,28 @@ import com.example.demo.dto.Spot;
 import com.example.demo.service.SpotService;
 
 @Service
-public class ISpotService implements SpotService{
+public class ISpotService implements SpotService {
 
     @Autowired
     SpotDao dao;
-    
+
     @Autowired
     ScheduleDao scheduleDao;
 
     @Override
     public Map<String, Object> findBySctIdx(String sctIdx) {
+        /**
+         * dao로 바로 붙으면 안되는데 !!
+         */
         Schedule schedule = scheduleDao.findByIdx(Long.valueOf(sctIdx));
         List<Spot> spotList = dao.findBySctIdx(sctIdx);
         Map<String, Object> result = new HashMap<>();
         LocalDate startLocalDate = schedule.getStartDate();
         LocalDate endLocalDate = schedule.getEndDate();
-        
+
         result.put("idx", schedule.getIdx());
         result.put("name", schedule.getName());
-        
+
         Map<String, Object> dateRange = new HashMap();
         dateRange.put("start", schedule.getStartDate());
         dateRange.put("end", schedule.getEndDate());
@@ -46,7 +49,7 @@ public class ISpotService implements SpotService{
         LocalDateTime date1 = startLocalDate.atStartOfDay();
         LocalDateTime date2 = endLocalDate.atStartOfDay();
         int diff = (int) Duration.between(date1, date2).toDays() + 1;
-        
+
         List<Object> scheduleList = new ArrayList<>();
 
         for (int i = 0; i < diff; i++) {
@@ -74,11 +77,11 @@ public class ISpotService implements SpotService{
     }
 
     @Override
-    public Map<String, Object> save(Map<String, Object> map) throws Exception{
+    public Map<String, Object> save(Map<String, Object> map) throws Exception {
         String dateStr = (String) map.get("date");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate date = LocalDate.parse(dateStr, formatter);
-  
+
         String sctIdx = (String) map.get("sctIdx");
 
         dao.deleteByDayAndSctIdx(date, sctIdx);
@@ -86,7 +89,7 @@ public class ISpotService implements SpotService{
         List<Spot> saveList = new ArrayList<>();
         List<Map<String, Object>> mapList = (List<Map<String, Object>>) map.get("list");
 
-        for (Map<String,Object> item : mapList) {
+        for (Map<String, Object> item : mapList) {
             String name = (String) item.get("placeName");
             String orderString = (String) item.get("order");
             String address = (String) item.get("address");
@@ -118,12 +121,12 @@ public class ISpotService implements SpotService{
         return resultMap;
     }
 
-    
     @Override
     public void deleteBySctIdx(Long idx) {
         dao.deleteBySctIdx(String.valueOf(idx));
     }
-    private Map<String, Object> makeScheduleMap(Spot spot){
+
+    private Map<String, Object> makeScheduleMap(Spot spot) {
         Map<String, Object> map = new HashMap<>();
         map.put("idx", spot.getIdx());
         map.put("placeName", spot.getName());

@@ -32,22 +32,21 @@ public class ScheduleController {
     public ResponseEntity<ResponseDTO> findByMemberIdx(String memberIdx) {
         log.info("회원별 여행일정 조회");
         List<Schedule> list = service.findByMemberIdx(memberIdx);
-        return returnUtil.code200("회원별 여행일정 조회", list);  
+        return returnUtil.code200("회원별 여행일정 조회", list);
     }
 
     @PostMapping("")
     public ResponseEntity<ResponseDTO> saveSchedule(Schedule schedule) {
         log.info("여행일정 생성");
-        System.out.println(schedule);
         if (schedule.getStartDate() == null) {
             return returnUtil.code400("시작날짜가 없습니다.");
         }
         if (schedule.getEndDate() == null) {
             return returnUtil.code400("종료날짜가 없습니다.");
         }
-        
+
         Schedule dto = service.save(schedule);
-        return returnUtil.code200("여행일정 저장", dto);   
+        return returnUtil.code200("여행일정 저장", dto);
     }
 
     @DeleteMapping("")
