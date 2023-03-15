@@ -1,7 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useEffect } from 'react';
-import { useEffect } from 'react';
 
 import MySchedule from './mySchedule';
 import MySchedule2 from './mySchedule2';
