@@ -1,15 +1,17 @@
 import { Routes, Route } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import { useEffect } from 'react';
 
 import MySchedule from './mySchedule';
 import MySchedule2 from './mySchedule2';
 import LoginPage from './LoginPage';
 import OauthPage from './OauthPage';
-import { useEffect } from 'react';
 import MapPage from './MapPage';
+import Main from './Main';
 import SearchPage from './SearchPage';
 import ReviewPage from './ReviewPage';
 import tw from 'twin.macro';
+
 
 const App = () => {
   useEffect(() => {
@@ -37,10 +39,10 @@ const App = () => {
       <div css={tw`w-full h-full xsm:w-380`}>
         <Routes>
           <Route
-            path="/mySchedule"
-            element={<MySchedule2 />}
-          />
-          <Route
+          path="/"
+          element={<Main />}
+        />
+        <Route
             path="/mySchedule"
             element={<MySchedule2 />}
           />
@@ -69,7 +71,7 @@ const App = () => {
             path="/*"
             element={<div>잘못된접근</div>}
           />
-        </Routes>
+      </Routes>
       </div>
     </div>
   );

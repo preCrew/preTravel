@@ -1,4 +1,5 @@
 import tw from 'twin.macro';
+import tw from 'twin.macro';
 import IconButton from '../Button/IconButton';
 
 interface TopBarProps {
@@ -11,6 +12,7 @@ const TopBar = ({ onClickBackButton, children }: TopBarProps) => {
     w-full h-70
     flex items-center
     bg-white
+    relative
   `;
   return (
     <div css={css}>

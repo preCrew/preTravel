@@ -1,0 +1,44 @@
+package com.example.demo.dao;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.example.demo.dto.Review;
+import com.example.demo.repository.ReviewRepository;
+
+@Component
+public class ReviewDao {
+
+    @Autowired
+    ReviewRepository repository;
+
+    public List<Review> findByLatitudeBetweenAndLongitudeBetweenAndMemberIdx(Integer smallLa, Integer largeLa,
+            Integer smallLo, Integer largeLo, String memberIdx) {
+        return repository.findByLatitudeBetweenAndLongitudeBetweenAndMemberIdx(smallLa, largeLa, smallLo, largeLo,
+                memberIdx);
+    }
+
+    public List<Review> findByMemberIdx(String memberIdx) {
+        return repository.findBymemberIdx(memberIdx);
+    }
+
+    public Optional<Review> findByIdx(String idx) {
+        return repository.findById(Long.parseLong(idx));
+    }
+
+    public Review save(Review review) {
+        return repository.save(review);
+    }
+
+    public void deleteById(Long idx) {
+        repository.deleteById(idx);
+    }
+
+    public Optional<Review> findById(Long idx) {
+        return repository.findById(idx);
+    }
+
+}

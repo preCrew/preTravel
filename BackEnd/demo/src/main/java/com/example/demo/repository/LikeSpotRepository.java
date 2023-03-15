@@ -12,4 +12,8 @@ public interface LikeSpotRepository extends JpaRepository<LikeSpot, Long>{
 
     void deleteById(Long idx);
 
+    List<LikeSpot> findByLatitudeBetweenAndLongitudeBetweenAndMemberIdx(Integer smallLa, Integer largeLa, Integer smallLo,
+            Integer largeLo, String memberIdx);
+            
+
 }

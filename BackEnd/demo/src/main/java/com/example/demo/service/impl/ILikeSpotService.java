@@ -1,6 +1,7 @@
 package com.example.demo.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,18 @@ public class ILikeSpotService implements LikeSpotService{
     @Override
     public void deleteById(Long idx) {
         dao.deleteById(idx);
+    }
+
+    @Override
+    public List<LikeSpot> findData(Map<String, Object> map) {
+        Integer smallLa = Integer.valueOf(map.get("smallLa").toString());
+        Integer largeLa = Integer.valueOf(map.get("largeLa").toString());
+        Integer smallLo = Integer.valueOf(map.get("smallLo").toString());
+        Integer largeLo = Integer.valueOf(map.get("largeLo").toString());
+        String memberIdx = (String) map.get("memberIdx");
+        List<LikeSpot> list = dao.findByLatitudeBetweenAndLongitudeBetweenAndMemberIdx(smallLa, largeLa, smallLo, largeLo, memberIdx);
+        
+        return list;
     }
 
 }
