@@ -8,13 +8,20 @@ import Title from '@src/components/scheduleDetail/Title';
 import { currentScheduleAtom, selectedDayAtom } from '@src/recoil/date/atom';
 import { calendarIsOpenAtom } from '@src/recoil/modal/atom';
 import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
 async function fetchPost(postId: number) {
-  const response = await fetch(`http://localhost:8000/posts/${postId}`);
-  return response.json();
+  try {
+    const response = await axios.get(`http://localhost:3001/posts/${postId}`);
+    return response.data;
+  } catch (err) {
+    if (err instanceof Error) {
+      console.log(err.message);
+    }
+  }
 }
 
 const MySchedule = () => {
@@ -23,12 +30,14 @@ const MySchedule = () => {
   const { data, isLoading, error, isError } = useQuery(['posts', postId], () =>
     fetchPost(postId),
   );
-  const [isOpen, setIsOpen] = useState(false);
   const [currentScheduleState, setCurrentScheduleState] =
     useRecoilState(currentScheduleAtom);
   const selectedDayState = useRecoilValue(selectedDayAtom);
   const { Map, setNowLocation, drawOverlayOnMap } = useKakaoMap();
   const calendarIsOpenState = useRecoilValue(calendarIsOpenAtom);
+  const scheduleDaysArr: number[] = Array(currentScheduleState.schedule.length)
+    .fill(null)
+    .map((_, i) => i + 1);
 
   useEffect(() => {
     setCurrentScheduleState(data);
@@ -65,7 +74,12 @@ const MySchedule = () => {
         />
         <div className="relative mt-4 ml-basic">
           <CalendarBtn />
-          {!calendarIsOpenState && <TabSlide />}
+          {!calendarIsOpenState && (
+            <TabSlide
+              data={scheduleDaysArr}
+              category="일차별"
+            />
+          )}
         </div>
       </header>
       {/*====지도====*/}

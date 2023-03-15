@@ -6,7 +6,7 @@
   "scripts": {
     "start": "export WDS_SOCKET_PORT=443 && react-scripts start",
     "build": "NODE_ENV=production webpack --progress",
-    "front": "NODE_ENV=development webpack serve --progress --env development --mode=development",
+    "front": "NODE_ENV=development webpack serve --progress",
     "server": "cd fakeServer && npm run server",
     "dev": "concurrently --kill-others-on-fail \"npm run front\" \"npm run server\"",
     "watch": "npx tailwindcss -i ./src/styles/global.css -o ./dist/style.css --watch"

@@ -1,4 +1,3 @@
-import { DateRange } from 'react-day-picker';
 import { atom } from 'recoil';
 
 interface IcurrentSceduleList {
