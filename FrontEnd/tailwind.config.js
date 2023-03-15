@@ -10,6 +10,7 @@ module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}', './index.html'],
   theme: {
     screens: {
+      xsm: '320px',
       sm: '640px',
       // => @media (min-width: 640px) { ... }
       md: '768px',
@@ -100,6 +101,7 @@ module.exports = {
         primary1: 'var(--primary1)',
         primary2: 'var(--primary2)',
         primary3: 'var(--primary3)',
+        primary4: 'var(--primary4)',
         primary8: 'var(--primary8)',
         gray1: 'var(--gray1)',
         gray2: 'var(--gray2)',

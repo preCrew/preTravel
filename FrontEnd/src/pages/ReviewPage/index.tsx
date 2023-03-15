@@ -28,7 +28,7 @@ const ReviewPage = ({}: ReviewPageProps) => {
         <TopText>{topBarName}</TopText>
       </TopBar>
 
-      <div css={tw`pl-4 pr-4 pb-4 flex-1`}>
+      <div css={tw`pl-4 pr-4 pb-4 w-h-full`}>
         <Routes>
           <Route
             path="/edit"

@@ -1,83 +1,114 @@
-import { useRef } from 'react';
-import tw from 'twin.macro';
+import { useState } from 'react';
+
+import tw, { css } from 'twin.macro';
+
+import useBoundingClientRect from '@src/hooks/useBoundingClientRect';
 
 interface DraggableProps {
+  itemNum: number;
   children: React.ReactNode;
   className?: string;
+  onMovedLeft?: () => void;
+  onMovedRight?: () => void;
+}
+interface State {
+  left: number;
+  startX: number;
+  beforeLeft: number;
+  isClick: boolean;
+  moved: boolean;
 }
 
-const isTouchable =
-  navigator.maxTouchPoints > 0 || 'ontouchstart' in document.documentElement;
+const Slider = ({
+  itemNum,
+  children,
+  className,
+  onMovedLeft,
+  onMovedRight,
+}: DraggableProps) => {
+  const { ref: outerRef, rect: outerRect } = useBoundingClientRect();
+  const { ref: innerRef, rect: innerRect } = useBoundingClientRect();
 
-const Slider = ({ children, className }: DraggableProps) => {
-  const innerRef = useRef<HTMLDivElement>(null);
-  const outerRef = useRef<HTMLDivElement>(null);
+  const [state, setState] = useState<State>({
+    left: 0,
+    startX: 0,
+    beforeLeft: 0,
+    isClick: false,
+    moved: false,
+  });
 
-  // 마우스 클릭
-  const handleMouseDown = (
-    e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>,
-  ) => {
-    const innerLeft = innerRef.current?.getBoundingClientRect().left;
-    let startX: number = 0;
-    if (isTouchable) {
-      startX =
-        (e as React.TouchEvent<HTMLDivElement>).touches[0].clientX - innerLeft!;
-    } else {
-      startX = (e as React.MouseEvent<HTMLDivElement>).clientX - innerLeft!;
+  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    setState(prev => ({ ...prev, startX: e.clientX, isClick: true }));
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!state.isClick) return;
+
+    setState(prev => ({
+      ...prev,
+      left: e.clientX - prev.startX + prev.beforeLeft,
+      moved: false,
+    }));
+  };
+
+  const handleMouseUp = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!state.isClick) return;
+
+    setState(prev => ({ ...prev, isClick: false }));
+    const moved = e.clientX - state.startX;
+
+    // 실제로 드래그하고 움직인 거리가 0이라면 아무것도 하지 않음
+    if (moved === 0) return;
+
+    // moved가 음수라면 오른쪽으로 움직인 것이고, 양수라면 왼쪽으로 움직인 것
+    const outerWidth = moved < 0 ? -outerRect?.width! : outerRect?.width!;
+    let nextLeft = state.beforeLeft + outerWidth;
+
+    // 아래 if문은 left가 끝까지 갔을 때 다시 원래대로 돌아오게 하는 코드
+    // 왼쪽을 벗어나면
+    if (nextLeft > 0) {
+      nextLeft = 0;
+    }
+    // 오른쪽을 벗어나면
+    else if (-nextLeft >= innerRect?.width!) {
+      nextLeft = state.beforeLeft;
     }
 
-    // 마우스 이동 이벤트
-    const onMouseMove = (e: MouseEvent | TouchEvent) => {
-      let nowX = e instanceof MouseEvent ? e.clientX : e.touches[0].clientX;
-      innerRef.current!.style.left = `${nowX - startX}px`;
+    // 실제로 left가 바뀌었다면 이벤트를 실행
+    if (nextLeft !== state.beforeLeft) {
+      if (moved < 0) onMovedRight?.();
+      else onMovedLeft?.();
+    }
 
-      const outterRect = outerRef.current?.getBoundingClientRect();
-      const innerRect = innerRef.current?.getBoundingClientRect();
-
-      // 안쪽 div의 left가 전체 div의 좌쪽을 넘어갔을 경우
-      if (parseInt(innerRef.current?.style.left!) > 0) {
-        innerRef.current!.style.left = `${0}px`;
-      }
-      // 안쪽 div의 left가 전체 div의 우측을 넘어갔을 경우
-      else if (innerRect?.right! < outterRect?.right!) {
-        // 안쪽 너비가 바깥보다 작으면 그냥 그대로 놔둠
-        if (innerRect?.width! < outterRect?.width!) {
-          innerRef.current!.style.left = `${0}px`;
-        } else {
-          const calc = (innerRect?.width! - outterRect?.width!) * -1;
-          innerRef.current!.style.left = `${calc}px`;
-        }
-      }
-    };
-
-    // 마우스 뗏을경우
-    const onMouseUp = () => {
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('touchmove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
-      document.removeEventListener('touchend', onMouseUp);
-    };
-    // 마우스 이벤트 등록
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('touchmove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
-    document.addEventListener('touchend', onMouseUp);
+    setState(prev => ({
+      ...prev,
+      left: nextLeft,
+      beforeLeft: nextLeft,
+      moved: true,
+    }));
   };
 
   return (
     <div
       ref={outerRef}
-      css={tw`relative w-full h-100 `}
+      css={tw`relative w-h-full overflow-x-hidden`}
       onMouseDown={handleMouseDown}
-      onTouchStart={handleMouseDown}
-      onScroll={() => {
-        console.log('!!');
-      }}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseUp}
       className={className}
     >
       <div
         ref={innerRef}
-        css={[tw`absolute pointer-events-none`]}
+        css={[
+          tw`absolute grid pointer-events-none`,
+          state.moved && tw`transition-transform duration-500`,
+          css`
+            transform: translateX(${state.left}px);
+            grid-template-columns: repeat(${itemNum}, 1fr);
+            width: ${itemNum * 100}%;
+          `,
+        ]}
       >
         {children}
       </div>

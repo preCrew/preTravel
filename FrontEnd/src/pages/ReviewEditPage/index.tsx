@@ -94,12 +94,12 @@ const ReviewEditPage = ({}: ReviewEditPageProps) => {
           </label>
         </Column>
 
-        <Column css={tw`flex-1`}>
+        <Column css={tw`flex-1 w-h-full`}>
           <FormText required>후기 작성</FormText>
           <textarea
             onChange={onChangeText}
             value={textValue}
-            css={tw`w-h-full text-body1 border border-gray1 rounded-2xl p-4 resize-none`}
+            css={tw`w-h-full text-body1 border border-gray1 rounded-2xl p-4 resize-none flex-1`}
           />
         </Column>
 

@@ -9,6 +9,7 @@ import { useEffect } from 'react';
 import MapPage from './MapPage';
 import SearchPage from './SearchPage';
 import ReviewPage from './ReviewPage';
+import tw from 'twin.macro';
 
 const App = () => {
   useEffect(() => {
@@ -19,7 +20,7 @@ const App = () => {
     //  - useSilentRefresh 훅을 생성해서 요청하면 될듯.
   });
   return (
-    <div className="h-full w-full safe-top safe-left safe-right safe-bottom">
+    <div className="flex h-full w-full justify-center safe-top safe-left safe-right safe-bottom">
       <Helmet>
         <title>여행</title>
         <meta charSet="UTF-8" />
@@ -33,41 +34,43 @@ const App = () => {
           viewport-fit="cover"
         />
       </Helmet>
-      <Routes>
-        <Route
-          path="/mySchedule"
-          element={<MySchedule2 />}
-        />
-        <Route
-          path="/mySchedule"
-          element={<MySchedule2 />}
-        />
-        <Route
-          path="/mySchedule/:id"
-          element={<MySchedule />}
-        />
-        <Route
-          path="/login"
-          element={<LoginPage />}
-        />
-        <Route
-          path="/oauth/:where"
-          element={<OauthPage />}
-        />
-        <Route
-          path="/map/*"
-          element={<MapPage />}
-        />
+      <div css={tw`w-full h-full xsm:w-380`}>
+        <Routes>
+          <Route
+            path="/mySchedule"
+            element={<MySchedule2 />}
+          />
+          <Route
+            path="/mySchedule"
+            element={<MySchedule2 />}
+          />
+          <Route
+            path="/mySchedule/:id"
+            element={<MySchedule />}
+          />
+          <Route
+            path="/login"
+            element={<LoginPage />}
+          />
+          <Route
+            path="/oauth/:where"
+            element={<OauthPage />}
+          />
+          <Route
+            path="/map/*"
+            element={<MapPage />}
+          />
 
-        <Route
-          path="/review/*"
-          element={<ReviewPage />}
-        />
-        <Route
-          path="/*"
-          element={<div>잘못된접근</div>}
-        />
-      </Routes>
+          <Route
+            path="/review/*"
+            element={<ReviewPage />}
+          />
+          <Route
+            path="/*"
+            element={<div>잘못된접근</div>}
+          />
+        </Routes>
+      </div>
     </div>
   );
 };
