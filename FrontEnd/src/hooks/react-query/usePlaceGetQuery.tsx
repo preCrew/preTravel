@@ -24,7 +24,7 @@ interface RegionResponseData {
       total: number;
       size: string;
       page: string;
-      is_end: boolean;
+      isEnd: boolean;
     };
   };
 }
@@ -43,7 +43,7 @@ const getData = async (pageParam: number, place: string) => {
   return {
     boardPage: data,
     currentPage: pageParam + 1,
-    isLast: res.data.data.page.is_end,
+    isLast: res.data.data.page.isEnd,
   };
 };
 

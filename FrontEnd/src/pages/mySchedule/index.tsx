@@ -65,7 +65,7 @@ const MySchedule = () => {
 
   return (
     <>
-      <header className="fixed left-0 right-0 z-10 top-5">
+      <header className="fixed left-0 right-0 top-5 z-10">
         <Title title={currentScheduleState.title} />
         <Button
           onClick={onClickBack}
