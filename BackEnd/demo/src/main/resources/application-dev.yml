@@ -35,3 +35,5 @@ oauth:
     user_host : https://openapi.naver.com/v1/nid/me
     client_id : 76Nr2e2G6KuBeyuVPqbf
     client_secret : 3FuWrNGOQZ
+    logout_url: http://nid.naver.com/nidlogin.logout
+

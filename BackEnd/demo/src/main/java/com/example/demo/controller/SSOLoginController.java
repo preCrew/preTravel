@@ -7,8 +7,12 @@ import com.example.demo.service.NaverService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Description;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("oauth")
@@ -43,9 +47,16 @@ public class SSOLoginController {
         return naverService.login(code, state);
     }
 
+
     @PostMapping("/naver/access")
     public ResponseEntity<ResponseDTO> getNaverToken(String refreshToken) {
         return naverService.getAccessToken(refreshToken);
     }
 
+    @GetMapping("/naver/logout")
+    public ResponseEntity<ResponseDTO> naverLogout(String code) {
+
+        return naverService.logout(code);
+
+    }
 }

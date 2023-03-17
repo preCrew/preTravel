@@ -38,6 +38,9 @@ public class NaverService {
         @Value("${oauth.naver.user_host}")
         private String USER_HOST;
 
+        @Value("${oauth.naver.logout_url}")
+        private String LOGOUT;
+
         @Autowired
         MemberService memberService;
 
@@ -156,5 +159,21 @@ public class NaverService {
                                 .msg("토큰갱신")
                                 .data(result)
                                 .build());
+        }
+
+        public ResponseEntity<ResponseDTO> logout(String token) {
+
+                log.info("네이버 로그아웃 합니다.");
+
+                //database 에 토큰 삭제
+
+                return ResponseEntity
+                        .ok()
+                        .body(ResponseDTO.builder()
+                                .code(200)
+                                .msg("로그아웃 성공")
+                                .data("")
+                                .build());
+
         }
 }
