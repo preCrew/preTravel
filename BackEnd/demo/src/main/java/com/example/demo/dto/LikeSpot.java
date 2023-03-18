@@ -25,23 +25,23 @@ import lombok.ToString;
 @Builder
 @Table(name = "like_spot_t")
 public class LikeSpot {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long idx;
 
-    @Column(name="mt_idx")
+    @Column(name = "mt_idx")
     String memberIdx;
 
-    @Column(name="ls_name")
+    @Column(name = "ls_name")
     String name;
 
-    @Column(name="ls_address")
+    @Column(name = "ls_address")
     String address;
 
-    @Column(name="ls_latitude")
-    Integer latitude;
+    @Column(name = "ls_latitude")
+    Double latitude;
 
-    @Column(name="ls_longitude")
-    Integer longitude;
+    @Column(name = "ls_longitude")
+    Double longitude;
 }

@@ -15,8 +15,8 @@ public class ReviewDao {
     @Autowired
     ReviewRepository repository;
 
-    public List<Review> findByLatitudeBetweenAndLongitudeBetweenAndMemberIdx(Integer smallLa, Integer largeLa,
-            Integer smallLo, Integer largeLo, String memberIdx) {
+    public List<Review> findByLatitudeBetweenAndLongitudeBetweenAndMemberIdx(Double smallLa, Double largeLa,
+            Double smallLo, Double largeLo, String memberIdx) {
         return repository.findByLatitudeBetweenAndLongitudeBetweenAndMemberIdx(smallLa, largeLa, smallLo, largeLo,
                 memberIdx);
     }

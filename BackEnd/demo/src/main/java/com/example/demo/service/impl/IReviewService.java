@@ -20,10 +20,10 @@ public class IReviewService implements ReviewService {
 
     @Override
     public List<Review> findData(Map<String, Object> map) {
-        Integer smallLa = Integer.valueOf(map.get("smallLa").toString());
-        Integer largeLa = Integer.valueOf(map.get("largeLa").toString());
-        Integer smallLo = Integer.valueOf(map.get("smallLo").toString());
-        Integer largeLo = Integer.valueOf(map.get("largeLo").toString());
+        Double smallLa = Double.valueOf(map.get("smallLa").toString());
+        Double largeLa = Double.valueOf(map.get("largeLa").toString());
+        Double smallLo = Double.valueOf(map.get("smallLo").toString());
+        Double largeLo = Double.valueOf(map.get("largeLo").toString());
         String memberIdx = (String) map.get("memberIdx");
 
         List<Review> list = dao.findByLatitudeBetweenAndLongitudeBetweenAndMemberIdx(smallLa, largeLa, smallLo, largeLo,

@@ -52,7 +52,7 @@ public class LikeSpotController {
     }
 
     @GetMapping("map")
-    public ResponseEntity<ResponseDTO> findData(@RequestParam Map<String, Object> map){
+    public ResponseEntity<ResponseDTO> findData(@RequestParam Map<String, Object> map) {
         log.info("범위내 찜한장소 조회");
         List<LikeSpot> list = service.findData(map);
         return returnUtil.code200("범위내 찜한장소 조회", list);
