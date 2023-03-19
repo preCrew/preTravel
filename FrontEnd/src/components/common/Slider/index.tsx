@@ -16,7 +16,6 @@ interface State {
   startX: number;
   beforeLeft: number;
   isClick: boolean;
-  moved: boolean;
 }
 
 const Slider = ({
@@ -34,7 +33,6 @@ const Slider = ({
     startX: 0,
     beforeLeft: 0,
     isClick: false,
-    moved: false,
   });
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -47,7 +45,6 @@ const Slider = ({
     setState(prev => ({
       ...prev,
       left: e.clientX - prev.startX + prev.beforeLeft,
-      moved: false,
     }));
   };
 
@@ -84,7 +81,6 @@ const Slider = ({
       ...prev,
       left: nextLeft,
       beforeLeft: nextLeft,
-      moved: true,
     }));
   };
 
@@ -102,7 +98,7 @@ const Slider = ({
         ref={innerRef}
         css={[
           tw`absolute grid pointer-events-none`,
-          state.moved && tw`transition-transform duration-500`,
+          !state.isClick && tw`transition-transform duration-500`,
           css`
             transform: translateX(${state.left}px);
             grid-template-columns: repeat(${itemNum}, 1fr);
@@ -115,6 +111,5 @@ const Slider = ({
     </div>
   );
 };
-// };
 
 export default Slider;

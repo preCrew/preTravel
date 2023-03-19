@@ -26,7 +26,7 @@ const ReviewEditPage = ({}: ReviewEditPageProps) => {
   const { onChange: onChangeText, value: textValue } = useOnChange();
   const { files: imgFiles, setFiles: setImgFiles } = useUploadFiles();
 
-  const { locationState } = useLocationState();
+  // const { locationState } = useLocationState();
   const { Modal, showModal } = useModal('loadingModal');
 
   const { data, mutate, isLoading, isSuccess } = useReviewUpdateQuery(
@@ -34,7 +34,7 @@ const ReviewEditPage = ({}: ReviewEditPageProps) => {
     rating,
     textValue,
     imgFiles,
-    locationState.region,
+    // locationState.region,
   );
 
   useEffect(() => {
