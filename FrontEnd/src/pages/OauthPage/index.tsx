@@ -10,7 +10,7 @@ interface OauthPageProps {}
 
 const OauthPage = ({}: OauthPageProps) => {
   const params = useParams();
-  const { code, state } = useParams();
+  const location = useLocation();
   const navigate = useNavigate();
 
   const [userState, setUserState] = useRecoilState(userAtom);
@@ -19,9 +19,9 @@ const OauthPage = ({}: OauthPageProps) => {
     const baseUrl = process.env.REAL_SERVER_URL; //getLoginUri('base');
     const where = params.where as 'kakao' | 'naver';
 
-    // const href = new URLSearchParams(location.search);
-    // const code = href.get('code');
-    // const state = href.get('state');
+    const href = new URLSearchParams(location.search);
+    const code = href.get('code');
+    const state = href.get('state');
 
     try {
       const reqUrl = {
