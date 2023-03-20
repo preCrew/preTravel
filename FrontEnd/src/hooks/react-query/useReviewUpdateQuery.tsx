@@ -18,18 +18,39 @@ const updateReview = async (
   locationState: LocationAtom,
   imgFiles?: File[],
   reviewIdx?: string,
-) =>
-  await axios.post(`http://192.168.0.40:8080/review`, {
-    memberIdx: 101,
-    name: locationState.selectData.name,
-    address: locationState.selectData.address,
-    star: rating,
-    latitude: parseFloat(locationState.selectData.y),
-    longitude: parseFloat(locationState.selectData.x),
-    revisit: isRevisit,
-    contents: textValue,
-    idx: reviewIdx,
-  });
+) => {
+  const form = new FormData();
+  form.append('memberIdx', '101');
+  form.append('name', locationState.selectData.name);
+  form.append('address', locationState.selectData.address);
+  form.append('star', rating.toString());
+  form.append('latitude', locationState.selectData.y);
+  form.append('longitude', locationState.selectData.x);
+  form.append('revisit', isRevisit.toString());
+  form.append('contents', textValue);
+  form.append('idx', reviewIdx || '');
+
+  // const response = await axios.post(`${process.env.REAL_SERVER_URL}/review`, {
+  //   memberIdx: 101,
+  //   name: locationState.selectData.name,
+  //   address: locationState.selectData.address,
+  //   star: rating,
+  //   latitude: parseFloat(locationState.selectData.y),
+  //   longitude: parseFloat(locationState.selectData.x),
+  //   revisit: isRevisit,
+  //   contents: textValue,
+  //   idx: reviewIdx,
+  // });
+  try {
+    const response = await axios.post(
+      `${process.env.REAL_SERVER_URL}/review`,
+      form,
+    );
+    return response.data.data;
+  } catch (e) {
+    throw new Error('리뷰 업데이트에 실패했습니다.');
+  }
+};
 
 const useReviewUpdateQuery = (
   isRevisit: boolean,

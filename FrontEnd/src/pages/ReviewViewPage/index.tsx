@@ -6,14 +6,13 @@ import Column from '@src/components/common/FlexBox/Column';
 import Row from '@src/components/common/FlexBox/Row';
 import Rating from '@src/components/common/Rating';
 import ImageViewer from '@src/components/ImageViewer';
-import Slider from '@src/components/common/Slider';
 
 interface ReviewViewPageProps {}
 
 const images = [
   'https://image.idus.com/image/files/8f5dbdb64253465a941757e82e530471_512.jpg',
-  // 'https://post-phinf.pstatic.net/MjAyMjA0MDFfMjM0/MDAxNjQ4ODA4MjE5NjYy.Z6I4_cbWtQ6w7ZzyLWKSubrOcTuBi-ZFvWhfpByOGGwg.lIc0Vg0ZOdOiZht3Brd_qn1ox2_E5n0JqrbAc-shFXIg.PNG/%EC%82%AC%EB%9E%8C_%EA%B7%B8%EB%A6%BC_8.png?type=w1200',
-  // 'https://storage.enuri.info/pic_upload/knowbox2/10564551120181120d8dc9de9-a59c-4bbf-841d-61c3e375cdbf.jpg',
+  'https://post-phinf.pstatic.net/MjAyMjA0MDFfMjM0/MDAxNjQ4ODA4MjE5NjYy.Z6I4_cbWtQ6w7ZzyLWKSubrOcTuBi-ZFvWhfpByOGGwg.lIc0Vg0ZOdOiZht3Brd_qn1ox2_E5n0JqrbAc-shFXIg.PNG/%EC%82%AC%EB%9E%8C_%EA%B7%B8%EB%A6%BC_8.png?type=w1200',
+  'https://storage.enuri.info/pic_upload/knowbox2/10564551120181120d8dc9de9-a59c-4bbf-841d-61c3e375cdbf.jpg',
   'https://free4kwallpapers.com/uploads/wallpaper/park-at-night----wallpaper-1024x768-wallpaper.jpg',
   'https://free4kwallpapers.com/uploads/wallpaper/night-sky----wallpaper-1024x768-wallpaper.jpg',
 ];

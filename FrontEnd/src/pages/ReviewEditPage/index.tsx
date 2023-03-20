@@ -40,7 +40,8 @@ const ReviewEditPage = ({}: ReviewEditPageProps) => {
   useEffect(() => {
     if (isSuccess) {
       alert(`리뷰가 등록되었습니다. \nfrom Server: ${data}`);
-      navigate(`/review/${data}`);
+      console.log(data.idx);
+      navigate(`/review/${data.idx}`);
     }
   }, [isSuccess]);
 
