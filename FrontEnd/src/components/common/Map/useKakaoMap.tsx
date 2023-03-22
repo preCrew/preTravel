@@ -30,9 +30,6 @@ const libraries = ['services', 'clusterer', 'drawing'];
 const apikey = process.env.KAKAOMAP_API_KEY;
 const src = `${url}?appkey=${apikey}&libraries=${libraries}&autoload=false`;
 
-const imageSrc =
-  'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
-
 function useKakaoMap() {
   // const [markers, setMarkers] = useState<any[]>([]);
   const [prevOverlay, setPrevOverlay] = useState<any[]>();
@@ -48,11 +45,18 @@ function useKakaoMap() {
   const setUserReivewState = useSetRecoilState(userReviewAtom);
   const setMarkerState = useSetRecoilState(markerAtom);
   const [isOpenState, setIsOpenState] = useRecoilState(modalAtom);
-  const { mutate, isLoading } = useGetAreaMarker();
-  //테스트용 변수
-  let bounds: any;
-  let sw;
-  let ne;
+  const [getAreaVal, setGetAreaVal] = useState<any>(null);
+
+  const {
+    refetch: refetchLike,
+    data: getLike,
+    isLoading,
+    isError,
+  } = useGetAreaMarker(getAreaVal);
+
+  // const { data: onMapRiview, refetch: refetchReview } =
+  //   useGetAreaMarker(getAreaVal);
+  const [onMapType, setOnMapType] = useState<null | number>(null);
 
   const Map = () => {
     const [success, error] = useScript(src);
@@ -84,152 +88,104 @@ function useKakaoMap() {
     map.current.setCenter(moveLatLon);
   };
 
-  //스크롤,확대시 북동,남서 좌표 불러오기
-  const mapAreaChange = (type: number) => {
-    window.kakao.maps.event.addListener(map.current, 'idle', function () {
-      // 지도 영역정보를 얻어옵니다
-      bounds = map.current.getBounds();
-      // 영역정보의 남서쪽 정보를 얻어옵니다
-      sw = bounds.getSouthWest();
-      // 영역정보의 북동쪽 정보를 얻어옵니다
-      ne = bounds.getNorthEast();
+  // 스크롤 확대/이동 시 지도에 표시
+  // 찜한장소 1 리뷰장소 2
 
-      const formData = new FormData();
+  function drowOnMap(data: any) {
+    // 마커이미지
+    const imageSize = new window.kakao.maps.Size(35, 35);
+    const favoriteImage = new window.kakao.maps.MarkerImage(
+      IcoFavorite,
+      imageSize,
+    );
+    const reveiwImage = new window.kakao.maps.MarkerImage(IcoReview, imageSize);
 
-      formData.append('memberIdx', '1');
-      formData.append('smallLa', sw.La); //좌상단 위도
-      formData.append('largeLa', ne.La); //우하단 위도
-      formData.append('smallLo', sw.Ma); //좌상단 경도
-      formData.append('largeLo', ne.Ma); //우하단 경도
+    //초기화
+    markerArr = [];
 
-      // for (let value of formData.values()) {
-      //   console.log(value);
-      // }
+    for (let i = 0; i < data.length; i++) {
+      markerArr.push(
+        new window.kakao.maps.Marker({
+          map: map.current, // 마커를 표시할 지도
+          position: new window.kakao.maps.LatLng(
+            data[i].latitude,
+            data[i].longitude,
+          ), // 마커를 표시할 위치
+          title: data[i].name, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+          image: 2 > onMapType! ? favoriteImage : reveiwImage, // 마커 이미지
+          clickable: true,
+        }),
+      );
+      markerArr[i].setMap(map.current);
 
-      mutate({
-        memberIdx: '1',
-        smallLa: sw.La,
-        largeLa: ne.La,
-        smallLo: sw.Ma,
-        largeLo: ne.Ma,
+      if (onMapType === 1) favoritePlace.current = markerArr;
+      if (onMapType === 2) reviewPlace.current = markerArr;
+
+      //마커 클릭했을때 바텀싯트에 장소 정보 표시
+      window.kakao.maps.event.addListener(markerArr[i], 'click', function () {
+        console.log('클릭', markerArr[i]);
+
+        setMarkerState(onMapType);
+        setIsOpenState(true);
       });
+    }
+  }
 
-      // if (favoritePlace.current.length && type === 0) {
-      //   return alert('이미 불러왔어요');
-      // }
-      // if (reviewPlace.current.length && type === 1) {
-      //   return alert('이미 불러왔어요');
-      // }
-      // 마커이미지
-      const imageSize = new window.kakao.maps.Size(35, 35);
-      const favoriteImage = new window.kakao.maps.MarkerImage(
-        IcoFavorite,
-        imageSize,
-      );
-      const reveiwImage = new window.kakao.maps.MarkerImage(
-        IcoReview,
-        imageSize,
-      );
-      //초기화
-      markerArr = [];
+  const idelEvent = () => {
+    // 지도 영역정보를 얻어옵니다
 
-      for (let i = 0; i < userLikeState.length; i++) {
-        markerArr.push(
-          new window.kakao.maps.Marker({
-            map: map.current, // 마커를 표시할 지도
-            position: new window.kakao.maps.LatLng(
-              userLikeState[i].latitude,
-              userLikeState[i].longitude,
-            ), // 마커를 표시할 위치
-            title: userLikeState[i].name, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-            image: type ? reveiwImage : favoriteImage, // 마커 이미지
-            clickable: true,
-          }),
-        );
-        markerArr[i].setMap(map.current);
+    const bounds = map.current.getBounds();
 
-        if (type === 0) favoritePlace.current = markerArr;
-        if (type === 1) reviewPlace.current = markerArr;
+    // 영역정보의 남서쪽 정보를 얻어옵니다
+    const swLatlng = bounds.getSouthWest();
 
-        //마커 클릭했을때 바텀싯트에 장소 정보 표시
-        window.kakao.maps.event.addListener(markerArr[i], 'click', function () {
-          console.log('클릭', markerArr[i]);
+    // 영역정보의 북동쪽 정보를 얻어옵니다
+    const neLatlng = bounds.getNorthEast();
 
-          setMarkerState(type);
-          setIsOpenState(true);
-        });
+    //La 경도 Ma 위도
+    async function refetchTry() {
+      const data = {
+        memberIdx: '12',
+        smallLa: swLatlng.Ma,
+        largeLa: neLatlng.Ma,
+        smallLo: swLatlng.La,
+        largeLo: neLatlng.La,
+      };
+      setGetAreaVal(data);
+      if (getAreaVal) {
+        await refetchLike();
       }
-    });
+      // drowOnMap(getLike.data);
+    }
+    refetchTry();
   };
 
-  const addUserSavedMarker = (type: number) => {
-    // if (favoritePlace.current.length && type === 0) {
-    //   return alert('이미 불러왔어요');
-    // }
-    // if (reviewPlace.current.length && type === 1) {
-    //   return alert('이미 불러왔어요');
-    // }
-    // //스크롤 or 확대 함수
-    // mapAreaChange();
-    // //초기화
-    // markerArr = [];
-    // for (let i = 0; i < userLikeState.length; i++) {
-    //   markerArr.push(
-    //     new window.kakao.maps.Marker({
-    //       map: map.current, // 마커를 표시할 지도
-    //       position: new window.kakao.maps.LatLng(
-    //         userLikeState[i].latitude,
-    //         userLikeState[i].longitude,
-    //       ), // 마커를 표시할 위치
-    //       title: userLikeState[i].name, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-    //       image: type ? reveiwImage : favoriteImage, // 마커 이미지
-    //       clickable: true,
-    //     }),
-    //   );
-    //   markerArr[i].setMap(map.current);
-    //   if (type === 0) favoritePlace.current = markerArr;
-    //   if (type === 1) reviewPlace.current = markerArr;
-    //   //마커 클릭했을때 바텀싯트에 장소 정보 표시
-    //   window.kakao.maps.event.addListener(markerArr[i], 'click', function () {
-    //     console.log('클릭', markerArr[i]);
-    //     setMarkerState(type);
-    // //     if (type === 0) {
-    // //       setUserFavoriteState({
-    // //         id: data[i].memberIdx,
-    // //         title: data[i].name,
-    // //         address: data[i].address,
-    // //         positions: {
-    // //           latitude: data[i].latitude,
-    // //           longitude: data[i].longitude,
-    // //         },
-    // //       });
-    // //     }
-    // //     if (type === 1) {
-    // //       setUserReivewState({
-    // //         id: data[i].memberIdx,
-    // //         title: data[i].name,
-    // //         address: data[i].address,
-    // //         image: data[i].image,
-    // //         positions: {
-    // //           latitude: data[i].latitude,
-    // //           longitude: data[i].longitude,
-    // //         },
-    // //       });
-    // //     }
-    //      setIsOpenState(true);
-    //   });
-    // }
+  useEffect(() => {
+    if (map.current) {
+      console.log('getlike', getLike);
+      window.kakao.maps.event.addListener(map.current, 'idle', idelEvent);
+    }
+
+    return () => {
+      window.kakao.maps.event.removeListener(map.current, 'idle', idelEvent);
+    };
+  }, [getAreaVal, map.current, getLike]);
+
+  const mapAreaChange = (type: number | null) => {
+    setOnMapType(type);
+    removeMarker(type);
   };
 
-  const removeMarker = (type: number) => {
+  const removeMarker = (type: number | null) => {
     console.log('삭제');
     // 0 찜한장소, 1 리뷰장소
-    console.log(favoritePlace, reviewPlace);
-    if (0 === type) {
+    // console.log(favoritePlace, reviewPlace);
+    if (2 === type) {
       favoritePlace.current.forEach((item: any) => {
         item.setMap(null);
       });
       favoritePlace.current = [];
+      drowOnMap([]);
       return;
     }
     if (1 === type) {
@@ -237,6 +193,7 @@ function useKakaoMap() {
         item.setMap(null);
       });
       reviewPlace.current = [];
+      drowOnMap([]);
       return;
     }
     // markers.current.forEach((marker, index) => {
@@ -324,7 +281,7 @@ function useKakaoMap() {
     }
 
     const onSucces = (position: any) => {
-      console.log(position.coords);
+      //console.log(position.coords);
       const content = `<div class='absolute h-20 w-20 before:relative before:ml-[-100%] before:mt-[-100%] before:box-border before:block before:h-[300%] before:w-[300%] before:animate-pulse-ring before:rounded-[45px] before:content-[""] after:shadow-[0_0_8px_rgba(0,0,0,.3)] after:absolute after:left-0 after:top-0 after:block after:h-full after:w-full after:animate-pulse-dot after:rounded-[15px] after:bg-primary1 after:content-[""] before:bg-primary1'></div>`;
       //현재위치 마커 표시
       const markerPosition = new window.kakao.maps.LatLng(
@@ -355,7 +312,7 @@ function useKakaoMap() {
   return {
     Map,
     setNowLocation,
-    addUserSavedMarker,
+
     removeMarker,
     drawOverlayOnMap,
     currentLocation,

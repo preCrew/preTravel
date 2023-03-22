@@ -6,9 +6,8 @@ import MySchedule from './mySchedule';
 import MySchedule2 from './mySchedule2';
 import LoginPage from './LoginPage';
 import OauthPage from './OauthPage';
-import MapPage from './MapPage';
-import Main from './Main';
-
+import MapPage from './MainPage';
+import Map from './Map';
 
 const App = () => {
   useEffect(() => {
@@ -35,10 +34,10 @@ const App = () => {
         />
       </Helmet>
       <Routes>
-        <Route
+        {/* <Route
           path="/"
           element={<Main />}
-        />
+        /> */}
         <Route
           path="/mySchedule"
           element={<MySchedule2 />}
@@ -61,7 +60,7 @@ const App = () => {
         />
         <Route
           path="/map/*"
-          element={<MapPage />}
+          element={<Map />}
         />
         <Route
           path="/*"
