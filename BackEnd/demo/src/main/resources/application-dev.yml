@@ -18,8 +18,6 @@ spring:
         show_sql: true
         format_sql: true
 
-file:
-  dir: https://port-0-pretravel-ll32glc6adwo3.gksl2.cloudtype.app/file/img/
 oauth:
   kakao:
     token_host: https://kauth.kakao.com/oauth/token

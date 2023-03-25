@@ -32,16 +32,14 @@ public class IFileService implements FileService {
     @Autowired
     FileDao dao;
 
-    @Value("${file.dir}")
-    private String DIR;
-
     @Override
     public ResponseEntity<ResponseDTO> save(MultipartFile file, String boardName) {
         if (boardName == null ||
                 !(boardName.equals("review") || boardName.equals("schedule"))) {
             return returnUtil.code400("boardName이 올바르지 않습니다.");
         }
-
+        // String dir = "http://localhost:8080/file/img/";
+        String dir = "https://port-0-pretravel-ll32glc6adwo3.gksl2.cloudtype.app/file/img/";
         try {
             File saveFile = dao.save(
                     new File(null,
@@ -50,7 +48,7 @@ public class IFileService implements FileService {
                             null,
                             null));
             String fileName = saveFile.getIdx() + "_" + file.getOriginalFilename();
-            DIR = DIR
+            dir = dir
                     + boardName + "/"
                     + fileName;
             byte[] bytes = file.getBytes();
@@ -64,7 +62,7 @@ public class IFileService implements FileService {
                     new File(saveFile.getIdx(),
                             boardName,
                             null,
-                            DIR,
+                            dir,
                             fileName));
             return returnUtil.code200("파일저장 성공", resultFile);
         } catch (Exception e) {
