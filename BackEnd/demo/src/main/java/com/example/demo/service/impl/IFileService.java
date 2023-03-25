@@ -6,7 +6,9 @@ import java.nio.file.Paths;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -30,6 +32,9 @@ public class IFileService implements FileService {
     @Autowired
     FileDao dao;
 
+    @Value("${file.dir}")
+    private String DIR;
+
     @Override
     public ResponseEntity<ResponseDTO> save(MultipartFile file, String boardName) {
         if (boardName == null ||
@@ -38,9 +43,6 @@ public class IFileService implements FileService {
         }
 
         try {
-            // String dir = "http://localhost:8080/file/img/"; // local
-            String dir = "https://port-0-pretravel-ll32glc6adwo3.gksl2.cloudtype.app/file/img/"; // server
-
             File saveFile = dao.save(
                     new File(null,
                             boardName,
@@ -48,7 +50,7 @@ public class IFileService implements FileService {
                             null,
                             null));
             String fileName = saveFile.getIdx() + "_" + file.getOriginalFilename();
-            dir = dir
+            DIR = DIR
                     + boardName + "/"
                     + fileName;
             byte[] bytes = file.getBytes();
@@ -62,7 +64,7 @@ public class IFileService implements FileService {
                     new File(saveFile.getIdx(),
                             boardName,
                             null,
-                            dir,
+                            DIR,
                             fileName));
             return returnUtil.code200("파일저장 성공", resultFile);
         } catch (Exception e) {
@@ -72,12 +74,27 @@ public class IFileService implements FileService {
     }
 
     @Override
-    public ResponseEntity<Resource> getFile(String dir, String fileName) {
+    public ResponseEntity<Resource> getFile(String boardName, String fileName) {
+        try {
+            ClassPathResource classPathResource = new ClassPathResource("");
+            String path = classPathResource.getFile().getAbsolutePath();
+            System.out.println("path : " + path);
+
+            ClassPathResource classPathResource2 = new ClassPathResource("img/"
+                    + boardName + "/"
+                    + fileName);
+            String path2 = classPathResource2.getFile().getAbsolutePath();
+            System.out.println("path2 : " + path2);
+        } catch (Exception e) {
+            // e.printStackTrace();
+        }
         Resource resource = new ClassPathResource("img/"
-                + dir + "/"
+                + boardName + "/"
                 + fileName);
+
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_PNG);
+
         return new ResponseEntity<>(resource, headers, HttpStatus.OK);
     }
 
