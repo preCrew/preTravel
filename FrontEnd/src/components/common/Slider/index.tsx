@@ -23,13 +23,13 @@ const getClientX = (
   e: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>,
 ) => {
   let clientX: number = 0;
-  if (e.nativeEvent instanceof TouchEvent) {
+  if (e.nativeEvent instanceof MouseEvent) {
+    clientX = e.nativeEvent.clientX;
+  } else if (e.nativeEvent instanceof TouchEvent) {
     clientX =
       e.nativeEvent.touches.length > 0
         ? e.nativeEvent.touches[0].clientX
         : e.nativeEvent.changedTouches[0].clientX;
-  } else if (e.nativeEvent instanceof MouseEvent) {
-    clientX = e.nativeEvent.clientX;
   }
   return clientX;
 };
@@ -132,9 +132,9 @@ const Slider = ({
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp}
-      onTouchStart={handleMouseDown}
-      onTouchMove={handleMouseMove}
-      onTouchEnd={handleMouseUp}
+      // onTouchStart={handleMouseDown}
+      // onTouchMove={handleMouseMove}
+      // onTouchEnd={handleMouseUp}
       className={className}
     >
       <div
