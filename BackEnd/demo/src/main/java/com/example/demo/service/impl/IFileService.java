@@ -39,7 +39,7 @@ public class IFileService implements FileService {
 
         try {
             // String dir = "http://localhost:8080/file/img/"; // local
-            String dir = "https://port-0-pretravel-ll32glc6adwo3.gksl2.cloudtype.app/file/img"; // server
+            String dir = "https://port-0-pretravel-ll32glc6adwo3.gksl2.cloudtype.app/file/img/"; // server
 
             File saveFile = dao.save(
                     new File(null,
