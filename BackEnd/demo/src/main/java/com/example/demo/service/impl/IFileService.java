@@ -23,7 +23,10 @@ import com.example.demo.dto.ResponseDTO;
 import com.example.demo.service.FileService;
 import com.example.demo.util.ReturnUtil;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class IFileService implements FileService {
 
     @Autowired
@@ -73,26 +76,29 @@ public class IFileService implements FileService {
 
     @Override
     public ResponseEntity<Resource> getFile(String boardName, String fileName) {
+        log.info("file service impl");
         try {
             ClassPathResource classPathResource = new ClassPathResource("");
             String path = classPathResource.getFile().getAbsolutePath();
-            System.out.println("path : " + path);
+            log.info("path : " + path);
 
             ClassPathResource classPathResource2 = new ClassPathResource("img/"
                     + boardName + "/"
                     + fileName);
             String path2 = classPathResource2.getFile().getAbsolutePath();
-            System.out.println("path2 : " + path2);
+            log.info("path2 : " + path2);
+
         } catch (Exception e) {
             // e.printStackTrace();
         }
+        log.info("file service impl22222");
         Resource resource = new ClassPathResource("img/"
                 + boardName + "/"
                 + fileName);
-
+        log.info("file service impl33333");
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_PNG);
-
+        log.info("file service impl44444");
         return new ResponseEntity<>(resource, headers, HttpStatus.OK);
     }
 
