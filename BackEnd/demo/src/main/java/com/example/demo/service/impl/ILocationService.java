@@ -18,8 +18,12 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.example.demo.dao.LocationDao;
+import com.example.demo.dto.LikeSpot;
 import com.example.demo.dto.Location;
+import com.example.demo.dto.Review;
+import com.example.demo.service.LikeSpotService;
 import com.example.demo.service.LocationService;
+import com.example.demo.service.ReviewService;
 import com.example.demo.util.ResponseUtil;
 
 @Service
@@ -35,6 +39,12 @@ public class ILocationService implements LocationService {
     private String HOST;
 
     @Autowired
+    LikeSpotService likeSpotService;
+
+    @Autowired
+    ReviewService reviewService;
+
+    @Autowired
     RestTemplate restTemplate;
 
     @Autowired
@@ -47,7 +57,7 @@ public class ILocationService implements LocationService {
 
     @Override
     public Map<String, Object> searchPlace(String keyword, String page) {
-        String size = "15"; 
+        String size = "15";
         JSONObject jo = getPlaceData(keyword, page, size);
         List<Object> list = (List<Object>) jo.get("documents");
         Map<String, Object> meta = (Map<String, Object>) jo.get("meta");
@@ -93,6 +103,17 @@ public class ILocationService implements LocationService {
                 httpEntity,
                 String.class);
         return responseUtil.responseToJson(data);
+    }
+
+    @Override
+    public Map<String, Object> getLikeReview(String memberIdx, String address) {
+        List<LikeSpot> likeList = likeSpotService.findByMemberIdxAndAddress(memberIdx, address);
+        List<Review> reviewList = reviewService.findByMemberIdxAndAddress(memberIdx, address);
+        Map<String, Object> map = new HashMap<>();
+        map.put("like", likeList);
+        map.put("review", reviewList);
+
+        return map;
     }
 
 }

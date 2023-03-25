@@ -44,4 +44,9 @@ public class ILikeSpotService implements LikeSpotService {
         return list;
     }
 
+    @Override
+    public List<LikeSpot> findByMemberIdxAndAddress(String memberIdx, String address) {
+        return dao.findByMemberIdxAndAddress(memberIdx, address);
+    }
+
 }

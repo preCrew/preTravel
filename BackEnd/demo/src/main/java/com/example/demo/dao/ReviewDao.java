@@ -41,4 +41,8 @@ public class ReviewDao {
         return repository.findById(idx);
     }
 
+    public List<Review> findByMemberIdxAndAddress(String memberIdx, String address) {
+        return repository.findByMemberIdxAndAddress(memberIdx, address);
+    }
+
 }

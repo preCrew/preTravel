@@ -65,4 +65,9 @@ public class IReviewService implements ReviewService {
         dao.deleteById(idx);
     }
 
+    @Override
+    public List<Review> findByMemberIdxAndAddress(String memberIdx, String address) {
+        return dao.findByMemberIdxAndAddress(memberIdx, address);
+    }
+
 }

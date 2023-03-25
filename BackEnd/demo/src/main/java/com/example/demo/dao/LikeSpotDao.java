@@ -33,4 +33,8 @@ public class LikeSpotDao {
                 memberIdx);
     }
 
+    public List<LikeSpot> findByMemberIdxAndAddress(String memberIdx, String address) {
+        return repository.findByMemberIdxAndAddress(memberIdx, address);
+    }
+
 }

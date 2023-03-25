@@ -65,5 +65,4 @@ public class ReviewController {
         service.deleteById(idx);
         return returnUtil.code200("리뷰삭제 성공", "");
     }
-
 }
