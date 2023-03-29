@@ -6,6 +6,7 @@ import IconButton from '@src/components/common/Button/IconButton';
 import TopBar from '@src/components/common/TobBar';
 import Button from '@src/components/common/Button';
 import useLocationState from '@src/hooks/recoil/useLocationState';
+import TopText from '@src/components/common/Text/TopText';
 
 interface MapInfoPageProps {}
 
@@ -18,14 +19,16 @@ const MapInfoPage = ({}: MapInfoPageProps) => {
   const handleClickBackButton = () => {
     navigate(-1);
   };
+
+  const handleClickAddReviewButton = () => {
+    navigate('/review/edit');
+  };
+
+  const handleClickAddScheduleButton = () => {};
   return (
     <>
       <TopBar onClickBackButton={handleClickBackButton}>
-        <div
-          css={tw`w-full absolute text-center text-h4Bold pointer-events-none`}
-        >
-          {selectData.name}
-        </div>
+        <TopText>{selectData.name}</TopText>
       </TopBar>
       <BottomSheetWrap drag={true}>
         <div css={tw`p-2 flex flex-col items-center gap-3`}>
@@ -38,12 +41,14 @@ const MapInfoPage = ({}: MapInfoPageProps) => {
               type="large"
               color="gray3"
               css={tw`text-black`}
+              onClick={handleClickAddReviewButton}
             >
               리뷰작성
             </Button>
             <Button
               type="large"
               color="primary1"
+              onClick={handleClickAddScheduleButton}
             >
               일정 추가
             </Button>
