@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 
 import MySchedule from './mySchedule';
 import MySchedule2 from './mySchedule2';
@@ -60,7 +60,11 @@ const App = () => {
         />
         <Route
           path="/map/*"
-          element={<Map />}
+          element={
+            <Suspense fallback={<div>로딩즁1</div>}>
+              <Map />
+            </Suspense>
+          }
         />
         <Route
           path="/*"

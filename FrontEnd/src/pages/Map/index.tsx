@@ -6,35 +6,38 @@ import useKakaoMap from '@src/components/common/Map/useKakaoMap';
 import { categoryAtom } from '@src/recoil/marker/category/atom';
 import SearchPage from '../SearchPage';
 import MainPage from '../MainPage';
+import KaKaoMap from './KaKaMap';
 
 const Map = () => {
-  const { Map, mapAreaChange, currentLocation } = useKakaoMap();
-  const categoryState = useRecoilValue(categoryAtom);
+  // const { Map, currentLocation } = useKakaoMap();
+  // const categoryState = useRecoilValue(categoryAtom);
 
-  const map = useMemo(() => <Map />, []);
-
-  useEffect(() => {
-    if (categoryState !== null) mapAreaChange(categoryState);
-  }, [categoryState]);
+  // const map = useMemo(() => <Map />, []);
 
   useEffect(() => {
-    currentLocation();
+    // currentLocation();
   }, []);
 
   return (
-    <Suspense fallback={<div>로딩즁..</div>}>
-      {map}
+    <>
       <Routes>
         <Route
           path="main"
-          element={<MainPage />}
+          element={
+            <Suspense fallback={<div>로딩즁</div>}>
+              <MainPage />
+            </Suspense>
+          }
         />
         <Route
           path="search"
           element={<SearchPage />}
         />
       </Routes>
-    </Suspense>
+      <Suspense fallback={<div>loadinnggggggggggggggg</div>}>
+        <KaKaoMap />
+      </Suspense>
+    </>
   );
 };
 

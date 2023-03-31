@@ -9,7 +9,7 @@ export interface ILikeMapData {
 }
 // https://port-0-pretravel-ll32glc6adwo3.gksl2.cloudtype.app/like
 
-const areaMarekerFunc = async ({ queryKey }: any) => {
+const areaMarekerFunc = async (data: any) => {
   //  console.log(memberIdx, smallLa, largeLa, smallLo, largeLo);
   // const params = new FormData();
   // params.append('memberIdx', '12');
@@ -18,11 +18,10 @@ const areaMarekerFunc = async ({ queryKey }: any) => {
   // params.append('smallLo', data.get('smallLo'));
   // params.append('largeLo', data.get('largeLo'));
   try {
-    const [_, data] = queryKey;
     const response = await axios.get(
       `https://port-0-pretravel-ll32glc6adwo3.gksl2.cloudtype.app/like/map?memberIdx=${data.memberIdx}&smallLa=${data.smallLa}&largeLa=${data.largeLa}&smallLo=${data.smallLo}&largeLo=${data.largeLo}`,
     );
-    console.log(response.data);
+
     return response.data;
   } catch (err) {
     if (err instanceof Error) console.log(err.message);
@@ -30,9 +29,9 @@ const areaMarekerFunc = async ({ queryKey }: any) => {
 };
 
 const useGetAreaMarker = (data: any) =>
-  useQuery(['getArea', data], {
+  useQuery(['getArea'], () => areaMarekerFunc(data), {
     enabled: false,
-    queryFn: areaMarekerFunc,
+    //queryFn: ,
   });
 
 export default useGetAreaMarker;
