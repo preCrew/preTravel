@@ -114,23 +114,23 @@ module.exports = {
       keyframes: {
         pulseRing: {
           '0%': {
-            transform: 'scale(.33)'
+            transform: 'scale(.33)',
           },
           '80%, 100%': {
-            opacity: 0
-          }
+            opacity: 0,
+          },
         },
         pulseDot: {
           '0%': {
-            transform: 'scale(.8)'
+            transform: 'scale(.8)',
           },
           '50%': {
-            transform: 'scale(1)'
+            transform: 'scale(1)',
           },
           '100%': {
-            transform: 'scale(.8)'
-          }
-        },        
+            transform: 'scale(.8)',
+          },
+        },
         down: {
           '0%': { opacity: 0 },
           '100%': { opacity: 1 },
@@ -149,29 +149,31 @@ module.exports = {
         down: 'down 1.0s ease-in-out',
         up: 'up 1.0s ease-in-out',
         skeletonData: 'skeletonData 1.5s infinite ',
-        'pulse-dot': 'pulseDot 1.25s cubic-bezier(0.455, 0.03, 0.515, 0.955) -0.4s infinite',
-        'pulse-ring': 'pulseRing 1.25s cubic-bezier(0.215, 0.61, 0.355, 1) infinite'        
+        'pulse-dot':
+          'pulseDot 1.25s cubic-bezier(0.455, 0.03, 0.515, 0.955) -0.4s infinite',
+        'pulse-ring':
+          'pulseRing 1.25s cubic-bezier(0.215, 0.61, 0.355, 1) infinite',
       },
       keyframes: {
         pulseRing: {
           '0%': {
-            transform: 'scale(.33)'
+            transform: 'scale(.33)',
           },
           '80%, 100%': {
-            opacity: 0
-          }
+            opacity: 0,
+          },
         },
         pulseDot: {
           '0%': {
-            transform: 'scale(.8)'
+            transform: 'scale(.8)',
           },
           '50%': {
-            transform: 'scale(1)'
+            transform: 'scale(1)',
           },
           '100%': {
-            transform: 'scale(.8)'
-          }
-        },        
+            transform: 'scale(.8)',
+          },
+        },
         down: {
           '0%': { opacity: 0 },
           '100%': { opacity: 1 },
@@ -190,8 +192,10 @@ module.exports = {
         down: 'down 1.0s ease-in-out',
         up: 'up 1.0s ease-in-out',
         skeletonData: 'skeletonData 1.5s infinite ',
-        'pulse-dot': 'pulseDot 1.25s cubic-bezier(0.455, 0.03, 0.515, 0.955) -0.4s infinite',
-        'pulse-ring': 'pulseRing 1.25s cubic-bezier(0.215, 0.61, 0.355, 1) infinite'        
+        'pulse-dot':
+          'pulseDot 1.25s cubic-bezier(0.455, 0.03, 0.515, 0.955) -0.4s infinite',
+        'pulse-ring':
+          'pulseRing 1.25s cubic-bezier(0.215, 0.61, 0.355, 1) infinite',
       },
     },
   },
@@ -240,11 +244,9 @@ module.exports = {
           '--data-num': 'calc(100%/50)',
           '--data-height': 'calc(50 * var(--data-num))',
 
-          // margin: 'auto',
           width: '100%',
           height: 'var(--data-height)',
           paddingLeft: '1rem',
-          paddingTop: '1.25rem',
 
           backgroundImage:
             'linear-gradient( 90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.5) 40%, rgba(255, 255, 255, 0) 70% ), linear-gradient(var(--gray3) 20px, transparent 0), linear-gradient(var(--gray3) 1px, transparent 0)',
@@ -255,6 +257,9 @@ module.exports = {
         },
         '.no-scroll': {
           overflow: 'hidden',
+        },
+        '.content-inner': {
+          padding: 'var(--contentX)',
         },
       };
 
