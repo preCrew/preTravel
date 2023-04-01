@@ -42,7 +42,7 @@ public class IReviewService implements ReviewService {
         Optional<Review> optReview = dao.findByIdx(idx);
         String address = optReview.get().getAddress();
         String[] parts = address.trim().split("\\s+");
-        String cityAndProvince = parts[0] + " " + parts[1];
+        String cityAndProvince = parts[1];
         optReview.get().setAddress(cityAndProvince);
         return optReview;
     }

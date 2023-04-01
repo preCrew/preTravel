@@ -42,7 +42,8 @@ public class IFileService implements FileService {
             return returnUtil.code400("boardName이 올바르지 않습니다.");
         }
         // String dir = "http://localhost:8080/file/img/";
-        String dir = "https://port-0-pretravel-ll32glc6adwo3.gksl2.cloudtype.app/file/img/";
+        String dir =
+        "https://port-0-pretravel-ll32glc6adwo3.gksl2.cloudtype.app/file/img/";
         try {
             File saveFile = dao.save(
                     new File(null,
@@ -78,21 +79,34 @@ public class IFileService implements FileService {
     public ResponseEntity<Resource> getFile(String boardName, String fileName) {
         log.info("file service impl");
         try {
-            ClassPathResource classPathResource = new ClassPathResource("");
+            /**
+             * 절대경로로 처리하는 부분
+             */
+            ClassPathResource classPathResource = new ClassPathResource(""); // 이 메서드체가 에러네
             String path = classPathResource.getFile().getAbsolutePath();
+            System.out.println("\npath : "+path);
             log.info("path : " + path);
 
+            
+        } catch (Exception e) {
+            System.out.println("\npath1 에러\n");
+            e.printStackTrace();
+        }
+        try {
             ClassPathResource classPathResource2 = new ClassPathResource("img/"
                     + boardName + "/"
                     + fileName);
             String path2 = classPathResource2.getFile().getAbsolutePath();
+            System.out.println("\npath2 : "+path2);
             log.info("path2 : " + path2);
-
         } catch (Exception e) {
-            // e.printStackTrace();
+            System.out.println("\npath2 에러\n");
+            e.printStackTrace();
+       
         }
+        
         log.info("file service impl22222");
-        Resource resource = new ClassPathResource("img/"
+        Resource resource = new ClassPathResource("img/" // 다시여기 왔을때 또 에러나와서 에러로그 나는 거ㅁ
                 + boardName + "/"
                 + fileName);
         log.info("file service impl33333");

@@ -46,6 +46,9 @@ public class Schedule {
     @Column(name="sct_name")
     String name;
 
+    @Column(name="sct_city")
+    String city;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(name="sct_start_date")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
