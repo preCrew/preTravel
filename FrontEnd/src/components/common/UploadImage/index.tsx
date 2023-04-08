@@ -1,4 +1,4 @@
-import { File } from '@src/hooks/react-query/useReviewUpdateQuery';
+import { File } from '@src/hooks/react-query/useUpdateReviewQuery';
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import tw, { css } from 'twin.macro';
 import ImageBox from './ImageBox';

@@ -1,4 +1,4 @@
-import { PlaceData } from '@src/hooks/react-query/usePlaceGetQuery';
+import { PlaceData } from '@src/hooks/react-query/useGetPlaceQuery';
 import { atom } from 'recoil';
 
 export type LocationNowPage = 'search' | 'map';
