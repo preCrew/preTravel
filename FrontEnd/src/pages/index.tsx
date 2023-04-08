@@ -35,7 +35,7 @@ const App = () => {
           viewport-fit="cover"
         />
       </Helmet>
-      <div css={tw`w-full h-full xsm:w-380`}>
+      <div css={tw`w-full h-full xsm:w-380 flex flex-col relative`}>
         <Routes>
           <Route
             path="/"
