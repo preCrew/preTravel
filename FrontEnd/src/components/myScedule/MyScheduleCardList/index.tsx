@@ -1,25 +1,29 @@
-import { useEffect, useState } from 'react';
-import MyScheduleCard, { MyScheduleCardI } from '../MyScheduleCard';
+import useMyScheduleGetQuery, {
+  MySchedule,
+} from '@src/hooks/react-query/useGetMyScheduleQuery';
+import MyScheduleCard from '../MyScheduleCard';
 
 interface MyScheduleCardListProps {
-  cardList: MyScheduleCardI[];
+  // cardList?: MySchedule[];
   deleteMode?: boolean;
 }
 
 const MyScheduleCardList = ({
-  cardList,
   deleteMode,
-}: MyScheduleCardListProps) => {
+}: // cardList,
+// deleteMode,
+MyScheduleCardListProps) => {
+  const { data: lists } = useMyScheduleGetQuery();
   return (
-    <ul className="content-inner grid grid-cols-2 gap-4">
-      {cardList.map((card, index) => (
-        <MyScheduleCard
-          key={card.id}
-          index={index}
-          deleteMode={deleteMode}
-          {...card}
-        />
-      ))}
+    <ul className="grid grid-cols-2 gap-4 content-inner">
+      {lists &&
+        lists.map((card, index) => (
+          <MyScheduleCard
+            key={card.idx}
+            deleteMode={deleteMode}
+            {...card}
+          />
+        ))}
     </ul>
   );
 };
