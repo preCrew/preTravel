@@ -34,7 +34,7 @@ public class File {
     String boardName;
 
     @Column(name = "f_board_idx")
-    String boardIdx;
+    Long boardIdx;
 
     @Column(name = "f_dir")
     String fileDir;

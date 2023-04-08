@@ -1,5 +1,6 @@
 package com.example.demo.dao;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,10 @@ public class FileDao {
 
     public void deleteById(String idx) {
         repository.deleteById(Long.valueOf(idx));
+    }
+
+    public List<File> findByBoardNameAndBoardIdx(String boardName, Long idx) {
+        return repository.findByBoardNameAndBoardIdx(boardName, idx);
     }
 
 }
