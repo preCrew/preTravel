@@ -1,16 +1,9 @@
 package com.example.demo.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import com.example.demo.dao.LikeSpotDao;
-import com.example.demo.dao.ScheduleDao;
-import com.example.demo.dao.SpotDao;
-import com.example.demo.dto.LikeSpot;
-import com.example.demo.dto.ResponseDTO;
-import com.example.demo.dto.Schedule;
+import com.example.demo.dao.*;
+import com.example.demo.dto.*;
 import com.example.demo.service.KaKaoService;
 import com.example.demo.service.NaverService;
 import com.example.demo.util.ReturnUtil;
@@ -18,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.dao.MemberDao;
-import com.example.demo.dto.Member;
 import com.example.demo.service.MemberService;
 
 @Service
@@ -33,6 +24,9 @@ public class IMemberService implements MemberService{
     MemberDao memberDao;
     @Autowired
     LikeSpotDao likeSpotDao;
+
+    @Autowired
+    ReviewDao reviewDao;
     @Autowired
     SpotDao spotDao;
     @Autowired
@@ -59,21 +53,37 @@ public class IMemberService implements MemberService{
 
         Map<String, Object> result = new HashMap<>();
 
-        String email = "kmk990418@daum.net";
-        Member member = memberDao.findByEmail(email).get(0);
-        result.put("member", member);
+        System.out.println(code);
+        Member member = memberDao.findByIdx(code);
+        result.put("name", member.getName());
+        result.put("email", member.getEmail());
 
-        String memberIdx = String.valueOf(member.getIdx());
 
-        LikeSpot likespot = likeSpotDao.findByMemberIdx(memberIdx).get(0);
+
+        List<LikeSpot> likespot = likeSpotDao.findByMemberIdx(code);
         result.put("likespot", likespot);
 
-        //review 있는 스케쥴만
-        Schedule reviewedSchedule = scheduleDao.findByMemberIdx(memberIdx).get(0);
+
+        //create date 기준으로 sort
+        List<Review> reviewedSchedule = reviewDao.findByMemberIdx(code);
         result.put("reviewedSchedule", reviewedSchedule);
 
-        Schedule schedule = scheduleDao.findByMemberIdx(memberIdx).get(0);
-        result.put("schedule", schedule);
+
+        //create date 기준으로 sort
+        List<Schedule> scheduleList = scheduleDao.findByMemberIdx(code);
+        List<Spot> spotResult = new ArrayList<>();
+        for (Schedule schedule : scheduleList) {
+            List<Spot> spotList = spotDao.findBySctIdx(String.valueOf(schedule.getIdx()));
+            for (Spot spot : spotList) {
+                spotResult.add(spot);
+            }
+        }
+        System.out.println(spotResult);
+        Comparator<Spot> comparator = Comparator.comparing(Spot::getCreateDate);
+        Collections.sort(spotResult, comparator);
+        System.out.println(spotResult);
+
+        result.put("schedule", scheduleList);
 
 
 

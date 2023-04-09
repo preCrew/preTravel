@@ -40,8 +40,8 @@ public class LikeSpot {
     String address;
 
     @Column(name="ls_latitude")
-    Integer latitude;
+    String latitude;
 
     @Column(name="ls_longitude")
-    Integer longitude;
+    String longitude;
 }

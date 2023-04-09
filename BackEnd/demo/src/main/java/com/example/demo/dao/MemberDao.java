@@ -23,6 +23,10 @@ public class MemberDao {
         return repository.findByEmail(email);
     }
 
+    public Member findByIdx(String idx) {
+        return repository.findByIdx(Long.valueOf(idx));
+    }
+
     @Transactional
     public void save(Member mem) {
         repository.save(mem);
