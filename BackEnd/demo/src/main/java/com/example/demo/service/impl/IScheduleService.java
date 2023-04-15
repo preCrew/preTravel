@@ -76,7 +76,6 @@ public class IScheduleService implements ScheduleService {
             for (File file : tmpList) {
                 fileService.delete(String.valueOf(file.getIdx()));
             }
-
             spotService.deleteBySctIdx(idx);
             dao.deleteById(idx);
         }
