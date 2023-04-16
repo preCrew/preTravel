@@ -53,9 +53,8 @@ public class SSOLoginController {
         return naverService.getAccessToken(refreshToken);
     }
 
-    @GetMapping("/naver/logout")
+    @PostMapping("/naver/logout")
     public ResponseEntity<ResponseDTO> naverLogout(String code) {
-
         return naverService.logout(code);
 
     }
