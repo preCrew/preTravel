@@ -35,7 +35,7 @@ public class IScheduleService implements ScheduleService {
             List<File> tmpList = fileService.findByBoardNameAndBoardIdx("schedule", schedule.getIdx());
             schedule.setFile(tmpList);
         }
-        return dao.findByMemberIdx(memberIdx);
+        return list;
     }
 
     @Override
