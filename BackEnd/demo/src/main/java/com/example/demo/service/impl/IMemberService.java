@@ -7,6 +7,8 @@ import com.example.demo.dto.*;
 import com.example.demo.service.KaKaoService;
 import com.example.demo.service.NaverService;
 import com.example.demo.util.ReturnUtil;
+import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.service.MemberService;
 
 @Service
+@Slf4j
 public class IMemberService implements MemberService{
 
 
@@ -53,15 +56,15 @@ public class IMemberService implements MemberService{
 
         Map<String, Object> result = new HashMap<>();
 
-        System.out.println(code);
+        log.info("user Idx : {}",code);
         Member member = memberDao.findByIdx(code);
         result.put("name", member.getName());
         result.put("email", member.getEmail());
 
 
 
-        List<LikeSpot> likespot = likeSpotDao.findByMemberIdx(code);
-        result.put("likespot", likespot);
+        List<LikeSpot> likeSpot = likeSpotDao.findByMemberIdx(code);
+        result.put("likeSpot", likeSpot);
 
 
         //create date 기준으로 sort
@@ -78,14 +81,10 @@ public class IMemberService implements MemberService{
                 spotResult.add(spot);
             }
         }
-        System.out.println(spotResult);
-        Comparator<Spot> comparator = Comparator.comparing(Spot::getCreateDate);
-        Collections.sort(spotResult, comparator);
-        System.out.println(spotResult);
+        Comparator<Spot> sptcomparator = Comparator.comparing(Spot::getDay);
+        Collections.sort(spotResult, sptcomparator);
 
-        result.put("schedule", scheduleList);
-
-
+        result.put("spot", spotResult);
 
         return returnUtil.code200("회원 정보 조회",result);
     }
