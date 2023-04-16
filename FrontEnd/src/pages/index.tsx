@@ -9,6 +9,7 @@ import OauthPage from './OauthPage';
 import MapPage from './MainPage';
 import Map from './Map';
 
+
 const App = () => {
   useEffect(() => {
     console.log('다시시작');
@@ -46,6 +47,10 @@ const App = () => {
           path="/mySchedule"
           element={<MySchedule2 />}
         />
+        {/* <Route
+          path="/schedulePlan"
+          element={<SchedulePlan />}
+        /> */}
         <Route
           path="/mySchedule/:id"
           element={<MySchedule />}

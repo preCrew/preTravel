@@ -128,12 +128,17 @@ const webpackConfig: Configuration = {
     // }
     // devMiddleware: { publicPath: '/' },
     static: { directory: path.join(__dirname, 'build') },
+    headers: { 'Access-Control-Allow-Origin': '*' },
+    devMiddleware: { publicPath: '/build' },
+    static: { directory: path.resolve(__dirname) },
     hot: true,
+    allowedHosts: ['all'], //웹팩오류..
     historyApiFallback: true, //존재하지 않는 url일경우 -> index.html
     // client: {
     //   overlay: true,
     //   webSocketURL: 'ws://0.0.0.0:80/ws',
     // },
+
   },
 };
 
