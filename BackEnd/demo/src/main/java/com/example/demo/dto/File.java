@@ -23,25 +23,23 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @Builder
-@Table(name = "like_spot_t")
-public class LikeSpot {
+@Table(name = "file_t")
+public class File {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long idx;
 
-    @Column(name = "mt_idx")
-    String memberIdx;
+    @Column(name = "f_board_name")
+    String boardName;
 
-    @Column(name = "ls_name")
-    String name;
+    @Column(name = "f_board_idx")
+    Long boardIdx;
 
-    @Column(name = "ls_address")
-    String address;
+    @Column(name = "f_dir")
+    String fileDir;
 
-    @Column(name = "ls_latitude")
-    Double latitude;
+    @Column(name = "f_name")
+    String fileName;
 
-    @Column(name = "ls_longitude")
-    Double longitude;
 }

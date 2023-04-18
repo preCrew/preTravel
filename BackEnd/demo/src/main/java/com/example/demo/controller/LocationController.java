@@ -35,9 +35,16 @@ public class LocationController {
     }
 
     @GetMapping("place")
-    public ResponseEntity<ResponseDTO> searchPlace(String keyword, String page){
-        log.info("장소조회");
+    public ResponseEntity<ResponseDTO> searchPlace(String keyword, String page) {
+        log.info("장소조회");
         Map<String, Object> result = service.searchPlace(keyword, page);
         return returnUtil.code200("장소조회 결과", result);
+    }
+
+    @GetMapping("address")
+    public ResponseEntity<ResponseDTO> getLikeReview(String memberIdx, String address) {
+        log.info("찜한장소 리뷰조회");
+        Map<String, Object> result = service.getLikeReview(memberIdx, address);
+        return returnUtil.code200("찜한장소, 리뷰조회 결과", result);
     }
 }

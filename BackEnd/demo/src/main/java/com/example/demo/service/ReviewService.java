@@ -21,4 +21,6 @@ public interface ReviewService {
 
     void deleteById(Long idx);
 
+    List<Review> findByMemberIdxAndAddress(String memberIdx, String address);
+
 }

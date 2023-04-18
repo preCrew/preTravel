@@ -26,9 +26,15 @@ public class LikeSpotDao {
         repository.deleteById(idx);
     }
 
-    public List<LikeSpot> findByLatitudeBetweenAndLongitudeBetweenAndMemberIdx(Integer smallLa, Integer largeLa, Integer smallLo,
-            Integer largeLo, String memberIdx) {
-        return repository.findByLatitudeBetweenAndLongitudeBetweenAndMemberIdx(smallLa, largeLa, smallLo, largeLo, memberIdx);
+    public List<LikeSpot> findByLatitudeBetweenAndLongitudeBetweenAndMemberIdx(Double smallLa, Double largeLa,
+            Double smallLo,
+            Double largeLo, String memberIdx) {
+        return repository.findByLatitudeBetweenAndLongitudeBetweenAndMemberIdx(smallLa, largeLa, smallLo, largeLo,
+                memberIdx);
+    }
+
+    public List<LikeSpot> findByMemberIdxAndAddress(String memberIdx, String address) {
+        return repository.findByMemberIdxAndAddress(memberIdx, address);
     }
 
 }

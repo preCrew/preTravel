@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -53,7 +54,7 @@ public class ReviewController {
     }
 
     @PostMapping("")
-    public ResponseEntity<ResponseDTO> saveReview(Review review) {
+    public ResponseEntity<ResponseDTO> saveReview(@RequestBody Review review) {
         log.info("리뷰 생성&수정");
         Review dto = service.save(review);
         return returnUtil.code200("리뷰 생성&수정 성공", dto);
@@ -65,5 +66,4 @@ public class ReviewController {
         service.deleteById(idx);
         return returnUtil.code200("리뷰삭제 성공", "");
     }
-
 }
