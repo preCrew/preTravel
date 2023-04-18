@@ -1,19 +1,20 @@
-import useMyScheduleGetQuery, {
-  MySchedule,
-} from '@src/hooks/react-query/useGetMyScheduleQuery';
+import useMyScheduleGetQuery from '@src/hooks/react-query/useGetMyScheduleQuery';
 import MyScheduleCard from '../MyScheduleCard';
+import { useNavigate } from 'react-router-dom';
 
 interface MyScheduleCardListProps {
-  // cardList?: MySchedule[];
   deleteMode?: boolean;
 }
 
-const MyScheduleCardList = ({
-  deleteMode,
-}: // cardList,
-// deleteMode,
-MyScheduleCardListProps) => {
+const MyScheduleCardList = ({ deleteMode }: MyScheduleCardListProps) => {
+  const navigate = useNavigate();
+
   const { data: lists } = useMyScheduleGetQuery();
+
+  const handleClickCard = (cardIdx: number) => {
+    navigate(`${cardIdx}`);
+    console.log(cardIdx);
+  };
   return (
     <ul className="grid grid-cols-2 gap-4 content-inner">
       {lists &&
@@ -21,6 +22,7 @@ MyScheduleCardListProps) => {
           <MyScheduleCard
             key={card.idx}
             deleteMode={deleteMode}
+            onClickCard={handleClickCard}
             {...card}
           />
         ))}

@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom';
 
 import usePlaceGetQuery, {
   PlaceData,
-} from '@src/hooks/react-query/usePlaceGetQuery';
+} from '@src/hooks/react-query/useGetPlaceQuery';
 import useRegionGetQuery, {
   RegionData,
-} from '@src/hooks/react-query/useRegionGetQuery';
+} from '@src/hooks/react-query/useGetRegionQuery';
 
 import useLocationState from '@src/hooks/recoil/useLocationState';
 import useToast from '@src/hooks/useToast';
