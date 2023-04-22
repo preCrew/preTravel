@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import com.example.demo.dto.Member;
@@ -37,6 +38,9 @@ public class NaverService {
 
         @Value("${oauth.naver.user_host}")
         private String USER_HOST;
+
+        @Value("${oauth.naver.logout_url}")
+        private String LOGOUT;
 
         @Autowired
         MemberService memberService;
@@ -130,6 +134,20 @@ public class NaverService {
         public ResponseEntity<ResponseDTO> getAccessToken(String refreshToken) {
                 log.info("네이버 AccessToken갱신 refreshToken : {}", refreshToken);
 
+                String accessToken = getRenewaledAccessToken(refreshToken);
+                Map<String, String> result = new HashMap<>();
+                result.put("accessToken", accessToken);
+
+                return ResponseEntity
+                .ok()
+                .body(ResponseDTO.builder()
+                                .code(200)
+                                .msg("토큰갱신")
+                                .data(result)
+                                .build());
+        }
+
+        private String getRenewaledAccessToken(String refreshToken) {
                 HttpHeaders httpHeaders = new HttpHeaders();
                 httpHeaders.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
                 MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
@@ -146,15 +164,60 @@ public class NaverService {
                                 String.class);
                 JSONObject token = responseUtil.responseToJson(data);
                 String accessToken = (String) token.get("access_token");
-                Map<String, String> result = new HashMap<>();
-                result.put("accessToken", accessToken);
+                return accessToken;
+        }
+
+        public ResponseEntity<ResponseDTO> logout(String refreshToken) {
+                log.info("네이버 로그아웃 refreshToken : {}", refreshToken);
+
+                //토큰 검증과정 : accessToken 갱신
+                String accessToken = getRenewaledAccessToken(refreshToken);
+
+                if (StringUtils.isEmpty(refreshToken)) {
+                        return ResponseEntity
+                                .ok()
+                                .body(ResponseDTO.builder()
+                                        .code(200)
+                                        .msg("로그아웃 성공")
+                                        .build());
+                }
+
+                //쿠키 삭제
+                ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
+                        .httpOnly(true)
+                        .secure(true)
+                        .path("/")
+                        .domain(".gksl2.cloudtype.app")
+                        .maxAge(60)
+                        .build();
+
+
+                HttpHeaders httpHeaders = new HttpHeaders();
+                httpHeaders.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+                MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+                params.add("grant_type", "delete");
+                params.add("client_id", CLIENT_ID);
+                params.add("client_secret", CLIENT_SECRET);
+                params.add("access_token",accessToken);
+                params.add("service_provider","NAVER");
+                HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<MultiValueMap<String, String>>(
+                        params,
+                        httpHeaders);
+
+                ResponseEntity<String> data = restTemplate.exchange(TOKEN_HOST,
+                        HttpMethod.POST,
+                        httpEntity,
+                        String.class);
+
+
+
 
                 return ResponseEntity
-                .ok()
-                .body(ResponseDTO.builder()
+                        .ok()
+                        .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                        .body(ResponseDTO.builder()
                                 .code(200)
-                                .msg("토큰갱신")
-                                .data(result)
+                                .msg("로그아웃 성공")
                                 .build());
         }
 }
