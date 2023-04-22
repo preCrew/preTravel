@@ -139,12 +139,12 @@ public class NaverService {
                 result.put("accessToken", accessToken);
 
                 return ResponseEntity
-                .ok()
-                .body(ResponseDTO.builder()
-                                .code(200)
-                                .msg("토큰갱신")
-                                .data(result)
-                                .build());
+                                .ok()
+                                .body(ResponseDTO.builder()
+                                                .code(200)
+                                                .msg("토큰갱신")
+                                                .data(result)
+                                                .build());
         }
 
         private String getRenewaledAccessToken(String refreshToken) {
@@ -170,27 +170,26 @@ public class NaverService {
         public ResponseEntity<ResponseDTO> logout(String refreshToken) {
                 log.info("네이버 로그아웃 refreshToken : {}", refreshToken);
 
-                //토큰 검증과정 : accessToken 갱신
+                // 토큰 검증과정 : accessToken 갱신
                 String accessToken = getRenewaledAccessToken(refreshToken);
 
                 if (StringUtils.isEmpty(refreshToken)) {
                         return ResponseEntity
-                                .ok()
-                                .body(ResponseDTO.builder()
-                                        .code(200)
-                                        .msg("로그아웃 성공")
-                                        .build());
+                                        .ok()
+                                        .body(ResponseDTO.builder()
+                                                        .code(200)
+                                                        .msg("로그아웃 성공")
+                                                        .build());
                 }
 
-                //쿠키 삭제
+                // 쿠키 삭제
                 ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
-                        .httpOnly(true)
-                        .secure(true)
-                        .path("/")
-                        .domain(".gksl2.cloudtype.app")
-                        .maxAge(60)
-                        .build();
-
+                                .httpOnly(true)
+                                .secure(true)
+                                .path("/")
+                                .domain(".gksl2.cloudtype.app")
+                                .maxAge(60)
+                                .build();
 
                 HttpHeaders httpHeaders = new HttpHeaders();
                 httpHeaders.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
@@ -198,26 +197,18 @@ public class NaverService {
                 params.add("grant_type", "delete");
                 params.add("client_id", CLIENT_ID);
                 params.add("client_secret", CLIENT_SECRET);
-                params.add("access_token",accessToken);
-                params.add("service_provider","NAVER");
+                params.add("access_token", accessToken);
+                params.add("service_provider", "NAVER");
                 HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<MultiValueMap<String, String>>(
-                        params,
-                        httpHeaders);
-
-                ResponseEntity<String> data = restTemplate.exchange(TOKEN_HOST,
-                        HttpMethod.POST,
-                        httpEntity,
-                        String.class);
-
-
-
+                                params,
+                                httpHeaders);
 
                 return ResponseEntity
-                        .ok()
-                        .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                        .body(ResponseDTO.builder()
-                                .code(200)
-                                .msg("로그아웃 성공")
-                                .build());
+                                .ok()
+                                .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                                .body(ResponseDTO.builder()
+                                                .code(200)
+                                                .msg("로그아웃 성공")
+                                                .build());
         }
 }
