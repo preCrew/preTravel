@@ -30,6 +30,8 @@ oauth:
     # rest_api_key: b419b28c930a90dc96e0fd983b9025ef
     rest_api_key : 2581cd83651b3e51982587f4cb1652f5 #신영수정
     redirect_uri: http://localhost:8080/oauth/kakao
+    logout_host: https://kauth.kakao.com/oauth/logout
+
     map:
       rest_api_key : 2581cd83651b3e51982587f4cb1652f5
       host : https://dapi.kakao.com/v2/local/search/keyword.JSON

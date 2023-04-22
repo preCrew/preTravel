@@ -40,6 +40,11 @@ public class SSOLoginController {
         return kaKaoService.getAccessToken(refreshToken);
     }
 
+    @GetMapping("/kakao/logout")
+    public HttpEntity<Object> kakaoLogout() {
+        return kaKaoService.logout();
+    }
+
     @GetMapping("/naver")
     public ResponseEntity<ResponseDTO> naverOauth(@RequestParam String code, @RequestParam String state) {
         return naverService.login(code, state);
