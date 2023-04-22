@@ -45,7 +45,7 @@ public class Spot {
     @Column(name="spt_seq")
     Integer seq;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(name="spt_day", updatable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     LocalDate day;
