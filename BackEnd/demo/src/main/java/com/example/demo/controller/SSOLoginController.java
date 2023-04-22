@@ -41,7 +41,7 @@ public class SSOLoginController {
     }
 
     @GetMapping("/kakao/logout")
-    public HttpEntity<Object> kakaoLogout() {
+    public ResponseEntity<Object> kakaoLogout() {
         return kaKaoService.logout();
     }
 

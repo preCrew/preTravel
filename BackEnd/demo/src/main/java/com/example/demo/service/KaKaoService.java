@@ -187,7 +187,7 @@ public class KaKaoService {
                         .build());
     }
 
-    public HttpEntity<Object> logout() {
+    public ResponseEntity<Object> logout() {
         log.info("카카오 로그아웃 합니다.");
         String url = LOGOUT_HOST
                 + "?client_id=" + REST_API_KEY // 1. client_id (rest_api_key)
