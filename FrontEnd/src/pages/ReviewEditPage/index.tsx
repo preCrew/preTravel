@@ -4,7 +4,7 @@ import tw from 'twin.macro';
 
 import useOnChange from '@src/hooks/useOnChange';
 import useUploadFiles from '@src/hooks/useUploadFiles';
-import useReviewUpdateQuery from '@src/hooks/react-query/useReviewUpdateQuery';
+import useReviewUpdateQuery from '@src/hooks/react-query/useUpdateReviewQuery';
 import useLocationState from '@src/hooks/recoil/useLocationState';
 
 import Row from '@src/components/common/FlexBox/Row';

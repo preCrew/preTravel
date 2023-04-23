@@ -4,9 +4,10 @@ import IconButton from '../Button/IconButton';
 interface TopBarProps {
   onClickBackButton?: () => void;
   children: React.ReactNode;
+  className?: string;
 }
 
-const TopBar = ({ onClickBackButton, children }: TopBarProps) => {
+const TopBar = ({ onClickBackButton, children, className }: TopBarProps) => {
   const css = tw`
     w-full h-70
     flex items-center
