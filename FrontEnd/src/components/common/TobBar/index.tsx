@@ -13,6 +13,7 @@ const TopBar = ({ onClickBackButton, children, className }: TopBarProps) => {
     flex items-center
     bg-white
     relative
+    relative
   `;
   return (
     <div css={css}>

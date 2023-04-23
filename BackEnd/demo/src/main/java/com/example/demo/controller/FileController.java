@@ -39,15 +39,9 @@ public class FileController {
         return service.delete(idx);
     }
 
-    @GetMapping("/img/review/{fileName}")
-    public ResponseEntity<Resource> getReviewImage(@PathVariable("fileName") String fileName) throws IOException {
+    @GetMapping("/img/{boardName}/{fileName}")
+    public ResponseEntity<Resource> getReviewImage(@PathVariable("boardName") String boardname, @PathVariable("fileName") String fileName) throws IOException {
         log.info("get image file[Review]");
-        return service.getFile("review", fileName);
-    }
-
-    @GetMapping("/img/schedule/{fileName}")
-    public ResponseEntity<Resource> getSchduleImage(@PathVariable("fileName") String fileName) throws IOException {
-        log.info("get image file[Schedule]");
-        return service.getFile("schedule", fileName);
+        return service.getFile(boardname, fileName);
     }
 }

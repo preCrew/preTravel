@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -68,5 +69,8 @@ public class Review {
     protected void prePersist() {
         createDate = LocalDateTime.now();
     }
+
+    @Transient
+    Object file;
 
 }

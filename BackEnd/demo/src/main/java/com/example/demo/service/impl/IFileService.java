@@ -3,11 +3,11 @@ package com.example.demo.service.impl;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -23,10 +23,7 @@ import com.example.demo.dto.ResponseDTO;
 import com.example.demo.service.FileService;
 import com.example.demo.util.ReturnUtil;
 
-import lombok.extern.slf4j.Slf4j;
-
 @Service
-@Slf4j
 public class IFileService implements FileService {
 
     @Autowired
@@ -35,14 +32,17 @@ public class IFileService implements FileService {
     @Autowired
     FileDao dao;
 
+    @Value("${file_url}")
+    private String DIR;
+
     @Override
     public ResponseEntity<ResponseDTO> save(MultipartFile file, String boardName) {
         if (boardName == null ||
                 !(boardName.equals("review") || boardName.equals("schedule"))) {
             return returnUtil.code400("boardName이 올바르지 않습니다.");
         }
-        // String dir = "http://localhost:8080/file/img/";
-        String dir = "https://port-0-pretravel-ll32glc6adwo3.gksl2.cloudtype.app/file/img/";
+
+        String file_dir;
         try {
             File saveFile = dao.save(
                     new File(null,
@@ -51,7 +51,7 @@ public class IFileService implements FileService {
                             null,
                             null));
             String fileName = saveFile.getIdx() + "_" + file.getOriginalFilename();
-            dir = dir
+            file_dir = DIR
                     + boardName + "/"
                     + fileName;
             byte[] bytes = file.getBytes();
@@ -65,7 +65,7 @@ public class IFileService implements FileService {
                     new File(saveFile.getIdx(),
                             boardName,
                             null,
-                            dir,
+                            file_dir,
                             fileName));
             return returnUtil.code200("파일저장 성공", resultFile);
         } catch (Exception e) {
@@ -76,29 +76,22 @@ public class IFileService implements FileService {
 
     @Override
     public ResponseEntity<Resource> getFile(String boardName, String fileName) {
-        log.info("file service impl");
-        try {
-            ClassPathResource classPathResource = new ClassPathResource("");
-            String path = classPathResource.getFile().getAbsolutePath();
-            log.info("path : " + path);
-
-            ClassPathResource classPathResource2 = new ClassPathResource("img/"
-                    + boardName + "/"
-                    + fileName);
-            String path2 = classPathResource2.getFile().getAbsolutePath();
-            log.info("path2 : " + path2);
-
-        } catch (Exception e) {
-            // e.printStackTrace();
-        }
-        log.info("file service impl22222");
-        Resource resource = new ClassPathResource("img/"
+        Path path = Paths.get("src/main/resources/img/"
                 + boardName + "/"
                 + fileName);
-        log.info("file service impl33333");
+        java.io.File imageFile = path.toFile();
+        Resource resource = new FileSystemResource(imageFile);
+        MediaType mediaType;
+        if (fileName.endsWith(".png")) {
+            mediaType = MediaType.IMAGE_PNG;
+        } else if (fileName.endsWith(".jpg") || fileName.endsWith(".jpeg")) {
+            mediaType = MediaType.IMAGE_JPEG;
+        } else {
+            mediaType = MediaType.APPLICATION_OCTET_STREAM;
+        }
+
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.IMAGE_PNG);
-        log.info("file service impl44444");
+        headers.setContentType(mediaType);
         return new ResponseEntity<>(resource, headers, HttpStatus.OK);
     }
 
@@ -114,6 +107,7 @@ public class IFileService implements FileService {
                     + file.getBoardName() + "/"
                     + fileName);
 
+            dao.deleteById(idx);
             if (Files.exists(path)) {
                 try {
                     Files.delete(path);
@@ -124,8 +118,22 @@ public class IFileService implements FileService {
                 return returnUtil.code400("파일이 존재하지 않습니다.");
             }
 
-            dao.deleteById(idx);
             return returnUtil.code200("파일삭제성공", "");
         }
+    }
+
+    @Override
+    public Optional<File> findById(String fileIdx) {
+        return dao.findById(fileIdx);
+    }
+
+    @Override
+    public File saveFile(File file) {
+        return dao.save(file);
+    }
+
+    @Override
+    public List<File> findByBoardNameAndBoardIdx(String boardName, Long idx) {
+        return dao.findByBoardNameAndBoardIdx(boardName, idx);
     }
 }
