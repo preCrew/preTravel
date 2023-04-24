@@ -1,25 +1,31 @@
-import { useEffect, useState } from 'react';
-import MyScheduleCard, { MyScheduleCardI } from '../MyScheduleCard';
+import useMyScheduleGetQuery from '@src/hooks/react-query/useGetMyScheduleQuery';
+import MyScheduleCard from '../MyScheduleCard';
+import { useNavigate } from 'react-router-dom';
 
 interface MyScheduleCardListProps {
-  cardList: MyScheduleCardI[];
   deleteMode?: boolean;
 }
 
-const MyScheduleCardList = ({
-  cardList,
-  deleteMode,
-}: MyScheduleCardListProps) => {
+const MyScheduleCardList = ({ deleteMode }: MyScheduleCardListProps) => {
+  const navigate = useNavigate();
+
+  const { data: lists } = useMyScheduleGetQuery();
+
+  const handleClickCard = (cardIdx: number) => {
+    navigate(`${cardIdx}`);
+    console.log(cardIdx);
+  };
   return (
-    <ul className="content-inner grid grid-cols-2 gap-4">
-      {cardList.map((card, index) => (
-        <MyScheduleCard
-          key={card.id}
-          index={index}
-          deleteMode={deleteMode}
-          {...card}
-        />
-      ))}
+    <ul className="grid grid-cols-2 gap-4 content-inner">
+      {lists &&
+        lists.map((card, index) => (
+          <MyScheduleCard
+            key={card.idx}
+            deleteMode={deleteMode}
+            onClickCard={handleClickCard}
+            {...card}
+          />
+        ))}
     </ul>
   );
 };

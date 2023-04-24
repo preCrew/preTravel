@@ -1,12 +1,14 @@
 package com.example.demo.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,28 +34,30 @@ public class ScheduleController {
     public ResponseEntity<ResponseDTO> findByMemberIdx(String memberIdx) {
         log.info("회원별 여행일정 조회");
         List<Schedule> list = service.findByMemberIdx(memberIdx);
-        return returnUtil.code200("회원별 여행일정 조회", list);  
+        return returnUtil.code200("회원별 여행일정 조회", list);
     }
 
     @PostMapping("")
-    public ResponseEntity<ResponseDTO> saveSchedule(Schedule schedule) {
+    public ResponseEntity<ResponseDTO> saveSchedule(@RequestBody Schedule schedule) {
         log.info("여행일정 생성");
-        System.out.println(schedule);
         if (schedule.getStartDate() == null) {
             return returnUtil.code400("시작날짜가 없습니다.");
         }
         if (schedule.getEndDate() == null) {
             return returnUtil.code400("종료날짜가 없습니다.");
         }
-        
+
         Schedule dto = service.save(schedule);
-        return returnUtil.code200("여행일정 저장", dto);   
+        if (dto == null) {
+            return returnUtil.code400("스케줄 생성실패, file index를 체크하세요");
+        }
+        return returnUtil.code200("여행일정 저장", dto);
     }
 
     @DeleteMapping("")
-    public ResponseEntity<ResponseDTO> deleteLike(Long idx) {
+    public ResponseEntity<ResponseDTO> delete(@RequestBody Map<String, Object> map) {
         log.info("여행일정 삭제");
-        service.deleteById(idx);
+        service.deleteById(map);
         return returnUtil.code200("여행일정 삭제", "");
     }
 

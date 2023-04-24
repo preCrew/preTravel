@@ -1,10 +1,13 @@
-import React from 'react';
+interface CancelBtnProps {
+  onClick?: () => void;
+}
 
-const CancelBtn = () => {
+const CancelBtn = ({ onClick }: CancelBtnProps) => {
   return (
     <button
       type="button"
       className="mr-3 text-body1Bold"
+      onClick={onClick}
     >
       취소
     </button>

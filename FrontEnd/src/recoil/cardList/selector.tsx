@@ -5,7 +5,7 @@ const filteredCardListSelector = selector({
   key: 'cardListSelector',
   get: ({ get }) => {
     const cardList = get(cardListAtom);
-    const selected = cardList.filter(card => card.isSeleted).length;
+    const selected = cardList.length;
     return selected;
   },
 });

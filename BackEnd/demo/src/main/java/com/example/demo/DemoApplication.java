@@ -18,21 +18,22 @@ public class DemoApplication {
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
-    
+
     @Bean
     public WebMvcConfigurer webMvcConfigurer() {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:8080",
-                                "https://web-fronttest-ll32glc6adwo3.gksl2.cloudtype.app")
-                        .allowedMethods("GET", "POST")
+                        // .allowedOrigins("http://localhost:8080", "http://127.0.0.1:5500",
+                        // "https://web-fronttest-ll32glc6adwo3.gksl2.cloudtype.app")
+                        .allowedOriginPatterns("*")
+                        .allowedMethods("GET", "POST", "DELETE", "PUT")
                         .allowCredentials(true)
                         .exposedHeaders("Set-Cookie")
                         // .allowedHeaders("application/json")
                         .maxAge(3600);
             }
         };
-}
+    }
 }

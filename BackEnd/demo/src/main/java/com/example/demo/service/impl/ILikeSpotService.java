@@ -11,7 +11,7 @@ import com.example.demo.dto.LikeSpot;
 import com.example.demo.service.LikeSpotService;
 
 @Service
-public class ILikeSpotService implements LikeSpotService{
+public class ILikeSpotService implements LikeSpotService {
 
     @Autowired
     LikeSpotDao dao;
@@ -33,14 +33,20 @@ public class ILikeSpotService implements LikeSpotService{
 
     @Override
     public List<LikeSpot> findData(Map<String, Object> map) {
-        Integer smallLa = Integer.valueOf(map.get("smallLa").toString());
-        Integer largeLa = Integer.valueOf(map.get("largeLa").toString());
-        Integer smallLo = Integer.valueOf(map.get("smallLo").toString());
-        Integer largeLo = Integer.valueOf(map.get("largeLo").toString());
+        Double smallLa = Double.valueOf(map.get("smallLa").toString());
+        Double largeLa = Double.valueOf(map.get("largeLa").toString());
+        Double smallLo = Double.valueOf(map.get("smallLo").toString());
+        Double largeLo = Double.valueOf(map.get("largeLo").toString());
         String memberIdx = (String) map.get("memberIdx");
-        List<LikeSpot> list = dao.findByLatitudeBetweenAndLongitudeBetweenAndMemberIdx(smallLa, largeLa, smallLo, largeLo, memberIdx);
-        
+        List<LikeSpot> list = dao.findByLatitudeBetweenAndLongitudeBetweenAndMemberIdx(smallLa, largeLa, smallLo,
+                largeLo, memberIdx);
+
         return list;
+    }
+
+    @Override
+    public List<LikeSpot> findByMemberIdxAndAddress(String memberIdx, String address) {
+        return dao.findByMemberIdxAndAddress(memberIdx, address);
     }
 
 }

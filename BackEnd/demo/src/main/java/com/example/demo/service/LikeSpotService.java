@@ -7,8 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.LikeSpot;
 
-
-
 @Service
 public interface LikeSpotService {
 
@@ -20,7 +18,6 @@ public interface LikeSpotService {
 
     List<LikeSpot> findData(Map<String, Object> map);
 
-
-
+    List<LikeSpot> findByMemberIdxAndAddress(String memberIdx, String address);
 
 }

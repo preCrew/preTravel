@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,7 @@ public interface ScheduleService {
 
     Schedule save(Schedule schedule);
 
-    void deleteById(Long idx);
+    void deleteById(Map<String, Object> map);
 
 
 }

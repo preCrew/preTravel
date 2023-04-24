@@ -1,8 +1,6 @@
 package com.example.demo.repository;
 
-
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -14,7 +12,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.example.demo.dto.Spot;
 
-public interface SpotRepository extends JpaRepository<Spot, Long>{
+public interface SpotRepository extends JpaRepository<Spot, Long> {
 
     List<Spot> findBySctIdx(String sctIdx);
 
@@ -25,6 +23,4 @@ public interface SpotRepository extends JpaRepository<Spot, Long>{
 
     void deleteBySctIdx(String sctIdx);
 
-
-    
 }

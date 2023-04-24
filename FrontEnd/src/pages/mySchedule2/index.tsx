@@ -1,65 +1,59 @@
-import { Suspense, useEffect, useState } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useNavigate } from 'react-router-dom';
+import { Suspense, useState } from 'react';
+import { useRecoilValue } from 'recoil';
+import tw from 'twin.macro';
 
-import MyScheduleCardList from '@src/components/myScedule/MyScheduleCardList';
-import SelectNumberBox from '../../components/myScedule/SelectNumberBox';
-import IconBox from '../../components/myScedule/IconBox';
-import TopBar from '@src/components/common/TobBar';
-
-import cardListAtom from '@src/recoil/cardList/atom';
-
-import mySchedule from './style';
-import Button from '@src/components/common/Button';
-import useMyScheduleAddQuery from '@src/hooks/react-query/useMyScheduleAddQuery';
 import filteredCardListSelector from '@src/recoil/cardList/selector';
+import useCardListState from '@src/hooks/recoil/useCardListState';
+
+import useMyScheduleDeleteQuery from '@src/hooks/react-query/useDeleteMyScheduleQuery';
+
+import TopBar from '@src/components/common/TobBar';
+import Button from '@src/components/common/Button';
+import MyScheduleCardList from '@src/components/myScedule/MyScheduleCardList';
 import CancelBtn from '@src/components/myScedule/CancelBtn';
-import useMyScheduleGetQuery from '@src/hooks/react-query/useMyScheduleGetQuery';
-import useMyScheduleDeleteQuery from '@src/hooks/react-query/useMyScheduleDeleteQuery';
+import { SkeletonMyScheduleCard } from '@src/components/myScedule/MyScheduleCard';
+import SelectNumberBox from '@src/components/myScedule/SelectNumberBox';
+import IconBox from '@src/components/myScedule/IconBox';
+import mySchedule from './style';
 
 const MySchedule2 = () => {
-  const [isRemoveMode, setIsRemoveMode] = useState(false);
+  const navigate = useNavigate();
+  const [isDeleteMode, setIsDeleteMode] = useState(false);
 
-  const [selectedCardListState, setSelectedCardListState] =
-    useRecoilState(cardListAtom);
+  const { clearCardState } = useCardListState();
   const filterdSelectedListState = useRecoilValue(filteredCardListSelector);
 
-  const { data: lists, isFetched } = useMyScheduleGetQuery();
-  const { mutate } = useMyScheduleDeleteQuery(selectedCardListState);
-  const { mutate: addSchedule } = useMyScheduleAddQuery(selectedCardListState);
-
-  useEffect(() => {
-    // 리스트를 다 받아왔다면 recoil에 저장
-    if (isFetched) {
-      setSelectedCardListState(
-        lists!.map(list => ({ id: list.id, isSeleted: false })),
-      );
-    }
-  }, []);
+  const { mutate: deleteScheduleQuery } = useMyScheduleDeleteQuery();
 
   const handleClickBackButton = () => {
-    console.log('back');
-    // TODO: 이전 페이지로 이동
+    navigate(-1);
   };
   const handleClickAddButton = () => {
-    addSchedule();
+    navigate('/map/');
   };
   const handleClickTopRemoveButton = () => {
-    setIsRemoveMode(true);
+    setIsDeleteMode(true);
   };
   const handleClickBottomRemoveButton = () => {
-    setIsRemoveMode(false);
-    mutate();
+    setIsDeleteMode(false);
+    deleteScheduleQuery();
+    clearCardState();
+  };
+  const handleClickCancelButton = () => {
+    setIsDeleteMode(false);
+    clearCardState();
   };
 
   return (
-    <div>
+    <>
       <TopBar onClickBackButton={handleClickBackButton}>
         <div className={mySchedule.childrenBox}>
           <div className={mySchedule.title}>내 일정</div>
           <div className={mySchedule.buttonBox}>
-            {isRemoveMode ? (
+            {isDeleteMode ? (
               <div className="flex">
-                <CancelBtn />
+                <CancelBtn onClick={handleClickCancelButton} />
                 <SelectNumberBox />
               </div>
             ) : (
@@ -71,23 +65,22 @@ const MySchedule2 = () => {
           </div>
         </div>
       </TopBar>
-      <Suspense fallback={<div>로딩중</div>}>
-        <MyScheduleCardList
-          cardList={lists || []}
-          deleteMode={isRemoveMode}
-        />
-      </Suspense>
-      {filterdSelectedListState > 0 && (
-        <Button
-          type="large"
-          color="primary1"
-          className=""
-          onClick={handleClickBottomRemoveButton}
-        >
-          삭제하기 테스트 버튼
-        </Button>
-      )}
-    </div>
+      <div css={tw`overflow-y-scroll`}>
+        <Suspense fallback={<SkeletonMyScheduleCard />}>
+          <MyScheduleCardList deleteMode={isDeleteMode} />
+        </Suspense>
+        {filterdSelectedListState > 0 && (
+          <Button
+            type="large"
+            color="primary1"
+            onClick={handleClickBottomRemoveButton}
+            css={tw`absolute bottom-2 `}
+          >
+            삭제하기
+          </Button>
+        )}
+      </div>
+    </>
   );
 };
 

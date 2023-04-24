@@ -4,7 +4,7 @@ import {
   // SelectLocation,
 } from '@src/recoil/location/atom';
 import { useRecoilState } from 'recoil';
-import { PlaceData } from '../react-query/usePlaceGetQuery';
+import { PlaceData } from '../react-query/useGetPlaceQuery';
 
 const useLocationState = () => {
   const [locationState, setState] = useRecoilState(locationAtom);

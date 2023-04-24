@@ -4,7 +4,6 @@ import com.example.demo.dto.ResponseDTO;
 import com.example.demo.service.KaKaoService;
 import com.example.demo.service.NaverService;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Description;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("oauth")
-@Slf4j
 public class SSOLoginController {
 
     KaKaoService kaKaoService;
@@ -38,14 +36,25 @@ public class SSOLoginController {
         return kaKaoService.getAccessToken(refreshToken);
     }
 
+    @GetMapping("/kakao/logout")
+    public ResponseEntity<Object> kakaoLogout() {
+        return kaKaoService.logout();
+    }
+
     @GetMapping("/naver")
     public ResponseEntity<ResponseDTO> naverOauth(@RequestParam String code, @RequestParam String state) {
         return naverService.login(code, state);
     }
+
 
     @PostMapping("/naver/access")
     public ResponseEntity<ResponseDTO> getNaverToken(String refreshToken) {
         return naverService.getAccessToken(refreshToken);
     }
 
+    @PostMapping("/naver/logout")
+    public ResponseEntity<ResponseDTO> naverLogout(String code) {
+        return naverService.logout(code);
+
+    }
 }

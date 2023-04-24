@@ -2,6 +2,8 @@
 // 세로줄 = Math.floor(index / 2) % 2
 // 계산식 = (index % 2 + Math.floor(index / 2) % 2) %2
 
+import tw from 'twin.macro';
+
 const getRow = (index: number) => index % 2;
 const getCol = (index: number) => Math.floor(index / 2) % 2;
 const isRedLocation = (index: number) =>
@@ -12,10 +14,9 @@ const block = `
   select-none cursor-pointer
 `;
 
-const blockInner = (url: string, index: number) => `
-  rounded px-3.5 py-5 relative 
-  min-w-[30vw] min-h-[23vh] h-full
-  before:content-[''] before:absolute before:left-0 before:top-0 before:w-full before:h-full before:bg-black before:opacity-20 before:rounded
+const blockInner = (url: string, index: number) => tw`
+  rounded px-3.5 py-5 relative  h-[23vh]
+  before:(content-[''] absolute left-0 top-0 w-full h-full bg-black opacity-20 rounded)
 `;
 // bg-cover bg-[url('${url}')]2
 const content = `
@@ -41,4 +42,29 @@ const Card = {
   date,
 };
 
-export default Card;
+const SkeletonBlockInner = tw`
+rounded px-3.5 py-5 relative  h-[23vh] z-10
+before:(content-[''] absolute left-0 top-0 w-h-full bg-gray-200 rounded)
+animate-pulse
+`;
+const SkeletonContent = tw`
+  flex flex-col w-full h-full relative z-[5] items-center
+`;
+const SkeletonTitle = tw`
+  text-h5Bold bg-black opacity-10 rounded-md w-[80%] h-[13%]
+`;
+const SkeletonRegion = tw`
+  text-body2Bold mt-2 bg-black opacity-10 rounded-md w-[50%] h-[10%]
+`;
+const SkeletonDate = tw`
+ text-body3 w-[70%] h-[20%] bg-black opacity-10 rounded-md mt-auto
+`;
+const SkeletonCard = {
+  Inner: SkeletonBlockInner,
+  Content: SkeletonContent,
+  Title: SkeletonTitle,
+  Region: SkeletonRegion,
+  Date: SkeletonDate,
+};
+
+export { Card, SkeletonCard };
