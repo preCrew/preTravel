@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import com.example.demo.dto.Review;
@@ -25,6 +28,13 @@ public class ReviewDao {
         return repository.findBymemberIdx(memberIdx);
     }
 
+    public List<Review> findByMemberIdxPage(String memberIdx, Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Review> data = repository.findByMemberIdx(memberIdx, pageable);
+        
+        return data.getContent();
+    }
+    
     public Optional<Review> findByIdx(String idx) {
         return repository.findById(Long.parseLong(idx));
     }

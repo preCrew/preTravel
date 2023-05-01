@@ -17,4 +17,6 @@ public interface LikeSpotRepository extends JpaRepository<LikeSpot, Long> {
 
     List<LikeSpot> findByMemberIdxAndAddress(String memberIdx, String address);
 
+    List<LikeSpot> findByNameAndMemberIdxAndLatitudeAndLongitude(String name, String memberIdx, Double latitude, Double longitude);
+
 }

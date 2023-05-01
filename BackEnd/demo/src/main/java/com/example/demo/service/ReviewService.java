@@ -13,7 +13,7 @@ public interface ReviewService {
 
     List<Review> findData(Map<String, Object> map);
 
-    List<Review> findByMemberIdx(String memberIdx);
+    Object findByMemberIdx(String memberIdx, Integer page, Integer size);
 
     Review save(Review review);
 

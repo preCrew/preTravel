@@ -40,9 +40,9 @@ public class ReviewController {
     }
 
     @GetMapping("member")
-    public ResponseEntity<ResponseDTO> findByMemberIdx(String memberIdx) {
+    public ResponseEntity<ResponseDTO> findByMemberIdx(String memberIdx, Integer page, Integer size) {
         log.info("회원별 리뷰조회");
-        List<Review> list = service.findByMemberIdx(memberIdx);
+        Object list = service.findByMemberIdx(memberIdx, page, size);
         return returnUtil.code200("회원별 리뷰조회", list);
     }
 

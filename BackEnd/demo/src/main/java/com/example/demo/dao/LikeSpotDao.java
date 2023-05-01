@@ -37,4 +37,8 @@ public class LikeSpotDao {
         return repository.findByMemberIdxAndAddress(memberIdx, address);
     }
 
+    public List<LikeSpot> findByNameAndMemberIdxAndLatitudeAndLongitude(String name, String memberIdx, Double latitude, Double longitude) {
+        return repository.findByNameAndMemberIdxAndLatitudeAndLongitude(name, memberIdx, latitude, longitude);
+    }
+
 }

@@ -2,6 +2,7 @@ package com.example.demo.service.impl;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -40,8 +41,23 @@ public class IReviewService implements ReviewService {
     }
 
     @Override
-    public List<Review> findByMemberIdx(String memberIdx) {
-        return dao.findByMemberIdx(memberIdx);
+    public Object findByMemberIdx(String memberIdx, Integer page, Integer size) {
+
+        if (size == 0) {
+            return dao.findByMemberIdx(memberIdx);
+        } else {
+            List<Review> list = dao.findByMemberIdxPage(memberIdx, page, size);
+            Map<String, Object> result = new HashMap<>();
+            Boolean isEnd = false;
+            if (list.size() == 0) {
+                isEnd = true;
+            }
+
+            result.put("list", list);
+            result.put("isEnd", isEnd);
+
+            return result;
+        }
     }
 
     @Override
