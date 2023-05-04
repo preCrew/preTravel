@@ -87,7 +87,7 @@ const Slider = ({
   return (
     <div
       ref={outerRef}
-      css={tw`relative w-h-full overflow-x-hidden`}
+      css={tw`relative w-h-full overflow-hidden`}
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
