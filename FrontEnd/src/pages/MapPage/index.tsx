@@ -46,7 +46,11 @@ const MapPage = ({}: MapPageProps) => {
         />
         <Route
           path="/info"
-          element={<MapInfoPage />}
+          element={
+            <Suspense>
+              <MapInfoPage />
+            </Suspense>
+          }
         />
       </Routes>
     </div>

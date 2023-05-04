@@ -1,17 +1,45 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import { Response } from './responseInterfaces';
 
-const likeFetch = async (idx: string) => {
+export interface Like {
+  idx: string;
+  memberIdx: string;
+  name: string;
+  address: string;
+  latitude: string;
+  longitude: string;
+}
+const likeFetch = async (
+  memberIdx: string,
+  name: string,
+  latitude: string,
+  longitude: string,
+) => {
   try {
-    const response = await axios.get(
-      `http://localhost:3001/like?memberIdx=${idx}`,
+    const response = await axios.get<Response<Like[]>>(
+      `${process.env.REAL_SERVER_URL}/like/search?memberIdx=${memberIdx}&name=${name}&latitude=${latitude}&longitude=${longitude}`,
     );
-    return response.data;
+    return response.data.data[0] || null;
   } catch (err) {
     if (err instanceof Error) console.log(err.message);
   }
 };
 
-const useGetLike = (idx: string) => useQuery(['like'], () => likeFetch(idx));
+const useGetLike = (
+  // memberIdx: string,
+  name: string,
+  latitude: string,
+  longitude: string,
+) => {
+  console.log('hook: ', name, latitude, longitude);
+  // TODO: recoil에 저장된 memberIdx 받아오도록 변경해야함.
+  const memberIdx = '1';
+  return useQuery(
+    ['like'],
+    () => likeFetch(memberIdx, name, latitude, longitude),
+    { cacheTime: 0 },
+  );
+};
 
 export default useGetLike;
