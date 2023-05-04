@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import { File } from './react-query/useReviewUpdateQuery';
 
 const useUploadFiles = () => {
-  const [files, setFiles] = useState<File[]>([]);
+  const [files, setFiles] = useState<string[]>([]);
   return { files, setFiles };
 };
 
