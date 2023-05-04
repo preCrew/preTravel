@@ -1,8 +1,7 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import tw from 'twin.macro';
-import useLocationState from '@src/hooks/recoil/useLocationState';
 import useGetLike, { Like } from '@src/hooks/react-query/useGetLike';
 import useDeleteLike from '@src/hooks/react-query/useDeleteLike';
 import useAddLike from '@src/hooks/react-query/useAddLike';
@@ -12,31 +11,37 @@ import IconButton from '@src/components/common/Button/IconButton';
 import TopBar from '@src/components/common/TobBar';
 import Button from '@src/components/common/Button';
 import TopText from '@src/components/common/Text/TopText';
+import useLocationState from '@src/hooks/recoil/useLocationState';
 
-interface MapInfoPageProps {}
+export interface MapInfoPageProps {}
 
 const MapInfoPage = ({}: MapInfoPageProps) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const searchParamsObj = Object.fromEntries(searchParams);
+
+  const { data: like, refetch: getLikeRefetch } = useGetLike(
+    searchParamsObj.name,
+    searchParamsObj.latitude,
+    searchParamsObj.longitude,
+  );
+
+  const { mutate: addLikeMutation } = useAddLike(
+    searchParamsObj.name,
+    searchParamsObj.address,
+    searchParamsObj.latitude,
+    searchParamsObj.longitude,
+  );
+
+  const { mutate: deleteLikeMutation } = useDeleteLike(like?.idx ?? '');
+
   const {
     locationState: { selectData },
   } = useLocationState();
 
-  const { data: like, refetch: getLikeRefetch } = useGetLike(
-    selectData.name,
-    selectData.y,
-    selectData.x,
-  );
-  const { mutate: addLikeMutation } = useAddLike(
-    selectData.name,
-    selectData.address,
-    selectData.y,
-    selectData.x,
-  );
-  const { mutate: deleteLikeMutation } = useDeleteLike();
-
   useEffect(() => {
     getLikeRefetch();
-
     // TODO: 리뷰 받아옴, 리뷰 있으면 리뷰 보기, 리뷰 없으면 리뷰 작성.
   }, []);
 
@@ -52,12 +57,13 @@ const MapInfoPage = ({}: MapInfoPageProps) => {
 
   const handleClickLikeButton = async () => {
     // TODO: memberIdx 받아오도록 변경해야함.
+    console.log(selectData);
     const tempLikeData: Like = {
-      name: selectData.name,
-      address: selectData.address,
-      idx: selectData.idx,
-      latitude: selectData.y,
-      longitude: selectData.x,
+      name: searchParamsObj.name,
+      address: searchParamsObj.address,
+      idx: '0',
+      latitude: searchParamsObj.latitude,
+      longitude: searchParamsObj.longitude,
       memberIdx: '1',
     };
 
@@ -67,11 +73,11 @@ const MapInfoPage = ({}: MapInfoPageProps) => {
   return (
     <>
       <TopBar onClickBackButton={handleClickBackButton}>
-        <TopText>{selectData.name}</TopText>
+        <TopText>{searchParamsObj.name}</TopText>
       </TopBar>
       <BottomSheetWrap drag={true}>
         <div css={tw`p-2 flex flex-col items-center gap-3`}>
-          <div css={tw`text-h5 `}>{selectData.roadAddress}</div>
+          <div css={tw`text-h5 `}>{searchParamsObj.address}</div>
           <div
             onClick={handleClickLikeButton}
             css={tw`w-30 h-30 flex-with-center bg-gray3 rounded-full`}

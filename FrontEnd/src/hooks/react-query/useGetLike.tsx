@@ -26,19 +26,13 @@ const likeFetch = async (
   }
 };
 
-const useGetLike = (
-  // memberIdx: string,
-  name: string,
-  latitude: string,
-  longitude: string,
-) => {
-  console.log('hook: ', name, latitude, longitude);
+const useGetLike = (name: string, latitude: string, longitude: string) => {
   // TODO: recoil에 저장된 memberIdx 받아오도록 변경해야함.
   const memberIdx = '1';
   return useQuery(
     ['like'],
     () => likeFetch(memberIdx, name, latitude, longitude),
-    { cacheTime: 0 },
+    { cacheTime: 0, enabled: false },
   );
 };
 

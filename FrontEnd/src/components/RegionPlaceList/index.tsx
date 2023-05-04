@@ -32,11 +32,8 @@ const RegionPlaceList = ({
 }: RegionPlaceListProps) => {
   const navigate = useNavigate();
   const { showToast } = useToast();
-  const {
-    locationState: { region },
-    setLocationRegion,
-    setSelectData,
-  } = useLocationState();
+  const { locationState, setLocationRegion, setSelectData } =
+    useLocationState();
 
   const { data: regionData, refetch: refetechRegionData } =
     useRegionGetQuery(inputVal);
@@ -45,7 +42,7 @@ const RegionPlaceList = ({
     fetchNextPage: fetchNextPlaceData,
     isFetchingNextPage: isFetchingNextPlaceData,
     hasNextPage: hasNextPlaceData,
-  } = usePlaceGetQuery(region, inputVal);
+  } = usePlaceGetQuery(locationState.region, inputVal);
 
   const { InfiniteScrollPositionComponent } = useInfinityScroll(() => {
     if (!hasNextPlaceData) return;
@@ -68,7 +65,7 @@ const RegionPlaceList = ({
       }
     };
 
-    if (region) {
+    if (locationState.region) {
       getNextPlaceData();
     } else {
       getRegionData();
@@ -78,10 +75,14 @@ const RegionPlaceList = ({
 
   const handleClickItem = async (data: unknown) => {
     // 지역을 입력헀었다면
-    if (region) {
+    if (locationState.region) {
       const placeData = (await data) as PlaceData;
+      const selectData = locationState.selectData;
       setSelectData(placeData);
-      navigate(`/map/info?showButton=false`);
+      console.log(placeData);
+      navigate(
+        `/map/info?name=${placeData.name}&address=${placeData.address}&latitude=${placeData.y}&longitude=${placeData.x}&showButton=false`,
+      );
     } else {
       const regionData = (await data) as RegionData;
       setLocationRegion(regionData.body);
@@ -90,8 +91,6 @@ const RegionPlaceList = ({
         'region',
         `지역이 ${regionData.body} 입니다. 장소를 입력해주세요.`,
       );
-      // setMsg(`지역이 ${regionData.body} 입니다. 장소를 입력해주세요.`);
-      // showToast();
 
       navigate(-1);
 
@@ -102,7 +101,7 @@ const RegionPlaceList = ({
   return (
     <>
       <DataList css={tw`no-scroll`}>
-        {region
+        {locationState.region
           ? /* 장소 리스트가 나옴*/
             placeData?.pages
               .flatMap(page => page?.boardPage)

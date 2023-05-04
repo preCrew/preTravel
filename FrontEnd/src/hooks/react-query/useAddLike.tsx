@@ -20,7 +20,7 @@ const addLike = async (
       `${process.env.REAL_SERVER_URL}/like?memberIdx=${memberIdx}&name=${name}&latitude=${latitude}&longitude=${longitude}&address=${address}`,
     );
     if (response.data.code === 200) {
-      queryClient.invalidateQueries(['like']);
+      // queryClient.invalidateQueries(['like']);
       return response.data.data;
     }
     throw new Error(response.data.msg);
@@ -42,6 +42,23 @@ const useAddLike = (
   return useMutation(['addLike'], {
     mutationFn: () =>
       addLike(memberIdx, name, address, latitude, longitude, queryClient),
+    onMutate: async (newData: Like) => {
+      // const newData: Like = data as unknown as Like;
+      const oldData = queryClient.getQueryData(['like']);
+      // 우리 update overwrite하지 않기 위해 미리 취소
+      await queryClient.cancelQueries(['like']);
+      // 미리 UI에 적용시켜 놓음
+      queryClient.setQueryData(['like'], newData);
+      // 만약 에러나서 롤백 되면 이전 것을 써놓음.
+      return () => queryClient.setQueryData(['like'], oldData);
+    },
+    onError: (error, variable, rollback) => {
+      if (rollback) rollback();
+      else console.log(error);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries(['like']);
+    },
   });
 };
 
