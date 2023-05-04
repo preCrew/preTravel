@@ -5,6 +5,7 @@ import ImageBox from './ImageBox';
 import useUploadImages, { File } from '@src/hooks/react-query/useAddImages';
 import useModal from '@src/hooks/useModal';
 import LoadingModal from '@src/components/Modal/LoadingModal';
+import useDeleteImage from '@src/hooks/react-query/useDeleteImage';
 
 interface UploadImageProps {
   imgFiles: File[];
@@ -28,6 +29,8 @@ const UploadImage = ({ imgFiles, setImgFiles }: UploadImageProps) => {
   };
   const { mutate, isLoading: uploadingImages } =
     useUploadImages(onSucessAddImages);
+
+  const { mutate: mutateDeleteImage } = useDeleteImage();
 
   useEffect(() => {
     return () => {
@@ -65,6 +68,7 @@ const UploadImage = ({ imgFiles, setImgFiles }: UploadImageProps) => {
   const handleClickCloseButton = (idx: string) => {
     setImgFiles(prev => prev.filter(i => i.idx !== idx));
     setImgNum(prev => prev - 1);
+    mutateDeleteImage(idx);
   };
 
   return (

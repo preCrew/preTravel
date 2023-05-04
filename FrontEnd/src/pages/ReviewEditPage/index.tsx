@@ -2,8 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import tw from 'twin.macro';
 
+import { File } from '@src/hooks/react-query/useAddImages';
 import useOnChange from '@src/hooks/useOnChange';
-import useUploadFiles from '@src/hooks/useUploadFiles';
 import useReviewUpdateQuery from '@src/hooks/react-query/useReviewUpdateQuery';
 import useLocationState from '@src/hooks/recoil/useLocationState';
 
@@ -14,9 +14,11 @@ import UploadImage from '@src/components/common/UploadImage';
 import CheckBox from '@src/components/common/CheckBox';
 import FormText from '@src/components/common/Text/FormText';
 import Button from '@src/components/common/Button';
-import useModal from '@src/hooks/useModal';
-import LoadingModal from '@src/components/Modal/LoadingModal';
-interface ReviewEditPageProps {}
+import TopBar from '@src/components/common/TobBar';
+import TopText from '@src/components/common/Text/TopText';
+interface ReviewEditPageProps {
+  isEdit?: boolean;
+}
 
 const ReviewEditPage = ({}: ReviewEditPageProps) => {
   const navigate = useNavigate();
@@ -24,38 +26,40 @@ const ReviewEditPage = ({}: ReviewEditPageProps) => {
   const [isRevisit, setIsRevisit] = useState<boolean>(false);
 
   const { onChange: onChangeText, value: textValue } = useOnChange();
-  const { files: imgFiles, setFiles: setImgFiles } = useUploadFiles();
+  const [files, setFiles] = useState<File[]>([]);
 
-  // const { locationState } = useLocationState();
-  const { Modal, showModal } = useModal('loadingModal');
+  const {
+    locationState: {
+      selectData: { name: topBarName },
+    },
+  } = useLocationState();
 
-  const { data, mutate, isLoading, isSuccess } = useReviewUpdateQuery(
-    isRevisit,
-    rating,
-    textValue,
-    imgFiles,
-    // locationState.region,
-  );
+  const {
+    data,
+    mutate: updateReview,
+    isSuccess,
+  } = useReviewUpdateQuery(isRevisit, rating, textValue, files);
 
   useEffect(() => {
     if (isSuccess) {
-      alert(`리뷰가 등록되었습니다. \nfrom Server: ${data}`);
-      console.log(data.idx);
+      alert(`리뷰가 정상적으로 등록되었습니다.`);
       navigate(`/review/${data.idx}`);
     }
   }, [isSuccess]);
 
   const handleClickSubmitButton = async () => {
-    showModal();
-    mutate();
+    updateReview();
+  };
+
+  const handleClickBackButton = () => {
+    navigate(-1);
   };
   return (
     <>
-      {isLoading && (
-        <Modal noClose>
-          <LoadingModal text="리뷰를 등록 중입니다..." />
-        </Modal>
-      )}
+      <TopBar onClickBackButton={handleClickBackButton}>
+        <TopText>{topBarName}</TopText>
+      </TopBar>
+
       <Column css={tw`w-h-full gap-14`}>
         <Column>
           <FormText required>만족도</FormText>
@@ -71,8 +75,8 @@ const ReviewEditPage = ({}: ReviewEditPageProps) => {
             사진 업로드
           </FormText>
           <UploadImage
-            files={imgFiles}
-            setFiles={setImgFiles}
+            imgFiles={files}
+            setImgFiles={setFiles}
           />
         </Column>
 
@@ -112,7 +116,6 @@ const ReviewEditPage = ({}: ReviewEditPageProps) => {
           등록
         </Button>
       </Column>
-      {/* </Suspense> */}
     </>
   );
 };
