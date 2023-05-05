@@ -33,7 +33,6 @@ const Button = ({ children, type, color, className, onClick }: ButtonProps) => {
     flex justify-center items-center
     ${sizes[type]}`;
 
-
   return (
     <button
       onClick={onClick}

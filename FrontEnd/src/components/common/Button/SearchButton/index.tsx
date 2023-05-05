@@ -69,7 +69,7 @@ const SearchButton = ({
         value={inputVal}
         onChange={onChangeInput}
         ref={inputRef}
-        css={tw`bg-transparent w-full h-full outline-none text-body1Bold`}
+        css={tw`w-full h-full bg-transparent outline-none text-body1Bold`}
         placeholder={
           region ? state.placeHolders.place : state.placeHolders.region
         }
