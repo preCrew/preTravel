@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import useMarkerState from '../recoil/useMarkerState';
 export interface ILikeMapData {
   memberIdx: string | null;
   smallLa: string | null;
@@ -11,13 +10,7 @@ export interface ILikeMapData {
 // https://port-0-pretravel-ll32glc6adwo3.gksl2.cloudtype.app/like
 
 const areaMarekerFunc = async (data: any) => {
-  //  console.log(memberIdx, smallLa, largeLa, smallLo, largeLo);
-  // const params = new FormData();
-  // params.append('memberIdx', '12');
-  // params.append('smallLa', data.get('smallLa'));
-  // params.append('largeLa', data.get('largeLa'));
-  // params.append('smallLo', data.get('smallLo'));
-  // params.append('largeLo', data.get('largeLo'));
+  console.log(data);
   try {
     const response = await axios.get(
       `https://port-0-pretravel-ll32glc6adwo3.gksl2.cloudtype.app/like/map?memberIdx=${data.memberIdx}&smallLa=${data.smallLa}&largeLa=${data.largeLa}&smallLo=${data.smallLo}&largeLo=${data.largeLo}`,
@@ -32,9 +25,8 @@ const areaMarekerFunc = async (data: any) => {
 const useGetLike = (data: any) => {
   //const { setGetLike } = useMarkerState();
 
-  return useQuery(['getAreaLike'], {
+  return useQuery(['getAreaLike', data], () => areaMarekerFunc(data), {
     enabled: false,
-    queryFn: () => areaMarekerFunc(data),
     onSuccess: () => {
       console.log('성공');
       //setGetLike(true);

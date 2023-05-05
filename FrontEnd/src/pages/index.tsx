@@ -2,18 +2,16 @@ import { Routes, Route } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Suspense, useEffect } from 'react';
 
-import MySchedule from './mySchedule';
-import MySchedule2 from './mySchedule2';
+import MyPlace from './myPlaceInSchedule';
 import LoginPage from './LoginPage';
 import OauthPage from './OauthPage';
-
 import MapPage from './MainPage';
-import Map from './Map';
-import Main from './Main';
+import MainPage from './MainPage';
 import SearchPage from './SearchPage';
-import ReviewPage from './ReviewPage';
-import tw from 'twin.macro';
-
+import PlacePlan from './PlacePlan';
+import MapInfoPage from './MapInfoPage';
+import MySchedule from './mySchedule';
+import SchedulePlan from './SchedulePlan';
 
 const App = () => {
   useEffect(() => {
@@ -24,7 +22,7 @@ const App = () => {
     //  - useSilentRefresh 훅을 생성해서 요청하면 될듯.
   });
   return (
-    <div className="flex justify-center w-full h-full safe-top safe-left safe-right safe-bottom">
+    <div className="h-full w-full safe-top safe-left safe-right safe-bottom">
       <Helmet>
         <title>여행</title>
         <meta charSet="UTF-8" />
@@ -45,19 +43,31 @@ const App = () => {
         /> */}
         <Route
           path="/mySchedule"
-          element={<MySchedule2 />}
+          element={<MySchedule />}
         />
-        <Route
-          path="/mySchedule"
-          element={<MySchedule2 />}
-        />
-        {/* <Route
-          path="/schedulePlan"
-          element={<SchedulePlan />}
-        /> */}
         <Route
           path="/mySchedule/:id"
-          element={<MySchedule />}
+          element={
+            <Suspense fallback={'내 장소 로딩중....'}>
+              <MyPlace />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/placePlan"
+          element={<PlacePlan />}
+        />
+        <Route
+          path="/schedulePlan"
+          element={<SchedulePlan />}
+        />
+        <Route
+          path="search"
+          element={<SearchPage />}
+        />
+        <Route
+          path="/map/info"
+          element={<MapInfoPage />}
         />
         <Route
           path="/login"
@@ -68,12 +78,16 @@ const App = () => {
           element={<OauthPage />}
         />
         <Route
-          path="/map/*"
+          path="/map/main"
           element={
-            <Suspense fallback={<div>로딩즁1</div>}>
-              <Map />
+            <Suspense fallback={'로딩즁,,,'}>
+              <MainPage />
             </Suspense>
           }
+        />
+        <Route
+          path="/map/*"
+          element={<MapPage />}
         />
         <Route
           path="/*"

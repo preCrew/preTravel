@@ -20,6 +20,7 @@ import axios from 'axios';
 import { categoryAtom } from '@src/recoil/marker/category/atom';
 import useGetLike from '@src/hooks/react-query/useGetLike';
 import useGetReview from '@src/hooks/react-query/useGetReview';
+import { mapAtom } from '@src/recoil/map/atom';
 declare global {
   interface Window {
     kakao: any;
@@ -44,16 +45,18 @@ function useKakaoMap() {
   const [prevOverlay, setPrevOverlay] = useState<any[]>();
   const [prevPolygon, setPrevPolygon] = useState<any>();
   const [categoryName, setCategoryName] = useState('');
+  const [currentMapState, setCurrentMapState] = useRecoilState(mapAtom);
 
   const map = useRef<any>(null);
+  const mapCopy = useRef();
   const likeCurrentMarker = useRef([]);
   const reviewCurrentMarker = useRef([]);
 
+  const [check, setCheck] = useState(false);
   const [categoryState, setCategoryState] = useRecoilState(categoryAtom);
   const [isOpenState, setIsOpenState] = useRecoilState(modalAtom);
   const [mapAreaInfoState, setMapAreaInfoState] =
     useRecoilState(mapAreaInfoAtom);
-
   const { refetch: refetchLike, data: getLike } = useGetLike(mapAreaInfoState);
   const {
     refetch: refetchReview,
@@ -61,21 +64,10 @@ function useKakaoMap() {
     isLoading,
   } = useGetReview(mapAreaInfoState);
 
+  //map 불러오기
+  const [success, error] = useScript(src);
+
   const Map = () => {
-    const [success, error] = useScript(src);
-    useEffect(() => {
-      if (!success) return;
-      window.kakao.maps.load(() => {
-        let container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
-        let options = {
-          center: new window.kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
-          level: 7, //지도의 레벨(확대, 축소 정도)
-        };
-
-        map.current = new window.kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
-      });
-    }, [success, error]);
-
     return (
       <div
         id="map"
@@ -83,10 +75,26 @@ function useKakaoMap() {
       />
     );
   };
+  useEffect(() => {
+    if (!success) return;
+    window.kakao.maps.load(() => {
+      let container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+      let options = {
+        center: new window.kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
+        level: 7, //지도의 레벨(확대, 축소 정도)
+      };
+      map.current = new window.kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+    });
+  }, [success, error]);
 
+  useEffect(() => {
+    console.log(map.current);
+    mapCopy.current = map.current;
+  }, [map.current]);
+
+  //map 위치 이동
   const setNowLocation = (LatLng: LatLng) => {
     if (!map.current) return;
-
     const moveLatLon = new window.kakao.maps.LatLng(LatLng.lat, LatLng.lng);
     map.current.setCenter(moveLatLon);
   };
@@ -119,6 +127,7 @@ function useKakaoMap() {
     }
 
     function createMarker(markerArr: any) {
+      console.log(markerArr);
       for (let i = 0; i < markerInfo.data.length; i++) {
         markerArr.current.push(
           new window.kakao.maps.Marker({
@@ -132,17 +141,24 @@ function useKakaoMap() {
             clickable: true,
           }),
         );
+        window.kakao.maps.event.addListener(
+          markerArr.current[i],
+          'click',
+          function () {
+            console.log('클릭');
+          },
+        );
         markerArr.current[i].setMap(map.current);
         //마커 클릭했을때 바텀싯트에 장소 정보 표시
-        // window.kakao.maps.event.addListener(markerArr.current[i], 'click', function () {
-        //   console.log('클릭', markerArr.current[i]);
-
-        //   setMarkerState(onMapType);
-        //   setIsOpenState(true);
-        // });
       }
     }
   }
+  const test = () => {
+    console.log('클릭');
+
+    //setMarkerState(onMapType);
+    //setIsOpenState(true);
+  };
 
   //남서 북동 좌표 이벤트
   const idelEvent = () => {
@@ -164,7 +180,7 @@ function useKakaoMap() {
       largeLo: neLatlng.La,
     };
     console.log(mapAreaInfoState);
-    setMapAreaInfoState(state => ({ ...state, ...data }));
+    setMapAreaInfoState((state: any) => ({ ...state, ...data }));
   };
 
   useEffect(() => {
@@ -234,22 +250,28 @@ function useKakaoMap() {
     reviewCurrentMarker.current = [];
   };
 
+  // 지도에 다각형(순서) 그리기
   const drawOverlayOnMap = (overlayArr: any) => {
     //오버레이된 곳의 중앙을 불러와야 할것 같은데...
-    if (!map.current) {
-      return alert('지도 로딩중...');
-    }
+    // if (!map.current) {
+    //   return alert('지도 로딩중...');
+    // }
 
     const allLatitude =
       overlayArr.reduce((acc: number, curr: any) => {
-        return acc + curr.la;
+        return acc + curr.la * 1;
       }, 0) / overlayArr.length;
     const allLongitude =
       overlayArr.reduce((acc: number, curr: any) => {
-        return acc + curr.lo;
+        return acc + curr.lo * 1;
       }, 0) / overlayArr.length;
 
-    setNowLocation({ lat: allLatitude, lng: allLongitude });
+    console.log(allLatitude, allLongitude);
+    //setNowLocation({ lat: allLatitude, lng: allLongitude });
+    setNowLocation({
+      lat: allLatitude,
+      lng: allLongitude,
+    });
 
     //오버레이칸텐트
     const content = (i: number) => `
@@ -287,8 +309,8 @@ function useKakaoMap() {
       });
       prevPolygon[0].setMap(null);
     }
-
-    setPrevOverlay(customOverlaySetArr);
+    console.log(customOverlaySetArr);
+    // setPrevOverlay(customOverlaySetArr);
 
     const polygon = new window.kakao.maps.Polygon({
       path: polygonPath, // 그려질 다각형의 좌표 배열입니다
@@ -300,16 +322,16 @@ function useKakaoMap() {
       fillOpacity: 0, // 채우기 불투명도 입니다
     });
     prevPolygonTemporary.push(polygon);
-    setPrevPolygon(prevPolygonTemporary);
+    // setPrevPolygon(prevPolygonTemporary);
     //선그리기
     prevPolygonTemporary[0].setMap(map.current);
   };
 
-  const currentLocation = () => {
+  // 현재 위치 불러오기
+  const getCurrentLocation = useCallback(() => {
     if (!('geolocation' in navigator)) {
       return console.log('위치정보가 없습니다.');
     }
-
     const onSucces = (position: any) => {
       //console.log(position.coords);
       const content = `<div class='absolute h-20 w-20 before:relative before:ml-[-100%] before:mt-[-100%] before:box-border before:block before:h-[300%] before:w-[300%] before:animate-pulse-ring before:rounded-[45px] before:content-[""] after:shadow-[0_0_8px_rgba(0,0,0,.3)] after:absolute after:left-0 after:top-0 after:block after:h-full after:w-full after:animate-pulse-dot after:rounded-[15px] after:bg-primary1 after:content-[""] before:bg-primary1'></div>`;
@@ -324,27 +346,24 @@ function useKakaoMap() {
       });
 
       marker.setMap(map.current);
-
       //현재 위시 이동
       setNowLocation({
         lat: position.coords.latitude,
         lng: position.coords.longitude,
       });
     };
-
     const onError = (err: any) => {
       console.warn(`ERROR(${err.code}): ${err.message}`);
     };
-
     navigator.geolocation.getCurrentPosition(onSucces, onError);
-  };
+  }, [map.current]);
 
   return {
     Map,
     setNowLocation,
     removeMarker,
     drawOverlayOnMap,
-    currentLocation,
+    getCurrentLocation,
   };
 }
 

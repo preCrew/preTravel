@@ -12,6 +12,7 @@ export interface MySchedule {
   name: string;
   startDate: string;
   city: string;
+  file: any[];
 }
 
 const getData = async (memberIdx: number) => {

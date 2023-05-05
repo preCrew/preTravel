@@ -1,13 +1,14 @@
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
-import {
+import React, {
   ReactNode,
   Suspense,
   useEffect,
   useState,
   useRef,
   useCallback,
+  useMemo,
 } from 'react';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import tw from 'twin.macro';
 
 import useToast from '@src/hooks/useToast';
@@ -21,8 +22,11 @@ import { categoryAtom } from '@src/recoil/marker/category/atom';
 import { main } from './style';
 import IcoFavorite from '@src/assets/svgs/ico-favorite.svg?url';
 import IcoReview from '@src/assets/svgs/ico-review.svg?url';
+import useCurrentMap from '@src/hooks/map/useCurrentMap';
+import { mapAtom } from '@src/recoil/map/atom';
+import KaKaoMap from '../MapPage/KaKaMap';
 
-interface MapPageProps {}
+interface MainPageProps {}
 
 interface ImainTabCategory {
   category: {
@@ -61,14 +65,20 @@ export const mainTabCategory: ImainTabCategory[] = [
   },
 ];
 
-const MapPage = ({}: MapPageProps) => {
+const MainPage = ({}: MainPageProps) => {
+  const { getCurrentLocation, Map } = useKakaoMap();
   const { Toast } = useToast();
 
   const [isShowSearchButton, setIsShowSearchButton] = useState(true);
   const setCategoryState = useSetRecoilState(categoryAtom);
+  const [currentMapState, setCurrentMapState] = useRecoilState(mapAtom);
 
   const navigate = useNavigate();
   const location = useLocation();
+
+  useEffect(() => {
+    getCurrentLocation();
+  }, []);
 
   useEffect(() => {
     const href = new URLSearchParams(location.search);
@@ -91,6 +101,7 @@ const MapPage = ({}: MapPageProps) => {
     setCategoryState(result?.category);
   }, []);
 
+  const map = useMemo(() => <Map />, []);
   return (
     <>
       <header className={main.header}>
@@ -113,11 +124,12 @@ const MapPage = ({}: MapPageProps) => {
           />
         </div>
       )}
-
+      {map}
       <Toast />
+
       <MarkerBottomSheet />
     </>
   );
 };
 
-export default MapPage;
+export default MainPage;
