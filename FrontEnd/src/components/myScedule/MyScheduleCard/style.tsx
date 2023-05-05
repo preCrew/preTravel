@@ -18,6 +18,7 @@ const blockInner = (url: string, index: number) => tw`
   rounded px-3.5 py-5 relative  h-[23vh]
   before:(content-[''] absolute left-0 top-0 w-full h-full bg-black opacity-20 rounded)
 `;
+
 // bg-cover bg-[url('${url}')]2
 const content = `
   text-white text-center flex flex-col h-full relative z-[5]

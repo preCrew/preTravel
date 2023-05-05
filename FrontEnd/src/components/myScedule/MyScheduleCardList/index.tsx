@@ -11,8 +11,8 @@ const MyScheduleCardList = ({ deleteMode }: MyScheduleCardListProps) => {
 
   const { data: lists } = useMyScheduleGetQuery();
 
-  const handleClickCard = (cardIdx: number) => {
-    navigate(`${cardIdx}`);
+  const handleClickCard = (cardIdx: number, index: number) => {
+    navigate(`${cardIdx}`, { state: lists?.[index].city });
     console.log(cardIdx);
   };
   return (
@@ -21,6 +21,7 @@ const MyScheduleCardList = ({ deleteMode }: MyScheduleCardListProps) => {
         lists.map((card, index) => (
           <MyScheduleCard
             key={card.idx}
+            index={index}
             deleteMode={deleteMode}
             onClickCard={handleClickCard}
             {...card}

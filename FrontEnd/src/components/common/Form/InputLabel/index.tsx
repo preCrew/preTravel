@@ -7,7 +7,7 @@ interface InputLableProps {
 
 const InputLabel = ({ labelName, necessary = true }: InputLableProps) => {
   return (
-    <label className="block mb-2 text-body2Bold">
+    <label className="mb-2 block text-body3Bold">
       {necessary && <strong className="text-red-600">*</strong>}
       {labelName}
     </label>

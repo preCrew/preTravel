@@ -33,6 +33,7 @@ const RegionPlaceList = ({
   const navigate = useNavigate();
   const { showToast } = useToast();
   const {
+    locationState,
     locationState: { region },
     setLocationRegion,
     setSelectData,
@@ -53,8 +54,8 @@ const RegionPlaceList = ({
   });
 
   useEffect(() => {
+    console.log(region);
     if (!isCommit) return;
-
     const getNextPlaceData = async () => {
       const placeArray = await fetchNextPlaceData();
       if (!placeArray?.data?.pages[0].boardPage.length) {
@@ -67,7 +68,6 @@ const RegionPlaceList = ({
         showToast('searchRegion', '검색 결과가 없습니다. 다시 입력해주세요');
       }
     };
-
     if (region) {
       getNextPlaceData();
     } else {
@@ -85,17 +85,16 @@ const RegionPlaceList = ({
     } else {
       const regionData = (await data) as RegionData;
       setLocationRegion(regionData.body);
-
-      showToast(
-        'region',
-        `지역이 ${regionData.body} 입니다. 장소를 입력해주세요.`,
-      );
+      // showToast(
+      //   'region',
+      //   `지역이 ${regionData.body} 입니다. 장소를 입력해주세요.`,
+      // );
       // setMsg(`지역이 ${regionData.body} 입니다. 장소를 입력해주세요.`);
       // showToast();
+      // 지역 입력 완료 후 일정짜기로 이동
+      navigate('/schedulePlan');
 
-      navigate(-1);
-
-      inputRef.current?.focus();
+      //inputRef.current?.focus();
     }
   };
 

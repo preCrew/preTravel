@@ -6,6 +6,6 @@ export const userAtom = atom({
     isLogin: false,
     id: '',
     accessToken: '',
-    testId: 1,
+    testId: 12,
   },
 });
