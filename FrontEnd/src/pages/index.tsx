@@ -2,7 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Suspense, useEffect } from 'react';
 
-import MyPlace from './myPlaceInSchedule';
+import MyPlace from './MyPlaceInSchedule';
 import LoginPage from './LoginPage';
 import OauthPage from './OauthPage';
 import MapPage from './MainPage';
@@ -10,7 +10,7 @@ import MainPage from './MainPage';
 import SearchPage from './SearchPage';
 import PlacePlan from './PlacePlan';
 import MapInfoPage from './MapInfoPage';
-import MySchedule from './mySchedule';
+import MySchedule from './MySchedule';
 import SchedulePlan from './SchedulePlan';
 
 const App = () => {

@@ -28,7 +28,7 @@ const MySchedule = () => {
   const calendarIsOpenState = useRecoilValue(calendarIsOpenAtom);
 
   // const { Map, setNowLocation, drawOverlayOnMap } = useKakaoMap();
-  console.log(data, currentScheduleState);
+
   const scheduleDaysArr: number[] = Array(data.schedule.length)
     .fill(null)
     .map((_, i) => i + 1);
@@ -37,7 +37,7 @@ const MySchedule = () => {
     setLocationRegion(state as string);
 
     setCurrentScheduleState(data);
-    console.log('스케줄', currentScheduleState, state, locationState);
+
     // setSchedulePlaceState()
   }, [currentScheduleState]);
 
