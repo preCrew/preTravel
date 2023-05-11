@@ -1,55 +1,39 @@
-import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
-import { Suspense, useEffect, useState } from 'react';
-import tw from 'twin.macro';
+import { Suspense, useEffect, useLayoutEffect, useMemo } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 
-import useToast from '@src/hooks/useToast';
-
-import SearchButton from '@src/components/common/Button/SearchButton';
-import SearchPage from '@src/pages/SearchPage';
+import SearchPage from '../SearchPage';
+import MainPage from '../MainPage';
+import KaKaoMap from './KaKaMap';
+import useKakaoMap from '@src/components/common/Map/useKakaoMap';
 import MapInfoPage from '../MapInfoPage';
 
-interface MapPageProps {}
-
-const MapPage = ({}: MapPageProps) => {
-  const { Toast } = useToast();
-  const [isShowSearchButton, setIsShowSearchButton] = useState(true);
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  useEffect(() => {
-    const href = new URLSearchParams(location.search);
-    const isShowButton = href.get('showButton');
-    setIsShowSearchButton(isShowButton === 'false' ? false : true);
-  }, [location.search]);
-
-  const handleClickSearchButton = () => {
-    navigate('/map/search');
-  };
+const MapPage = () => {
+  const { Map } = useKakaoMap();
+  const map = useMemo(() => <Map />, [Map]);
 
   return (
-    <div css={tw`w-full h-full flex flex-col items-center`}>
-      {isShowSearchButton && (
-        <div css={tw`h-70 w-full flex justify-center items-center relative`}>
-          <SearchButton
-            nowPage={'map'}
-            onClickSearchButton={handleClickSearchButton}
-            css={tw`z-[15]`}
-          />
-        </div>
-      )}
-
-      <Toast />
+    <>
+      {/* {map} */}
       <Routes>
+        {/* <Route
+          path="main"
+          element={
+            <Suspense fallback={<div>메인화면 로딩중...</div>}>
+              <MainPage />
+            </Suspense>
+          }
+        /> */}
         <Route
-          path="/search"
+          path="search"
           element={<SearchPage />}
         />
-        <Route
-          path="/info"
-          element={<MapInfoPage />}
-        />
+        {/* <Route
+          path="mySchedule/:id"
+          element={<MySchedule />}
+        /> */}
       </Routes>
-    </div>
+    </>
   );
 };
 

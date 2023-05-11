@@ -14,8 +14,15 @@ export const useScript = (src: string) => {
       script.async = true;
     }
 
-    const handleLoad = () => setSuccess(true);
-    const handleError = (error: ErrorEvent) => setError(error.message);
+    const handleLoad = () => {
+      console.log('로드즁');
+      setSuccess(true);
+    };
+    const handleError = (error: ErrorEvent) => {
+      console.log('에러즁');
+
+      setError(error.message);
+    };
 
     script.addEventListener('load', handleLoad);
     script.addEventListener('error', handleError);

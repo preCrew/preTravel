@@ -31,7 +31,6 @@ const CheckBox = ({ onChange, onClick, cheked }: CheckBoxProps) => {
         id="checkbox"
         css={checkbox}
         onClick={onClick}
-        onClick={onClick}
         onChange={onChange}
         checked={cheked}
       />

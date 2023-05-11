@@ -9,7 +9,8 @@ import tw from 'twin.macro';
 
 interface MyScheduleCardProps extends MySchedule {
   deleteMode?: boolean;
-  onClickCard?: (cardIdx: number) => void;
+  index?: number;
+  onClickCard?: (cardIdx: number, idx: number) => void;
 }
 
 const MyScheduleCard = ({
@@ -19,6 +20,8 @@ const MyScheduleCard = ({
   idx: cardIdx,
   city,
   deleteMode,
+  index,
+  file,
   onClickCard,
 }: MyScheduleCardProps) => {
   const { changeCardState } = useCardListState();
@@ -32,7 +35,7 @@ const MyScheduleCard = ({
     if (deleteMode) {
       handleClickCheckBox();
     } else {
-      onClickCard?.(cardIdx);
+      onClickCard?.(cardIdx, index as number);
     }
   };
 
@@ -40,14 +43,21 @@ const MyScheduleCard = ({
   const bgColor = ['#fedcf5', '#c7ecf4', '#d6ede5', '#7ca3de', '#ffcfdb'];
   const bgColorValue = useMemo(() => bgColor[generateNum], []);
 
+  console.log(file.length);
+
   return (
     <li
       className={Card.block}
       onClick={handleClickCard}
     >
       <div
-        css={Card.blockInner('', cardIdx)}
-        style={{ backgroundColor: bgColorValue }}
+        css={[
+          Card.blockInner('', cardIdx),
+          file.length
+            ? { backgroundImage: `url(${file[0]?.fileDir})` }
+            : { background: bgColorValue },
+          tw`bg-center bg-no-repeat bg-cover`,
+        ]}
       >
         {/* 삭제모드면 체크박스 표시 */}
         {deleteMode && (
@@ -71,7 +81,7 @@ const iterator = [1, 2, 3, 4, 5, 6, 7, 8];
 export const SkeletonMyScheduleCard = () => {
   return (
     <>
-      <div css={tw`grid grid-cols-2 gap-4 w-h-full relative content-inner`}>
+      <div css={tw`relative grid grid-cols-2 gap-4 w-h-full content-inner`}>
         {iterator.map(id => (
           <div
             css={SkeletonCard.Inner}

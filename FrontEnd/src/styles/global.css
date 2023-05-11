@@ -43,6 +43,11 @@
     background-color: var(--primary1);
     color: white;
   }
+  .rdp-button:hover:not([disabled]):not(.rdp-day_selected),
+  .rdp-day_selected, .rdp-day_selected:focus-visible, .rdp-day_selected:hover{
+      background-color: var(--primary1) !important;
+      color: white;
+  }  
 
 }
 
