@@ -13,7 +13,8 @@ import useLocationState from '@src/hooks/recoil/useLocationState';
 const MyScheduleCon = ({ region }: any) => {
   const [drag, setDrag] = useState(false);
 
-  const { setLocationRegion, setSelectData } = useLocationState();
+  const { setLocationRegion, setSelectData, locationState } =
+    useLocationState();
   const currentScheduleState = useRecoilValue(currentScheduleAtom);
   const withSelectedDayState = useRecoilValue(withSelectedDay);
   const selectedDayState = useRecoilValue(selectedDayAtom);

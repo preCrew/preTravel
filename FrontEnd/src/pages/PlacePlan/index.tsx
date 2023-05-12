@@ -74,6 +74,7 @@ const PlacePlan = () => {
     //   ...q,
     // ];
     console.log(
+      orderSelected,
       currentPlaceState,
       currentScheduleState.schedule[selectDayState].date,
     );
@@ -85,12 +86,12 @@ const PlacePlan = () => {
       // );
       mutate({
         date: currentScheduleState.schedule[selectDayState].date,
-        sctIdx: currentScheduleState.idx,
+        sctIdx: currentScheduleState.idx + '',
         list: [
           {
             placeName: currentPlaceState.selectData.body,
             address: currentPlaceState.selectData.address,
-            order: orderSelected,
+            order: '1',
             la: currentPlaceState.selectData.y,
             lo: currentPlaceState.selectData.x,
           },

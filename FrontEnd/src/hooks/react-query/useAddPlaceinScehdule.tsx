@@ -2,18 +2,22 @@ import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 
 const add = async (data: any) => {
+  console.log(JSON.stringify(data));
   try {
-    axios.post(`${process.env.REAL_SERVER_URL}/spot`, { data });
+    await axios.post(`${process.env.REAL_SERVER_URL}/spot`, data, {
+      headers: {
+        'Content-Type': `application/json`,
+      },
+    });
   } catch (err) {
     throw err;
   }
 };
 
 const useAddPlaceinScehduleQuery = () =>
-  useMutation(['addMyScheduleDetail'], {
-    mutationFn: (data: any) => add(data),
-    onSuccess: () => {
-      console.log('!');
+  useMutation((data: any) => add(data), {
+    onSuccess: data => {
+      console.log('성공', data);
     },
     onMutate: () => {
       console.log('!');

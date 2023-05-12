@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import tw from 'twin.macro';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import BottomSheetWrap from '@src/components/scheduleDetail/BottomSheet/BottomSheetWrap';
 import IconButton from '@src/components/common/Button/IconButton';
@@ -15,16 +15,17 @@ interface MapInfoPageProps {}
 
 const MapInfoPage = ({}: MapInfoPageProps) => {
   const navigate = useNavigate();
-  const { mutate: mutateAddPlace, isSuccess: isSuccessAddPlace } =
+  const { mutate: mutateAddPlace, isLoading: isLoadingAddPlace } =
     useAddPlaceinScehduleQuery();
 
   const {
     locationState: { selectData },
   } = useLocationState();
 
-  const currentScheduleState = useRecoilValue(currentScheduleAtom);
+  const [currentScheduleState, setCurrentScheduleState] =
+    useRecoilState(currentScheduleAtom);
   const currentPlaceState = useRecoilValue(locationAtom);
-  const selectDayState = useRecoilValue(selectedDayAtom);
+  const selectedDayState = useRecoilValue(selectedDayAtom);
 
   const handleClickBackButton = () => {
     navigate(-1);
@@ -35,21 +36,56 @@ const MapInfoPage = ({}: MapInfoPageProps) => {
   };
 
   const handleClickAddScheduleButton = () => {
-    mutateAddPlace({
-      date: currentScheduleState.schedule[selectDayState].date,
-      sctIdx: currentScheduleState.idx,
-      list: [
-        {
-          placeName: currentPlaceState.selectData.body,
-          address: currentPlaceState.selectData.address,
-          order: null,
-          la: currentPlaceState.selectData.y,
-          lo: currentPlaceState.selectData.x,
-        },
-      ],
-    });
+    console.log(currentScheduleState.schedule[selectedDayState].list.length);
+    //일정이 없는경우
+    if (!currentScheduleState.schedule[selectedDayState].list.length) {
+      const newPlace = {
+        date: currentScheduleState.schedule[selectedDayState].date,
+        sctIdx: currentScheduleState.idx + '',
+        list: [
+          {
+            placeName: currentPlaceState.selectData.body,
+            address: currentPlaceState.selectData.address,
+            order: '1',
+            la: currentPlaceState.selectData.y,
+            lo: currentPlaceState.selectData.x,
+          },
+        ],
+      };
+      console.log(newPlace);
+      mutateAddPlace(newPlace);
+    } else {
+      // 일정이 1개 이상인경우(현재 일정에 가지고 있는 플레이스 리스트들과 안꺼번에 같이 보내줘야함.)
+      const currentPlaceData = currentScheduleState.schedule.filter(
+        val =>
+          val.date === currentScheduleState.schedule[selectedDayState].date,
+      )[0];
 
-    if (isSuccessAddPlace) navigate(`/mySchedule/${currentScheduleState.idx}`);
+      const selectedPlace = {
+        placeName: currentPlaceState.selectData.body,
+        address: currentPlaceState.selectData.address,
+        order: '2',
+        la: currentPlaceState.selectData.y,
+        lo: currentPlaceState.selectData.x,
+      };
+
+      const newList = [...currentPlaceData.list];
+      newList.push(selectedPlace);
+
+      const newPlace = {
+        date: currentScheduleState.schedule[selectedDayState].date,
+        sctIdx: currentScheduleState.idx + '',
+        list: newList,
+      };
+
+      console.log(newPlace);
+      mutateAddPlace(newPlace);
+    }
+
+    // 현
+    //
+
+    //if (!isLoadingAddPlace) navigate(`/mySchedule/${currentScheduleState.idx}`);
   };
 
   return (
