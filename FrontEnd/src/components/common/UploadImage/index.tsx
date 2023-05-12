@@ -10,6 +10,8 @@ import useDeleteImage from '@src/hooks/react-query/useDeleteImage';
 interface UploadImageProps {
   imgFiles: File[];
   setImgFiles: Dispatch<SetStateAction<File[]>>;
+  imgNum: number;
+  setImgNum: Dispatch<SetStateAction<number>>;
 }
 
 const errorMessages = {
@@ -19,14 +21,20 @@ const errorMessages = {
   nowMoreThan10: '사진은 최대 10장까지 선택 가능합니다.',
 };
 
-const UploadImage = ({ imgFiles, setImgFiles }: UploadImageProps) => {
-  const [imgNum, setImgNum] = useState<number>(0);
+const UploadImage = ({
+  imgFiles,
+  setImgFiles,
+  imgNum,
+  setImgNum,
+}: UploadImageProps) => {
+  // const [imgNum, setImgNum] = useState<number>(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const { Modal, showModal } = useModal('loadingModal');
 
   const onSucessAddImages = (data: File[]) => {
     setImgFiles(prev => [...prev, ...data]);
   };
+
   const { mutate, isLoading: uploadingImages } =
     useUploadImages(onSucessAddImages);
 

@@ -79,7 +79,6 @@ const RegionPlaceList = ({
       const placeData = (await data) as PlaceData;
       const selectData = locationState.selectData;
       setSelectData(placeData);
-      console.log(placeData);
       navigate(
         `/map/info?name=${placeData.name}&address=${placeData.address}&latitude=${placeData.y}&longitude=${placeData.x}&showButton=false`,
       );

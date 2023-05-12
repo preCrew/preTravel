@@ -116,7 +116,12 @@ const reviewFetch = async (idx: string) => {
       .split(' ')[0]
       .replaceAll('-', '.');
     const file = response.data.data.file.map(item => item.fileDir);
-    const newData = { ...response.data.data, createDate, file };
+    const newData = {
+      ...response.data.data,
+      createDate,
+      file,
+      originFile: response.data.data.file,
+    };
     return newData;
   } catch (err) {
     if (err instanceof Error) {

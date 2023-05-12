@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import tw from 'twin.macro';
 
@@ -17,28 +17,53 @@ import Button from '@src/components/common/Button';
 import TopBar from '@src/components/common/TobBar';
 import TopText from '@src/components/common/Text/TopText';
 interface ReviewEditPageProps {
-  isEdit?: boolean;
+  idx?: string;
+  topBarName?: string;
+  rating?: RatingNum;
+  images?: File[];
+  isRevisit?: boolean;
+  review?: string;
 }
 
 const ReviewEditPage = ({}: ReviewEditPageProps) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const locationState = location.state as ReviewEditPageProps;
+
   const [rating, setRating] = useState<RatingNum>(1);
   const [isRevisit, setIsRevisit] = useState<boolean>(false);
-
-  const { onChange: onChangeText, value: textValue } = useOnChange();
-  const [files, setFiles] = useState<File[]>([]);
+  const [imgNum, setImgNum] = useState<number>(0);
 
   const {
-    locationState: {
-      selectData: { name: topBarName },
-    },
-  } = useLocationState();
+    onChange: onChangeText,
+    value: textValue,
+    setValue: setTextValue,
+  } = useOnChange();
+  const [files, setFiles] = useState<File[]>([]);
+  console.log(files);
 
   const {
     data,
     mutate: updateReview,
     isSuccess,
-  } = useReviewUpdateQuery(isRevisit, rating, textValue, files);
+  } = useReviewUpdateQuery(
+    isRevisit,
+    rating,
+    textValue,
+    files,
+    locationState.idx,
+  );
+
+  useEffect(() => {
+    if (!locationState.idx) return;
+
+    console.log('!왔어!!', locationState);
+    setRating(locationState.rating ?? 1);
+    setFiles(prev => [...prev, ...(locationState.images ?? [])]);
+    setIsRevisit(locationState.isRevisit ?? false);
+    setTextValue(locationState.review ?? '');
+    setImgNum(locationState.images?.length ?? 0);
+  }, []);
 
   useEffect(() => {
     if (isSuccess) {
@@ -57,7 +82,7 @@ const ReviewEditPage = ({}: ReviewEditPageProps) => {
   return (
     <>
       <TopBar onClickBackButton={handleClickBackButton}>
-        <TopText>{topBarName}</TopText>
+        <TopText>{locationState.topBarName}</TopText>
       </TopBar>
 
       <Column css={tw`w-h-full gap-14`}>
@@ -77,6 +102,8 @@ const ReviewEditPage = ({}: ReviewEditPageProps) => {
           <UploadImage
             imgFiles={files}
             setImgFiles={setFiles}
+            imgNum={imgNum}
+            setImgNum={setImgNum}
           />
         </Column>
 
