@@ -13,8 +13,8 @@ const MyScheduleCardList = ({ deleteMode }: MyScheduleCardListProps) => {
 
   const handleClickCard = (cardIdx: number, index: number) => {
     navigate(`${cardIdx}`, { state: lists?.[index].city });
-    console.log(cardIdx);
   };
+
   return (
     <ul className="grid grid-cols-2 gap-4 content-inner">
       {lists &&

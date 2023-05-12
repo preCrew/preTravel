@@ -54,7 +54,6 @@ const RegionPlaceList = ({
   });
 
   useEffect(() => {
-    console.log(region);
     if (!isCommit) return;
     const getNextPlaceData = async () => {
       const placeArray = await fetchNextPlaceData();

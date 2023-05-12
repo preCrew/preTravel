@@ -31,7 +31,6 @@ const useAddScheduleQuery = () => {
 
   return useMutation((data: TsheduleAdd) => add(data), {
     onSuccess: data => {
-      console.log(data);
       setSchedulState(state => ({
         ...state,
         data,

@@ -33,12 +33,8 @@ const BottomSheet = ({
   const sheetDetent = contentH ? 'full-height' : 'content-height';
   const [isOpenState, setOpenState] = useRecoilState(modalAtom);
 
-  useEffect(() => {
-    console.log(open);
-  }, [open, isOpenState]);
-
   const onCloseSheet = () => {
-    console.log('닫기');
+    // console.log('닫기');
     setOpenState(false);
   };
 
