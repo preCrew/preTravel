@@ -2,10 +2,10 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
 export interface PlaceData {
-  idx: string;
-  body: string;
+  idx?: string;
+  body?: string;
   address: string;
-  roadAddress: string;
+  roadAddress?: string;
   name: string;
   x: string;
   y: string;

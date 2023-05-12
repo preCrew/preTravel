@@ -13,14 +13,12 @@ const addLike = async (
   address: string,
   latitude: string,
   longitude: string,
-  queryClient: QueryClient,
 ) => {
   try {
     const response = await axios.post<Response<Like>>(
       `${process.env.REAL_SERVER_URL}/like?memberIdx=${memberIdx}&name=${name}&latitude=${latitude}&longitude=${longitude}&address=${address}`,
     );
     if (response.data.code === 200) {
-      // queryClient.invalidateQueries(['like']);
       return response.data.data;
     }
     throw new Error(response.data.msg);
@@ -40,8 +38,7 @@ const useAddLike = (
   const queryClient = useQueryClient();
 
   return useMutation(['addLike'], {
-    mutationFn: () =>
-      addLike(memberIdx, name, address, latitude, longitude, queryClient),
+    mutationFn: () => addLike(memberIdx, name, address, latitude, longitude),
     onMutate: async (newData: Like) => {
       // const newData: Like = data as unknown as Like;
       const oldData = queryClient.getQueryData(['like']);

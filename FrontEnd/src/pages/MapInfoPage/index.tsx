@@ -36,11 +36,16 @@ const MapInfoPage = ({}: MapInfoPageProps) => {
 
   const { mutate: deleteLikeMutation } = useDeleteLike(like?.idx ?? '');
 
-  const {
-    locationState: { selectData },
-  } = useLocationState();
+  const { setSelectData } = useLocationState();
 
   useEffect(() => {
+    // 만약 주소로 들어왔다면 selectData를 채워줘야함.
+    setSelectData({
+      name: searchParamsObj.name,
+      address: searchParamsObj.address,
+      y: searchParamsObj.latitude,
+      x: searchParamsObj.longitude,
+    });
     getLikeRefetch();
     // TODO: 리뷰 받아옴, 리뷰 있으면 리뷰 보기, 리뷰 없으면 리뷰 작성.
   }, []);
@@ -50,14 +55,13 @@ const MapInfoPage = ({}: MapInfoPageProps) => {
   };
 
   const handleClickAddReviewButton = () => {
-    navigate('/review/edit');
+    navigate(`/review/edit`, { state: { topBarName: searchParamsObj.name } });
   };
 
   const handleClickAddScheduleButton = () => {};
 
   const handleClickLikeButton = async () => {
     // TODO: memberIdx 받아오도록 변경해야함.
-    console.log(selectData);
     const tempLikeData: Like = {
       name: searchParamsObj.name,
       address: searchParamsObj.address,
@@ -67,8 +71,11 @@ const MapInfoPage = ({}: MapInfoPageProps) => {
       memberIdx: '1',
     };
 
-    if (like) deleteLikeMutation();
-    else addLikeMutation(tempLikeData);
+    if (like) {
+      deleteLikeMutation();
+    } else {
+      addLikeMutation(tempLikeData);
+    }
   };
   return (
     <>
@@ -82,7 +89,7 @@ const MapInfoPage = ({}: MapInfoPageProps) => {
             onClick={handleClickLikeButton}
             css={tw`w-30 h-30 flex-with-center bg-gray3 rounded-full`}
           >
-            {like ? (
+            {like || '' ? (
               <IconButton type="heartFill" />
             ) : (
               <IconButton type="heart" />

@@ -5,7 +5,7 @@ import {
 } from '@tanstack/react-query';
 import axios from 'axios';
 import { Response } from './responseInterfaces';
-import { Like } from './useGetLike';
+// import { Like } from './useGetLike';
 
 const deleteLike = async (idx: string) => {
   try {
@@ -30,6 +30,7 @@ const useDeleteLike = (idx: string) => {
     mutationFn: () => deleteLike(idx),
     onMutate: async () => {
       const oldData = queryClient.getQueryData(['like']);
+      console.log('oldData: ', oldData);
       // 우리 update overwrite하지 않기 위해 미리 취소
       await queryClient.cancelQueries(['like']);
       // 미리 UI에 적용시켜 놓음

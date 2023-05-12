@@ -13,37 +13,54 @@ import TextButton from '@src/components/common/Button/TextButton';
 import useGetReveiw from '@src/hooks/react-query/useGetReview';
 import TopBar from '@src/components/common/TobBar';
 import TopText from '@src/components/common/Text/TopText';
+import useLocationState from '@src/hooks/recoil/useLocationState';
 
 interface ReviewViewPageProps {}
 
 const ReviewViewPage = ({}: ReviewViewPageProps) => {
   const { id } = useParams();
-  const {
-    // refetch: refetchReview,
-    data: reviewData,
-    isError,
-  } = useGetReveiw(id ?? ''); //서버에서 리뷰데이터 받아오는 쿼리
-  const { mutate: mutateDeleteReview } = useDeleteReview(id ?? ''); //서버에서 리뷰 삭제하는 쿼리
-
   const navigate = useNavigate();
+
+  const { setSelectData } = useLocationState();
+
+  const { data: reviewData, isError } = useGetReveiw(id ?? ''); //서버에서 리뷰데이터 받아오는 쿼리
+  const { mutate: mutateDeleteReview } = useDeleteReview(id ?? ''); //서버에서 리뷰 삭제하는 쿼리
 
   const handleClickDelete = () => {
     mutateDeleteReview();
     alert('리뷰가 정상적으로 삭제되었습니다. 첫 페이지로 돌아갑니다.');
     navigate('/');
   };
-  const handleClickModify = () => {};
+  const handleClickModify = () => {
+    navigate(`/review/edit`, {
+      state: {
+        topBarName: reviewData?.name,
+        idx: id,
+        rating: reviewData?.star,
+        images: reviewData?.originFile,
+        isRevisit: reviewData?.revisit,
+        review: reviewData?.contents,
+      },
+    });
+  };
   const handleClickBackButton = () => {
     navigate(-1);
   };
 
   useEffect(() => {
-    console.log(isError);
     if (isError) {
       alert('잘못된 페이지입니다. 이전페이지로 돌아갑니다.');
       navigate(-1);
     }
+    // 만약 주소로 들어왔다면 selectData를 채워줘야함.
+    setSelectData({
+      name: reviewData?.name ?? '',
+      address: reviewData?.address ?? '',
+      y: reviewData?.latitude ?? '',
+      x: reviewData?.longitude ?? '',
+    });
   }, []);
+
   return (
     <>
       <TopBar onClickBackButton={handleClickBackButton}>
@@ -60,7 +77,7 @@ const ReviewViewPage = ({}: ReviewViewPageProps) => {
             gap={2}
             css={tw`text-sm`}
           >
-            <TextButton>수정</TextButton>
+            <TextButton onClick={handleClickModify}>수정</TextButton>
             <p css={tw`select-none`}>|</p>
             <TextButton onClick={handleClickDelete}>삭제</TextButton>
           </Row>

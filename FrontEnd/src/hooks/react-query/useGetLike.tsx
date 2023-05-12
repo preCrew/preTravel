@@ -32,7 +32,7 @@ const useGetLike = (name: string, latitude: string, longitude: string) => {
   return useQuery(
     ['like'],
     () => likeFetch(memberIdx, name, latitude, longitude),
-    { cacheTime: 0, enabled: false },
+    { cacheTime: 0 },
   );
 };
 
