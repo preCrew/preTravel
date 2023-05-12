@@ -17,7 +17,7 @@ import SelectNumberBox from '@src/components/myScedule/SelectNumberBox';
 import IconBox from '@src/components/myScedule/IconBox';
 import mySchedule from './style';
 
-const MySchedule2 = () => {
+const MySchedule = () => {
   const navigate = useNavigate();
   const [isDeleteMode, setIsDeleteMode] = useState(false);
 
@@ -83,4 +83,4 @@ const MySchedule2 = () => {
   );
 };
 
-export default MySchedule2;
+export default MySchedule;

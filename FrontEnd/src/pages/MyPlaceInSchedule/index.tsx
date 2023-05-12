@@ -9,19 +9,16 @@ import CalendarCon from '@src/components/scheduleDetail/BottomSheet/CalendarCon'
 import MyScheduleCon from '@src/components/scheduleDetail/BottomSheet/MyScheduleCon';
 import CalendarBtn from '@src/components/scheduleDetail/CalendarBtn';
 import Title from '@src/components/scheduleDetail/Title';
-
 import useGetMyPlaceInSchedule from '@src/hooks/react-query/useGetMyPlaceInSchedule';
 
-import useLocationState from '@src/hooks/recoil/useLocationState';
 import { currentScheduleAtom, selectedDayAtom } from '@src/recoil/date/atom';
 import { calendarIsOpenAtom } from '@src/recoil/modal/atom';
 
-const MySchedule = () => {
+const MyPlaceInSchedule = () => {
   const { id } = useParams();
   const { state } = useLocation();
   const { data } = useGetMyPlaceInSchedule(id as string);
 
-  const { setLocationRegion, locationState } = useLocationState();
   const [currentScheduleState, setCurrentScheduleState] =
     useRecoilState(currentScheduleAtom);
   const selectedDayState = useRecoilValue(selectedDayAtom);
@@ -34,11 +31,7 @@ const MySchedule = () => {
     .map((_, i) => i + 1);
 
   useEffect(() => {
-    setLocationRegion(state as string);
-
     setCurrentScheduleState(data);
-
-    // setSchedulePlaceState()
   }, [currentScheduleState]);
 
   // useEffect(() => {
@@ -80,13 +73,9 @@ const MySchedule = () => {
       </header>
       {/*====지도====*/}
       {/* {onCallMap()} */}
-      {calendarIsOpenState ? (
-        <CalendarCon />
-      ) : (
-        <MyScheduleCon region={data.region} />
-      )}
+      {calendarIsOpenState ? <CalendarCon /> : <MyScheduleCon region={state} />}
     </>
   );
 };
 
-export default MySchedule;
+export default MyPlaceInSchedule;

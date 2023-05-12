@@ -2,7 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Suspense, useEffect } from 'react';
 
-import MyPlace from './MyPlaceInSchedule';
+import MySchedule from './MySchedule';
 import LoginPage from './LoginPage';
 import OauthPage from './OauthPage';
 import MapPage from './MainPage';
@@ -10,8 +10,8 @@ import MainPage from './MainPage';
 import SearchPage from './SearchPage';
 import PlacePlan from './PlacePlan';
 import MapInfoPage from './MapInfoPage';
-import MySchedule from './MySchedule';
 import SchedulePlan from './SchedulePlan';
+import MyPlaceInSchedule from './MyPlaceInSchedule';
 
 const App = () => {
   useEffect(() => {
@@ -49,7 +49,7 @@ const App = () => {
           path="/mySchedule/:id"
           element={
             <Suspense fallback={'내 장소 로딩중....'}>
-              <MyPlace />
+              <MyPlaceInSchedule />
             </Suspense>
           }
         />
