@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.json.simple.JSONObject;
@@ -70,11 +71,15 @@ public class NaverService {
                                                         .data("")
                                                         .build());
                 }
-                if (memberService.findByEmail(email).isEmpty()) {
+
+                List<Member> listMember = memberService.findByEmail(email);
+
+                if (listMember.isEmpty()) {
                         memberService.save(Member.builder().id((String) profileJo.get("id"))
                                         .name((String) profileJo.get("name"))
                                         .email(email).build());
                 }
+
                 ResponseCookie cookie = ResponseCookie.from("refreshToken", (String) token.get("refresh_token"))
                                 .httpOnly(true)
                                 .secure(true)
@@ -85,6 +90,7 @@ public class NaverService {
 
                 Map<String, String> data = new HashMap<>();
                 data.put("accessToken", accessToken);
+                data.put("memberIdx", listMember.get(0).getIdx().toString());
 
                 return ResponseEntity
                                 .ok()

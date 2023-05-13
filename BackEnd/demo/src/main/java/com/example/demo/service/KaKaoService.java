@@ -22,6 +22,7 @@ import org.springframework.web.client.RestTemplate;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -141,11 +142,16 @@ public class KaKaoService {
         if (email.isEmpty() || email.isBlank()) {
             return (ResponseEntity<ResponseDTO>) ResponseEntity.notFound();
         }
-        if (memberService.findByEmail(email).isEmpty()) {
+
+        List<Member> listMember = memberService.findByEmail(email);
+
+        if (listMember.isEmpty()) {
             memberService.save(Member.builder().email(email).build());
         } else {
             // Last Access Time Update
         }
+
+        data.put("memberIdx", listMember.get(0).getIdx().toString());
 
         return ResponseEntity
                 .ok()

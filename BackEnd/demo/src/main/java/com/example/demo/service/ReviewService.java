@@ -17,7 +17,7 @@ public interface ReviewService {
 
     Review save(Review review);
 
-    Optional<Review> findByIdx(String idx);
+    Map<String, Object> findByIdx(String idx);
 
     void deleteById(Long idx);
 

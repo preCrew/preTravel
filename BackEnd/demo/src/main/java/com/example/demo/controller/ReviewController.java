@@ -49,7 +49,7 @@ public class ReviewController {
     @GetMapping("detail")
     public ResponseEntity<ResponseDTO> findByIdx(String idx) {
         log.info("리뷰 상세 조회");
-        Optional<Review> review = service.findByIdx(idx);
+        Map<String, Object> review = service.findByIdx(idx);
         return returnUtil.code200("리뷰 상세 조회", review);
     }
 
