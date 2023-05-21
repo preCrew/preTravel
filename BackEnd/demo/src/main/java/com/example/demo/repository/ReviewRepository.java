@@ -20,4 +20,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     List<Review> findByMemberIdxAndAddress(String memberIdx, String address);
 
+    List<Review> findByNameAndLatitudeAndLongitude(String name, Double latitude, Double longitude);
+
 }

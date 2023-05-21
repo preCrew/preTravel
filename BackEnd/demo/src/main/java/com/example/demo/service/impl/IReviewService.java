@@ -119,6 +119,11 @@ public class IReviewService implements ReviewService {
         return dao.findByMemberIdxAndAddress(memberIdx, address);
     }
 
+    @Override
+    public List<Review> findByNameAndLatitudeAndLongitude(String name, String latitude, String longitude) {
+        return dao.findByNameAndLatitudeAndLongitude(name, Double.valueOf(latitude), Double.valueOf(longitude));
+    }
+
     private Map<String, Object> convertReviewToMap(Review target) {
         Map<String, Object> result = new HashMap<>();
 

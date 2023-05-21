@@ -55,4 +55,8 @@ public class ReviewDao {
         return repository.findByMemberIdxAndAddress(memberIdx, address);
     }
 
+    public List<Review> findByNameAndLatitudeAndLongitude(String name, Double latitude, Double longitude) {
+        return repository.findByNameAndLatitudeAndLongitude(name, latitude, longitude);
+    }
+
 }
