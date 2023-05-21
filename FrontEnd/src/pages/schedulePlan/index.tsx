@@ -15,7 +15,7 @@ import { scheduleFileAtom } from '@src/recoil/schedule/file/atom';
 import useAddScheduleQuery from '@src/hooks/react-query/useAddSchedule';
 import { scheduleAtom } from '@src/recoil/schedule/atom';
 
-////
+//// chaning
 const SchedulePlan = () => {
   const navigate = useNavigate();
   const [title, setTitle, onChangeTitle] = useInput('');
