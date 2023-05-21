@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "target": "es2015",
+    "strict": true,
+    "lib":[
+        "ES5",
+        "ES2015",
+        "ES2022",
+        "DOM",//web 사용
+        "DOM.iterable",
+    ],
+    "forceConsistentCasingInFileNames":false,
+    "moduleResolution": "node",
+    "jsx":"react-jsx",   
+    "esModuleInterop": true ,
+    "experimentalDecorators": true,
+    "baseUrl": ".",
+    "paths": {
+      "@src/*": ["src/*"],
+    },
+    "jsxImportSource": "@emotion/react",
+    "module": "esnext",
+  },
+  "include": ["src", "@types","client.tsx"],
+  "exclude": ["node_modules"],
+  "ts-node": {
+    "compilerOptions": {
+      "module": "CommonJS"
+    }
+  }
+
+}

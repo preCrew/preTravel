@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 400;
+    overflow-y: scroll;
+  }
+  html,
+  body,
+  .root,
+  #root,
+  #docs-root{
+    width: 100%;
+    height: 100%;
+    --contentX: 22px;
+    --primary1: #5698F3;
+    --primary2: #D84243;
+    --primary3: #F09CD5;
+    --primary4: #F09CD5;
+    --primary8: #D84243;
+    --gray1: #787878;
+    --gray2: #F6F6F6;
+    --gray3: #eeeeee;
+    --gray4: #F2F5F9;
+    --gray5: #C8C8C8; 
+    --red1: #C81111;
+    --green1: #4D854C;
+  }
+  
+}
+
+@layer components {
+  .content-inner{
+    padding: var(--contentX);
+  }  
+  .tab__slide .slick-track{
+    margin: 0;
+  }
+  .slick-slide button.active{
+    background-color: var(--primary1);
+    color: white;
+  }
+  .rdp-button:hover:not([disabled]):not(.rdp-day_selected),
+  .rdp-day_selected, .rdp-day_selected:focus-visible, .rdp-day_selected:hover{
+      background-color: var(--primary1) !important;
+      color: white;
+  }  
+
+}
+

@@ -1,0 +1,33 @@
+spring:
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:3306/schedule?characterEncoding=UTF-8&useTimezone=true&serverTimezone=Asia/Seoul
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+
+file_url: http://localhost:8080/file/img/
+
+oauth:
+  kakao:
+    token_host: https://kauth.kakao.com/oauth/token
+    user_host: https://kapi.kakao.com/v2/user/me
+    grant_type: authorization_code
+    rest_api_key : 2581cd83651b3e51982587f4cb1652f5 #신영수정
+    redirect_uri: http://localhost:8080/oauth/kakao
+    logout_host: https://kauth.kakao.com/oauth/logout
+    map:
+      rest_api_key : 2581cd83651b3e51982587f4cb1652f5
+      host : https://dapi.kakao.com/v2/local/search/keyword.JSON
+  naver:
+    token_host : https://nid.naver.com/oauth2.0/token
+    user_host : https://openapi.naver.com/v1/nid/me
+    client_id : 76Nr2e2G6KuBeyuVPqbf
+    client_secret : 3FuWrNGOQZ
+    logout_url : http://nid.naver.com/nidlogin.logout
