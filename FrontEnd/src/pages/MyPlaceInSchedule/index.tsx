@@ -4,11 +4,11 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
 import useKakaoMap from '@src/components/common/Map/useKakaoMap';
 import TabSlide from '@src/components/common/TabSlide/TabSlide';
-import Button from '@src/components/scheduleDetail/BottomSheet/Button';
-import CalendarCon from '@src/components/scheduleDetail/BottomSheet/CalendarCon';
-import MyScheduleCon from '@src/components/scheduleDetail/BottomSheet/MyScheduleCon';
-import CalendarBtn from '@src/components/scheduleDetail/CalendarBtn';
-import Title from '@src/components/scheduleDetail/Title';
+import Button from '@src/components/ScheduleDetail/BottomSheet/Button';
+import CalendarCon from '@src/components/ScheduleDetail/BottomSheet/CalendarCon';
+import MyScheduleCon from '@src/components/ScheduleDetail/BottomSheet/MyScheduleCon';
+import CalendarBtn from '@src/components/ScheduleDetail/CalendarBtn';
+import Title from '@src/components/ScheduleDetail/Title';
 
 import useGetMyPlaceInSchedule from '@src/hooks/react-query/useGetMyPlaceInSchedule';
 
