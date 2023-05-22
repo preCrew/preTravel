@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import tw from 'twin.macro';
 import { useRecoilValue } from 'recoil';
 
-import BottomSheetWrap from '@src/components/scheduleDetail/BottomSheet/BottomSheetWrap';
+import BottomSheetWrap from '@src/components/ScheduleDetail/BottomSheet/BottomSheetWrap';
 import IconButton from '@src/components/common/Button/IconButton';
 import TopBar from '@src/components/common/TobBar';
 import Button from '@src/components/common/Button';
