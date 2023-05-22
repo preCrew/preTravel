@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://svc.gksl2.cloudtype.app:30575/schedule?characterEncoding=UTF-8&useTimezone=true&serverTimezone=Asia/Seoul
+    url: jdbc:mariadb://svc.sel4.cloudtype.app:30772/schedule?characterEncoding=UTF-8&useTimezone=true&serverTimezone=Asia/Seoul
     username: root
-    password: charmacist
+    password: root
   jpa:
     hibernate:
       ddl-auto: none
@@ -12,7 +12,7 @@ spring:
         show_sql: true
         format_sql: true
 
-file_url: https://port-0-pretravel-ll32glc6adwo3.gksl2.cloudtype.app/file/img/
+file_url: https://port-0-pretravel-lhe2blhxg4o79.sel4.cloudtype.app/file/img/
 
 oauth:
   kakao:

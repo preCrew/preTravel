@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -51,6 +50,14 @@ public class ReviewController {
         log.info("리뷰 상세 조회");
         Map<String, Object> review = service.findByIdx(idx);
         return returnUtil.code200("리뷰 상세 조회", review);
+    }
+
+    @GetMapping("name")
+    public ResponseEntity<ResponseDTO> findByNameAndLatitudeAndLongitude(String name, String latitude, String longitude) {
+        System.out.println(name + latitude + longitude);
+        log.info("리뷰 이름, 위경도 조회");
+        List<Review> review = service.findByNameAndLatitudeAndLongitude(name, latitude, longitude);
+        return returnUtil.code200("리뷰 이름, 위경도 조회", review);
     }
 
     @PostMapping("")

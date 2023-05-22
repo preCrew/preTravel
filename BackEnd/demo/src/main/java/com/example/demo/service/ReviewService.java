@@ -2,7 +2,6 @@ package com.example.demo.service;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -22,5 +21,7 @@ public interface ReviewService {
     void deleteById(Long idx);
 
     List<Review> findByMemberIdxAndAddress(String memberIdx, String address);
+
+    List<Review> findByNameAndLatitudeAndLongitude(String name, String latitude, String longitude);
 
 }
