@@ -11,7 +11,7 @@ import SearchPage from './SearchPage';
 import PlacePlan from './PlacePlan';
 import MapInfoPage from './MapInfoPage';
 import MySchedule from './MySchedule';
-import SchedulePlan from './schedulePlan2';
+import SchedulePlan from './SchedulePlan';
 
 const App = () => {
   useEffect(() => {
