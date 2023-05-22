@@ -10,12 +10,12 @@ import useMyScheduleDeleteQuery from '@src/hooks/react-query/useDeleteMySchedule
 
 import TopBar from '@src/components/common/TobBar';
 import Button from '@src/components/common/Button';
-import MyScheduleCardList from '@src/components/MyScedule/MyScheduleCardList';
-import CancelBtn from '@src/components/MyScedule/CancelBtn';
-import { SkeletonMyScheduleCard } from '@src/components/MyScedule/MyScheduleCard';
-import IconBox from '@src/components/MyScedule/IconBox';
+import MyScheduleCardList from '@src/components/myScedule2/MyScheduleCardList';
+import CancelBtn from '@src/components/myScedule2/CancelBtn';
+import { SkeletonMyScheduleCard } from '@src/components/myScedule2/MyScheduleCard';
+import IconBox from '@src/components/myScedule2/IconBox';
 import mySchedule from './style';
-import SelectNumberBox from '@src/components/MyScedule/SelectNumberBox';
+import SelectNumberBox from '@src/components/myScedule2/SelectNumberBox';
 
 const MySchedule2 = () => {
   const navigate = useNavigate();
