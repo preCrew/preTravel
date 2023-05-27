@@ -3,7 +3,13 @@ import axios from 'axios';
 import { Response } from './responseInterfaces';
 
 // ### Request - GET - QueryParameter
-
+// @GetMapping("name")
+// public ResponseEntity<ResponseDTO> findByNameAndLatitudeAndLongitude(String name, String latitude, String longitude) {
+//     System.out.println(name + latitude + longitude);
+//     log.info("리뷰 이름, 위경도 조회");
+//     List<Review> review = service.findByNameAndLatitudeAndLongitude(name, latitude, longitude);
+//     return returnUtil.code200("리뷰 이름, 위경도 조회", review);
+// }
 // | Key | 타입 | 설명 |
 // | --- | --- | --- |
 // | idx | String | 회원 idx |
