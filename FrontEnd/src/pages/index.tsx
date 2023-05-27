@@ -41,10 +41,10 @@ const App = () => {
           path="/"
           element={<MainPage />}
         />
-        <Route
+        {/* <Route
           path="/mySchedule"
           element={<MySchedule />}
-        />
+        /> */}
         <Route
           path="/mySchedule/:id"
           element={
@@ -77,18 +77,6 @@ const App = () => {
           path="/oauth/:where"
           element={<OauthPage />}
         />
-        {/* <Route
-          path="/map/main"
-          element={
-            <Suspense fallback={'로딩즁,,,'}>
-              <MainPage />
-            </Suspense>
-          }
-        /> */}
-        {/* <Route
-          path="/map/*"
-          element={<MapPage />}
-        /> */}
         <Route
           path="/*"
           element={<div>잘못된접근</div>}
