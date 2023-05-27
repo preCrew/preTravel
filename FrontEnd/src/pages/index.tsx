@@ -62,7 +62,7 @@ const App = () => {
           element={<SchedulePlan />}
         />
         <Route
-          path="search"
+          path="/search"
           element={<SearchPage />}
         />
         <Route
