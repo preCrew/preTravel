@@ -15,3 +15,4 @@ const CancelBtn = ({ onClick }: CancelBtnProps) => {
 };
 
 export default CancelBtn;
+``;
