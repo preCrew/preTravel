@@ -1,11 +1,10 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import tw from 'twin.macro';
 
 import { File } from '@src/hooks/react-query/useAddImages';
 import useOnChange from '@src/hooks/useOnChange';
 import useReviewUpdateQuery from '@src/hooks/react-query/useReviewUpdateQuery';
-import useLocationState from '@src/hooks/recoil/useLocationState';
 
 import Row from '@src/components/common/FlexBox/Row';
 import Column from '@src/components/common/FlexBox/Column';
@@ -18,59 +17,74 @@ import TopBar from '@src/components/common/TobBar';
 import TopText from '@src/components/common/Text/TopText';
 interface ReviewEditPageProps {
   idx?: string;
-  topBarName?: string;
   rating?: RatingNum;
   images?: File[];
   isRevisit?: boolean;
   review?: string;
+  name?: string;
+  latitude?: string;
+  longitude?: string;
 }
 
-const ReviewEditPage = ({}: ReviewEditPageProps) => {
+const ReviewEditPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const locationState = location.state as ReviewEditPageProps;
-
-  const [rating, setRating] = useState<RatingNum>(1);
-  const [isRevisit, setIsRevisit] = useState<boolean>(false);
-  const [imgNum, setImgNum] = useState<number>(0);
-
-  const {
-    onChange: onChangeText,
-    value: textValue,
-    setValue: setTextValue,
-  } = useOnChange();
-  const [files, setFiles] = useState<File[]>([]);
-  console.log(files);
-
-  const {
-    data,
-    mutate: updateReview,
-    isSuccess,
-  } = useReviewUpdateQuery(
-    isRevisit,
-    rating,
-    textValue,
-    files,
-    locationState.idx,
+  const locationState = useMemo(
+    () => location.state as ReviewEditPageProps,
+    [location.state],
   );
 
-  useEffect(() => {
-    if (!locationState.idx) return;
+  const [state, setState] = useState<{
+    rating: RatingNum;
+    isRevisit: boolean;
+    imgNum: number;
+  }>({
+    rating: locationState.rating ?? 1,
+    isRevisit: locationState.isRevisit ?? false,
+    imgNum: locationState.images?.length ?? 0,
+  });
 
-    console.log('!왔어!!', locationState);
-    setRating(locationState.rating ?? 1);
-    setFiles(prev => [...prev, ...(locationState.images ?? [])]);
-    setIsRevisit(locationState.isRevisit ?? false);
-    setTextValue(locationState.review ?? '');
-    setImgNum(locationState.images?.length ?? 0);
-  }, []);
+  const decreseImgNum = () => {
+    setState(prev => ({ ...prev, imgNum: prev.imgNum - 1 }));
+  };
+
+  const increseImgNum = (imgNum: number) => {
+    setState(prev => ({ ...prev, imgNum: prev.imgNum + imgNum }));
+  };
+
+  const handleChangeRating = (rating: RatingNum) => {
+    setState(prev => ({ ...prev, rating }));
+  };
+
+  const handleClickRevisitCheckBox = () => {
+    setState(prev => ({ ...prev, isRevisit: !prev.isRevisit }));
+  };
+
+  const { onChange: onChangeText, value: textValue } = useOnChange();
+  const [files, setFiles] = useState<File[]>([]);
+
+  const { mutate: updateReview, isSuccess: isSuccessUpdate } =
+    useReviewUpdateQuery(
+      state.isRevisit,
+      state.rating,
+      textValue,
+      files,
+      locationState.idx,
+    );
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isSuccessUpdate) {
       alert(`리뷰가 정상적으로 등록되었습니다.`);
-      navigate(`/review/${data.idx}`);
+      navigate(`/review`, {
+        state: {
+          idx: locationState.idx,
+          name: locationState.name,
+          latitude: locationState.latitude,
+          longitude: locationState.longitude,
+        },
+      });
     }
-  }, [isSuccess]);
+  }, [isSuccessUpdate]);
 
   const handleClickSubmitButton = async () => {
     updateReview();
@@ -82,15 +96,15 @@ const ReviewEditPage = ({}: ReviewEditPageProps) => {
   return (
     <>
       <TopBar onClickBackButton={handleClickBackButton}>
-        <TopText>{locationState.topBarName}</TopText>
+        <TopText>{locationState.name}</TopText>
       </TopBar>
 
       <Column css={tw`w-h-full gap-14`}>
         <Column>
           <FormText required>만족도</FormText>
           <Rating
-            rating={rating}
-            setRating={setRating}
+            rating={state.rating}
+            onChange={handleChangeRating}
             starSize={12}
           />
         </Column>
@@ -102,8 +116,9 @@ const ReviewEditPage = ({}: ReviewEditPageProps) => {
           <UploadImage
             imgFiles={files}
             setImgFiles={setFiles}
-            imgNum={imgNum}
-            setImgNum={setImgNum}
+            imgNum={state.imgNum}
+            decreseImgNum={decreseImgNum}
+            increseImgNum={increseImgNum}
           />
         </Column>
 
@@ -114,11 +129,7 @@ const ReviewEditPage = ({}: ReviewEditPageProps) => {
               gap={2}
               css={tw`items-center `}
             >
-              <CheckBox
-                onClick={() => {
-                  setIsRevisit(prev => !prev);
-                }}
-              />
+              <CheckBox onClick={handleClickRevisitCheckBox} />
               <span css={tw`text-body3 cursor-pointer select-none`}>
                 다음에도 방문하고 싶어요😃
               </span>

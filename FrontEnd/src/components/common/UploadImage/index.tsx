@@ -11,7 +11,9 @@ interface UploadImageProps {
   imgFiles: File[];
   setImgFiles: Dispatch<SetStateAction<File[]>>;
   imgNum: number;
-  setImgNum: Dispatch<SetStateAction<number>>;
+  // setImgNum: (num: number) => void;
+  increseImgNum: (num: number) => void;
+  decreseImgNum: () => void;
 }
 
 const errorMessages = {
@@ -25,7 +27,8 @@ const UploadImage = ({
   imgFiles,
   setImgFiles,
   imgNum,
-  setImgNum,
+  increseImgNum,
+  decreseImgNum,
 }: UploadImageProps) => {
   // const [imgNum, setImgNum] = useState<number>(0);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -62,7 +65,7 @@ const UploadImage = ({
     }
 
     mutate({ boardName: 'review', files: inputFiles });
-    setImgNum(prev => prev + inputFiles.length);
+    increseImgNum(inputFiles.length);
     showModal();
 
     e.target.value = '';
@@ -75,7 +78,7 @@ const UploadImage = ({
 
   const handleClickCloseButton = (idx: string) => {
     setImgFiles(prev => prev.filter(i => i.idx !== idx));
-    setImgNum(prev => prev - 1);
+    decreseImgNum();
     mutateDeleteImage(idx);
   };
 
