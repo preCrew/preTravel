@@ -1,5 +1,5 @@
 import BottomSheet from '@src/components/BottomSheet';
-import React, { useState } from 'react';
+import React from 'react';
 
 interface BottomSheetWrapProps {
   drag: boolean;
