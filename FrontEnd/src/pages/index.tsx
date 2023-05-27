@@ -2,8 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useEffect } from 'react';
 
-import MySchedule from './mySchedule';
-import MySchedule2 from './mySchedule2';
+import MySchedule from './MySchedule';
 import LoginPage from './LoginPage';
 import OauthPage from './OauthPage';
 import MapPage from './MapPage';
@@ -11,6 +10,7 @@ import Main from './Main';
 import SearchPage from './SearchPage';
 import ReviewPage from './ReviewPage';
 import tw from 'twin.macro';
+import MySchedule2 from './MySchedule2';
 
 const App = () => {
   useEffect(() => {

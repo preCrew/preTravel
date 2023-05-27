@@ -1,4 +1,4 @@
-import { MyScheduleCardI } from '@src/components/myScedule/MyScheduleCard';
+import { MyScheduleCardI } from '@src/components/MyScedule/MyScheduleCard';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
