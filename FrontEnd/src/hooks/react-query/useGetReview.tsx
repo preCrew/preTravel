@@ -89,6 +89,7 @@ interface Review {
   memberIdx: string;
   name: string;
   address: string;
+  city: string;
   star: string;
   latitude: string;
   longitude: string;
@@ -113,7 +114,8 @@ const reviewFetch = async (idx: string) => {
     }
 
     const createDate = response.data.data.createDate
-      .split(' ')[0]
+      .slice(0, 10)
+      // .split(' ')[0]
       .replaceAll('-', '.');
     const file = response.data.data.file.map(item => item.fileDir);
     const newData = {
