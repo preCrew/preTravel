@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { Response } from './responseInterfaces';
+import { useQuery } from '@tanstack/react-query';
 
 interface IReviewFile {
   idx: string;
@@ -67,7 +68,7 @@ const reviewFetch = async (
   }
 };
 
-const useGetReveiw = (storeName: string, latitude: string, longitude: string) =>
+const useGetReview = (storeName: string, latitude: string, longitude: string) =>
   useQuery(
     ['review', storeName, latitude, longitude],
     () => reviewFetch(storeName, latitude, longitude),

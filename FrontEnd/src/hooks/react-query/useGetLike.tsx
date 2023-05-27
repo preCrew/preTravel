@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { Response } from './responseInterfaces';
+import { useQuery } from '@tanstack/react-query';
 
 export interface Like {
   idx: string;
