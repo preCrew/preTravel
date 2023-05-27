@@ -6,12 +6,12 @@ import useGetLike, { Like } from '@src/hooks/react-query/useGetLike';
 import useDeleteLike from '@src/hooks/react-query/useDeleteLike';
 import useAddLike from '@src/hooks/react-query/useAddLike';
 
-import BottomSheetWrap from '@src/components/ScheduleDetail/BottomSheet/BottomSheetWrap';
 import IconButton from '@src/components/common/Button/IconButton';
 import TopBar from '@src/components/common/TobBar';
 import Button from '@src/components/common/Button';
 import TopText from '@src/components/common/Text/TopText';
 import useLocationState from '@src/hooks/recoil/useLocationState';
+import BottomSheetWrap from '@src/components/scheduleDetail/BottomSheet/BottomSheetWrap';
 
 export interface MapInfoPageProps {}
 
