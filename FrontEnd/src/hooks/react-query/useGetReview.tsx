@@ -1,4 +1,3 @@
-import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { Response } from './responseInterfaces';
 
@@ -80,4 +79,4 @@ const useGetReveiw = (storeName: string, latitude: string, longitude: string) =>
     },
   );
 
-export default useGetReveiw;
+export default useGetReview;

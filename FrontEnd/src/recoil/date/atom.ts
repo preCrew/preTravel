@@ -2,30 +2,30 @@ import { atom } from 'recoil';
 
 interface IcurrentSceduleList {
   date: string;
-  list: [
-    {
-      id: number;
-      placeName: string;
-      order: number;
-      la: number;
-      lo: number;
-    },
-  ];
+  list: any[];
 }
 
 interface IdateAtom {
-  id: number;
-  title: string;
-  dateRange: string | number[];
+  idx: string;
+  name: string;
+  region: string;
+  dateRange: {
+    start: string;
+    end: string;
+  };
   schedule: IcurrentSceduleList[];
 }
 
 const currentScheduleAtom = atom<IdateAtom>({
   key: 'currentScheduleAtom',
   default: {
-    id: 1,
-    title: '',
-    dateRange: [],
+    idx: '',
+    name: '',
+    region: '',
+    dateRange: {
+      start: '',
+      end: '',
+    },
     schedule: [],
   },
 });

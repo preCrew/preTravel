@@ -2,6 +2,7 @@ package com.example.demo.service.impl;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -40,21 +41,37 @@ public class IReviewService implements ReviewService {
     }
 
     @Override
-    public List<Review> findByMemberIdx(String memberIdx) {
-        return dao.findByMemberIdx(memberIdx);
+    public Object findByMemberIdx(String memberIdx, Integer page, Integer size) {
+
+        if (size == 0) {
+            return dao.findByMemberIdx(memberIdx);
+        } else {
+            List<Review> list = dao.findByMemberIdxPage(memberIdx, page, size);
+            Map<String, Object> result = new HashMap<>();
+            Boolean isEnd = false;
+            if (list.size() == 0) {
+                isEnd = true;
+            }
+
+            result.put("list", list);
+            result.put("isEnd", isEnd);
+
+            return result;
+        }
     }
 
     @Override
-    public Optional<Review> findByIdx(String idx) {
+    public Map<String, Object> findByIdx(String idx) {
         Optional<Review> optReview = dao.findByIdx(idx);
-        String address = optReview.get().getAddress();
-        String[] parts = address.trim().split("\\s+");
-        String cityAndProvince = parts[1];
-        optReview.get().setAddress(cityAndProvince);
+        if (optReview.isPresent()) {
+            Review target = optReview.get();
+            List<File> tmpList = fileService.findByBoardNameAndBoardIdx("review", target.getIdx());
+            target.setFile(tmpList);
 
-        List<File> tmpList = fileService.findByBoardNameAndBoardIdx("review", optReview.get().getIdx());
-        optReview.get().setFile(tmpList);
-        return optReview;
+            return convertReviewToMap(target);
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -100,6 +117,44 @@ public class IReviewService implements ReviewService {
     @Override
     public List<Review> findByMemberIdxAndAddress(String memberIdx, String address) {
         return dao.findByMemberIdxAndAddress(memberIdx, address);
+    }
+
+    @Override
+    public List<Review> findByNameAndLatitudeAndLongitude(String name, String latitude, String longitude) {
+        List<Review> list =  dao.findByNameAndLatitudeAndLongitude(name, Double.valueOf(latitude), Double.valueOf(longitude));
+
+        for (Review review : list) {
+            List<File> tmpList = fileService.findByBoardNameAndBoardIdx("review", review.getIdx());
+            review.setFile(tmpList);
+        }
+        return dao.findByNameAndLatitudeAndLongitude(name, Double.valueOf(latitude), Double.valueOf(longitude));
+    }
+
+    private Map<String, Object> convertReviewToMap(Review target) {
+        Map<String, Object> result = new HashMap<>();
+
+        result.put("idx", target.getIdx());
+        result.put("memberIdx", target.getMemberIdx());
+        result.put("name", target.getName());
+        result.put("address", target.getAddress());
+        result.put("city", extractCity(target));
+        result.put("star", target.getStar());
+        result.put("latitude", target.getLatitude());
+        result.put("longitude", target.getLongitude());
+        result.put("revisit", target.getRevisit());
+        result.put("contents", target.getContents());
+        result.put("createDate", target.getCreateDate());
+        result.put("file", target.getFile());
+
+        return result;
+    }
+
+    private String extractCity(Review target) {
+        String address = target.getAddress();
+        String[] parts = address.trim().split("\\s+");
+        String cityAndProvince = parts[1];
+
+        return cityAndProvince;
     }
 
 }

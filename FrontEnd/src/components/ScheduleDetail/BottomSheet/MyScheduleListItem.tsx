@@ -31,7 +31,7 @@ const MyScheduleListItem = ({ data, index, edit }: MyScheduleListItemProps) => {
             ref={provided.innerRef}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
-            className="flex mb-3 pl-7 text-body2"
+            className="mb-3 flex pl-7 text-body2"
             style={{
               backgroundColor: snap.isDragging
                 ? 'var(--primary2)'
@@ -39,11 +39,11 @@ const MyScheduleListItem = ({ data, index, edit }: MyScheduleListItemProps) => {
               ...provided.draggableProps.style,
             }}
           >
-            <span className="inline-block w-20 h-20 font-bold text-center rounded-full shrink-0 bg-gray4 text-body2Bold -ml-7">
+            <span className="-ml-7 inline-block h-20 w-20 shrink-0 rounded-full bg-gray4 text-center text-body2Bold font-bold">
               {index + 1}
             </span>
             <div className="flex grow">
-              <p className="px-2 break-words grow">{data.placeName}</p>
+              <p className="grow break-words px-2">{data.placeName}</p>
               {edtiBtnOn && <MyScheduleListEditBtn />}
             </div>
           </li>

@@ -8,6 +8,7 @@ interface BottomSheetProps {
   contentH?: number;
   dragOn?: boolean;
   bg?: boolean;
+  open?: boolean;
 }
 
 type WithoutBgBottomSheetType = {
@@ -21,14 +22,25 @@ const WithoutBgBottomSheet = ({ backSheet }: WithoutBgBottomSheetType) => {
   return <Sheet.Backdrop />;
 };
 
-const BottomSheet = ({ children, contentH, dragOn, bg }: BottomSheetProps) => {
+const BottomSheet = ({
+  children,
+  contentH,
+  dragOn,
+  bg,
+  open,
+}: BottomSheetProps) => {
   // const [isOpen, setOpen] = useState(false);
   const sheetDetent = contentH ? 'full-height' : 'content-height';
-  const [isOpen, setOpen] = useRecoilState(modalAtom);
+  const [isOpenState, setOpenState] = useRecoilState(modalAtom);
 
   useEffect(() => {
-    setOpen(true);
-  }, []);
+    console.log(open);
+  }, [open, isOpenState]);
+
+  const onCloseSheet = () => {
+    console.log('닫기');
+    setOpenState(false);
+  };
 
   return (
     <>
@@ -36,8 +48,8 @@ const BottomSheet = ({ children, contentH, dragOn, bg }: BottomSheetProps) => {
       {/* <button onClick={() => setOpen(true)}>Open sheet?</button> */}
       {/*Sheet */}
       <Sheet
-        isOpen={isOpen}
-        onClose={() => setOpen(false)}
+        isOpen={isOpenState}
+        onClose={onCloseSheet}
         detent={sheetDetent}
         disableDrag={dragOn}
       >

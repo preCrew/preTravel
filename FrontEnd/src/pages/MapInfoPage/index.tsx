@@ -12,11 +12,21 @@ import Button from '@src/components/common/Button';
 import TopText from '@src/components/common/Text/TopText';
 import useLocationState from '@src/hooks/recoil/useLocationState';
 import BottomSheetWrap from '@src/components/scheduleDetail/BottomSheet/BottomSheetWrap';
+import useAddPlaceinScehduleQuery from '@src/hooks/react-query/useAddPlaceinScehdule';
+import { useRecoilValue } from 'recoil';
+import { currentScheduleAtom, selectedDayAtom } from '@src/recoil/date/atom';
+import { locationAtom } from '@src/recoil/location/atom';
 
 export interface MapInfoPageProps {}
 
 const MapInfoPage = ({}: MapInfoPageProps) => {
   const navigate = useNavigate();
+  const {
+    locationState: { selectData },
+  } = useLocationState();
+  const { mutate: mutateAddPlace, isSuccess: isSuccessAddPlace } =
+    useAddPlaceinScehduleQuery();
+
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const searchParamsObj = Object.fromEntries(searchParams);
@@ -26,6 +36,9 @@ const MapInfoPage = ({}: MapInfoPageProps) => {
     searchParamsObj.latitude,
     searchParamsObj.longitude,
   );
+  const currentScheduleState = useRecoilValue(currentScheduleAtom);
+  const currentPlaceState = useRecoilValue(locationAtom);
+  const selectDayState = useRecoilValue(selectedDayAtom);
 
   const { mutate: addLikeMutation } = useAddLike(
     searchParamsObj.name,
@@ -38,17 +51,20 @@ const MapInfoPage = ({}: MapInfoPageProps) => {
 
   const { setSelectData } = useLocationState();
 
-  useEffect(() => {
-    // 만약 주소로 들어왔다면 selectData를 채워줘야함.
-    setSelectData({
-      name: searchParamsObj.name,
-      address: searchParamsObj.address,
-      y: searchParamsObj.latitude,
-      x: searchParamsObj.longitude,
+  const handleClickAddScheduleButton = () => {
+    mutateAddPlace({
+      date: currentScheduleState.schedule[selectDayState].date,
+      sctIdx: currentScheduleState.id,
+      list: [
+        {
+          placeName: currentPlaceState.selectData.body,
+          address: currentPlaceState.selectData.address,
+          order: null,
+          la: currentPlaceState.selectData.y,
+          lo: currentPlaceState.selectData.x,
+        },
+      ],
     });
-    getLikeRefetch();
-    // TODO: 리뷰 받아옴, 리뷰 있으면 리뷰 보기, 리뷰 없으면 리뷰 작성.
-  }, []);
 
   const handleClickBackButton = () => {
     navigate(-1);
@@ -58,7 +74,6 @@ const MapInfoPage = ({}: MapInfoPageProps) => {
     navigate(`/review/edit`, { state: { topBarName: searchParamsObj.name } });
   };
 
-  const handleClickAddScheduleButton = () => {};
 
   const handleClickLikeButton = async () => {
     // TODO: memberIdx 받아오도록 변경해야함.
@@ -80,22 +95,19 @@ const MapInfoPage = ({}: MapInfoPageProps) => {
   return (
     <>
       <TopBar onClickBackButton={handleClickBackButton}>
-        <TopText>{searchParamsObj.name}</TopText>
+        <div
+          css={tw`w-full absolute text-center text-h4Bold pointer-events-none`}
+        >
+          {selectData.name}
+        </div>
       </TopBar>
       <BottomSheetWrap drag={true}>
         <div css={tw`p-2 flex flex-col items-center gap-3`}>
-          <div css={tw`text-h5 `}>{searchParamsObj.address}</div>
-          <div
-            onClick={handleClickLikeButton}
-            css={tw`w-30 h-30 flex-with-center bg-gray3 rounded-full`}
-          >
-            {like || '' ? (
-              <IconButton type="heartFill" />
-            ) : (
-              <IconButton type="heart" />
-            )}
+          <div css={tw`text-h5 `}>{selectData.roadAddress}</div>
+          <div css={tw`w-30 h-30 flex-with-center bg-gray3 rounded-full`}>
+            <IconButton type="heart" />
           </div>
-          <div css={tw`w-full flex justify-evenly gap-5`}>
+          <div css={tw`flex w-full gap-5 justify-evenly`}>
             <Button
               type="large"
               color="gray3"

@@ -37,7 +37,7 @@ const SearchPage = ({}: SearchPageProps) => {
   };
 
   return (
-    <div css={tw`w-full h-full absolute z-20 top-0 bg-white`}>
+    <div css={tw`absolute top-0 z-20 w-full h-full bg-white`}>
       <TopBar onClickBackButton={handleClickBackButton}>
         <SearchButton
           nowPage={'search'}

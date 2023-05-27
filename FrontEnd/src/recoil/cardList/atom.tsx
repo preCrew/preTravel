@@ -1,11 +1,11 @@
 import { atom } from 'recoil';
 
-export interface CardListI {
-  id: string;
-  isSeleted: boolean;
-}
+// export interface CardListI {
+//   id: number;
+//   isSeleted: boolean;
+// }
 
-const cardListAtom = atom<CardListI[]>({
+const cardListAtom = atom<number[]>({
   key: 'cardListAtom',
   default: [],
 });

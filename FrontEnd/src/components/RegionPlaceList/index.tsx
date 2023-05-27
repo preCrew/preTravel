@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom';
 
 import usePlaceGetQuery, {
   PlaceData,
-} from '@src/hooks/react-query/usePlaceGetQuery';
+} from '@src/hooks/react-query/useGetPlaceQuery';
 import useRegionGetQuery, {
   RegionData,
-} from '@src/hooks/react-query/useRegionGetQuery';
+} from '@src/hooks/react-query/useGetRegionQuery';
 
 import useLocationState from '@src/hooks/recoil/useLocationState';
 import useToast from '@src/hooks/useToast';
@@ -32,8 +32,12 @@ const RegionPlaceList = ({
 }: RegionPlaceListProps) => {
   const navigate = useNavigate();
   const { showToast } = useToast();
-  const { locationState, setLocationRegion, setSelectData } =
-    useLocationState();
+  const {
+    locationState,
+    locationState: { region },
+    setLocationRegion,
+    setSelectData,
+  } = useLocationState();
 
   const { data: regionData, refetch: refetechRegionData } =
     useRegionGetQuery(inputVal);
@@ -50,8 +54,8 @@ const RegionPlaceList = ({
   });
 
   useEffect(() => {
+    console.log(region);
     if (!isCommit) return;
-
     const getNextPlaceData = async () => {
       const placeArray = await fetchNextPlaceData();
       if (!placeArray?.data?.pages[0].boardPage.length) {
@@ -64,8 +68,7 @@ const RegionPlaceList = ({
         showToast('searchRegion', '검색 결과가 없습니다. 다시 입력해주세요');
       }
     };
-
-    if (locationState.region) {
+    if (region) {
       getNextPlaceData();
     } else {
       getRegionData();
@@ -85,15 +88,16 @@ const RegionPlaceList = ({
     } else {
       const regionData = (await data) as RegionData;
       setLocationRegion(regionData.body);
+      // showToast(
+      //   'region',
+      //   `지역이 ${regionData.body} 입니다. 장소를 입력해주세요.`,
+      // );
+      // setMsg(`지역이 ${regionData.body} 입니다. 장소를 입력해주세요.`);
+      // showToast();
+      // 지역 입력 완료 후 일정짜기로 이동
+      navigate('/schedulePlan');
 
-      showToast(
-        'region',
-        `지역이 ${regionData.body} 입니다. 장소를 입력해주세요.`,
-      );
-
-      navigate(-1);
-
-      inputRef.current?.focus();
+      //inputRef.current?.focus();
     }
   };
 

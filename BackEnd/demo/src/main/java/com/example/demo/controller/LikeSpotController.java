@@ -57,4 +57,16 @@ public class LikeSpotController {
         List<LikeSpot> list = service.findData(map);
         return returnUtil.code200("범위내 찜한장소 조회", list);
     }
+
+    @GetMapping("search")
+    public ResponseEntity<ResponseDTO> findByNameAndMemberIdxAndLatitudeAndLongitude(
+            @RequestParam(value = "name") String name,
+            @RequestParam(value = "latitude") Double latitude,
+            @RequestParam(value = "longitude") Double longitude,
+            @RequestParam(value = "memberIdx") String memberIdx) {
+        List<LikeSpot> list = service.findByNameAndMemberIdxAndLatitudeAndLongitude(name, memberIdx, latitude,
+                longitude);
+        log.info("회원별 장소 위경도 조회");
+        return returnUtil.code200("위경도, 장소 찜한장소 조회", list);
+    }
 }

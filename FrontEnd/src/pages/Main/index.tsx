@@ -19,20 +19,14 @@ interface ImainTabCategory {
 }
 
 const Main = () => {
-  const {
-    Map,
-    addUserSavedMarker,
-    removeMarker,
-    currentLocation,
-    mapAreaChange,
-  } = useKakaoMap();
+  const { Map, removeMarker, getCurrentLocation } = useKakaoMap();
 
   //const { data: userReview } = useGetReveiw('1');
 
   const map = useMemo(() => <Map />, []);
 
   useEffect(() => {
-    currentLocation();
+    getCurrentLocation();
   }, []);
 
   //const mainTabCategory = ['찜한장소', '리뷰 쓴 곳', '전체'];
@@ -65,7 +59,7 @@ const Main = () => {
       el => el.category.title === target.textContent,
     );
 
-    mapAreaChange(result?.category.type as number);
+    //mapAreaChange(result?.category.type as number);
     //Object.keys(mainTabCategory).find(key => mainTabCategory[key] as keyof );
 
     // if (target.textContent === mainTabCategory[0]) {

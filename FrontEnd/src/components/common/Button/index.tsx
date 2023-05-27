@@ -27,6 +27,7 @@ const Button = ({ children, type, color, className, onClick }: ButtonProps) => {
     large: `w-[calc(100%)] h-50 text-body1Bold z-[10] text-white`,
     none: '',
   };
+
   const defaultClassName = `
     p-2 rounded-3xl 
     flex justify-center items-center

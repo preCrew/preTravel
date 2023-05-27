@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -40,17 +39,25 @@ public class ReviewController {
     }
 
     @GetMapping("member")
-    public ResponseEntity<ResponseDTO> findByMemberIdx(String memberIdx) {
+    public ResponseEntity<ResponseDTO> findByMemberIdx(String memberIdx, Integer page, Integer size) {
         log.info("회원별 리뷰조회");
-        List<Review> list = service.findByMemberIdx(memberIdx);
+        Object list = service.findByMemberIdx(memberIdx, page, size);
         return returnUtil.code200("회원별 리뷰조회", list);
     }
 
     @GetMapping("detail")
     public ResponseEntity<ResponseDTO> findByIdx(String idx) {
         log.info("리뷰 상세 조회");
-        Optional<Review> review = service.findByIdx(idx);
+        Map<String, Object> review = service.findByIdx(idx);
         return returnUtil.code200("리뷰 상세 조회", review);
+    }
+
+    @GetMapping("name")
+    public ResponseEntity<ResponseDTO> findByNameAndLatitudeAndLongitude(String name, String latitude, String longitude) {
+        System.out.println(name + latitude + longitude);
+        log.info("리뷰 이름, 위경도 조회");
+        List<Review> review = service.findByNameAndLatitudeAndLongitude(name, latitude, longitude);
+        return returnUtil.code200("리뷰 이름, 위경도 조회", review);
     }
 
     @PostMapping("")

@@ -2,10 +2,10 @@ import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { Suspense, useMemo } from 'react';
 import tw from 'twin.macro';
 
-import useToast from '@src/hooks/useToast';
-
-import SearchButton from '@src/components/common/Button/SearchButton';
-import SearchPage from '@src/pages/SearchPage';
+import SearchPage from '../SearchPage';
+import MainPage from '../MainPage';
+import KaKaoMap from './KaKaMap';
+import useKakaoMap from '@src/components/common/Map/useKakaoMap';
 import MapInfoPage from '../MapInfoPage';
 
 interface State {
@@ -32,10 +32,6 @@ const MapPage = ({}: MapPageProps) => {
     [searchParamsObj['showButton']],
   );
 
-  const handleClickSearchButton = () => {
-    navigate('/map/search');
-  };
-
   return (
     <div css={tw`w-full h-full flex flex-col items-center`}>
       {showButton && (
@@ -50,8 +46,16 @@ const MapPage = ({}: MapPageProps) => {
 
       <Toast />
       <Routes>
+        {/* <Route
+          path="main"
+          element={
+            <Suspense fallback={<div>메인화면 로딩중...</div>}>
+              <MainPage />
+            </Suspense>
+          }
+        /> */}
         <Route
-          path="/search"
+          path="search"
           element={<SearchPage />}
         />
         <Route
@@ -63,7 +67,7 @@ const MapPage = ({}: MapPageProps) => {
           }
         />
       </Routes>
-    </div>
+    </>
   );
 };
 

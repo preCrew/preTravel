@@ -1,24 +1,36 @@
-import BottomSheet from '@src/components/BottomSheet';
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+
 import BottomSheetWrap from './BottomSheetWrap';
 import Button from './Button';
 import MyScheduleList from './MyScheduleList';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { currentScheduleAtom, selectedDayAtom } from '@src/recoil/date/atom';
-import { modalDragAtom } from '@src/recoil/modal/atom';
+import { modalAtom, modalDragAtom } from '@src/recoil/modal/atom';
 import withSelectedDay from '@src/recoil/date/withSelectedDay';
+import useLocationState from '@src/hooks/recoil/useLocationState';
 
-const MyScheduleCon = () => {
+const MyScheduleCon = ({ region }: any) => {
   const [drag, setDrag] = useState(false);
+
+  const { setLocationRegion, setSelectData } = useLocationState();
   const currentScheduleState = useRecoilValue(currentScheduleAtom);
   const withSelectedDayState = useRecoilValue(withSelectedDay);
   const selectedDayState = useRecoilValue(selectedDayAtom);
+  const setmodalOpen = useSetRecoilState(modalAtom);
   const [modalDragOn, setModalDraOn] = useRecoilState(modalDragAtom);
   const [edit, setEdit] = useState(false);
   const edtiBtnOn = edit && modalDragOn;
 
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setmodalOpen(true);
+  });
+
   const onClickAddSchedule = () => {
-    console.log(1);
+    setLocationRegion(region);
+    navigate('/search');
   };
 
   const onClickEdit = () => {
@@ -44,7 +56,7 @@ const MyScheduleCon = () => {
       <div className="flex justify-between">
         <h4 className="flex items-end text-body1Bold">
           {currentScheduleState.schedule[selectedDayState]?.date}
-          <sub className="p-1 ml-2 rounded bg-gray4 text-body4Bold text-primary1">
+          <sub className="ml-2 rounded bg-gray4 p-1 text-body4Bold text-primary1">
             {withSelectedDayState}일차
           </sub>
         </h4>
@@ -59,12 +71,13 @@ const MyScheduleCon = () => {
                 <Button
                   onClick={onClickOrderChange}
                   name="순서변경"
+                  submitColor={true}
                 />
-                <Button
+                {/* <Button
                   onClick={onClickEditSubmit}
                   name="완료"
                   submitColor={true}
-                />
+                /> */}
               </>
             ) : (
               <>

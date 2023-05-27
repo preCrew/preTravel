@@ -24,7 +24,7 @@ const Calendar = () => {
     useRecoilState(selectedDayAtom);
 
   const [selectedDay, setSelectedDay] = useState<any>(
-    new Date(currentScheduleState.dateRange[0]),
+    new Date(currentScheduleState.dateRange.start),
   );
   const [calendarIsOpenState, setCalendarIsOpenState] =
     useRecoilState(calendarIsOpenAtom);
@@ -48,7 +48,7 @@ const Calendar = () => {
 
   const handleDayClick: DayClickEventHandler = day => {
     setCalendarIsOpenState(false);
-    setSelectedDayState(getDateDiff(currentScheduleState.dateRange[0], day));
+    setSelectedDayState(getDateDiff(currentScheduleState.dateRange.start, day));
   };
 
   return (
@@ -57,8 +57,8 @@ const Calendar = () => {
       <DayPicker
         defaultMonth={selectedDay}
         disabled={{
-          after: new Date(currentScheduleState.dateRange[1]), //마지막날짜
-          before: new Date(currentScheduleState.dateRange[0]), //시작날짜
+          after: new Date(currentScheduleState.dateRange.end), //마지막날짜
+          before: new Date(currentScheduleState.dateRange.start), //시작날짜
         }}
         mode="single"
         selected={selectedDay}

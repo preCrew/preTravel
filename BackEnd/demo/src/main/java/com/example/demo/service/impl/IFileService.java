@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -31,14 +32,17 @@ public class IFileService implements FileService {
     @Autowired
     FileDao dao;
 
+    @Value("${file_url}")
+    private String DIR;
+
     @Override
     public ResponseEntity<ResponseDTO> save(MultipartFile file, String boardName) {
         if (boardName == null ||
                 !(boardName.equals("review") || boardName.equals("schedule"))) {
             return returnUtil.code400("boardName이 올바르지 않습니다.");
         }
-        // String dir = "http://localhost:8080/file/img/";
-        String dir = "https://port-0-pretravel-ll32glc6adwo3.gksl2.cloudtype.app/file/img/";
+
+        String file_dir;
         try {
             File saveFile = dao.save(
                     new File(null,
@@ -47,7 +51,7 @@ public class IFileService implements FileService {
                             null,
                             null));
             String fileName = saveFile.getIdx() + "_" + file.getOriginalFilename();
-            dir = dir
+            file_dir = DIR
                     + boardName + "/"
                     + fileName;
             byte[] bytes = file.getBytes();
@@ -61,7 +65,7 @@ public class IFileService implements FileService {
                     new File(saveFile.getIdx(),
                             boardName,
                             null,
-                            dir,
+                            file_dir,
                             fileName));
             return returnUtil.code200("파일저장 성공", resultFile);
         } catch (Exception e) {
@@ -103,6 +107,7 @@ public class IFileService implements FileService {
                     + file.getBoardName() + "/"
                     + fileName);
 
+            dao.deleteById(idx);
             if (Files.exists(path)) {
                 try {
                     Files.delete(path);
@@ -113,7 +118,6 @@ public class IFileService implements FileService {
                 return returnUtil.code400("파일이 존재하지 않습니다.");
             }
 
-            dao.deleteById(idx);
             return returnUtil.code200("파일삭제성공", "");
         }
     }

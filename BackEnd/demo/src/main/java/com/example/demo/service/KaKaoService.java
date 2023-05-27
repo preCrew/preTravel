@@ -19,8 +19,10 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -29,6 +31,9 @@ public class KaKaoService {
 
     @Value("${oauth.kakao.token_host}")
     private String TOKEN_HOST; // https://kauth.kakao.com/oauth/token
+
+    @Value("${oauth.kakao.logout_host}")
+    private String LOGOUT_HOST;
 
     @Value("${oauth.kakao.user_host}")
     private String USER_HOST; // https://kapi.kakao.com/v2/user/me
@@ -137,11 +142,16 @@ public class KaKaoService {
         if (email.isEmpty() || email.isBlank()) {
             return (ResponseEntity<ResponseDTO>) ResponseEntity.notFound();
         }
-        if (memberService.findByEmail(email).isEmpty()) {
+
+        List<Member> listMember = memberService.findByEmail(email);
+
+        if (listMember.isEmpty()) {
             memberService.save(Member.builder().email(email).build());
         } else {
             // Last Access Time Update
         }
+
+        data.put("memberIdx", listMember.get(0).getIdx().toString());
 
         return ResponseEntity
                 .ok()
@@ -181,5 +191,17 @@ public class KaKaoService {
                         .msg("토큰갱신")
                         .data(result)
                         .build());
+    }
+
+    public ResponseEntity<Object> logout() {
+        log.info("카카오 로그아웃 합니다.");
+        String url = LOGOUT_HOST
+                + "?client_id=" + REST_API_KEY // 1. client_id (rest_api_key)
+                + "&redirect_uri=" + WEB_HOST; // 2. redirect_uri
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(URI.create(url));
+        return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
+
     }
 }
