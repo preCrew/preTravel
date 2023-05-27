@@ -10,7 +10,7 @@ import MainPage from './MainPage';
 import SearchPage from './SearchPage';
 import PlacePlan from './PlacePlan';
 import MapInfoPage from './MapInfoPage';
-import MySchedule from './MySchedule';
+import MySchedule from './MyPlaceInSchedule';
 import SchedulePlan from './SchedulePlan';
 
 const App = () => {
