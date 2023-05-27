@@ -37,10 +37,10 @@ const App = () => {
         />
       </Helmet>
       <Routes>
-        {/* <Route
+        <Route
           path="/"
-          element={<Main />}
-        /> */}
+          element={<MainPage />}
+        />
         <Route
           path="/mySchedule"
           element={<MySchedule />}
@@ -77,60 +77,23 @@ const App = () => {
           path="/oauth/:where"
           element={<OauthPage />}
         />
-        <Route
+        {/* <Route
           path="/map/main"
           element={
             <Suspense fallback={'로딩즁,,,'}>
               <MainPage />
             </Suspense>
           }
-        />
-        <Route
+        /> */}
+        {/* <Route
           path="/map/*"
           element={<MapPage />}
-        />
+        /> */}
         <Route
           path="/*"
           element={<div>잘못된접근</div>}
         />
       </Routes>
-      {/* <div css={tw`relative flex flex-col w-full h-full xsm:w-380`}>
-        <Routes>
-          <Route
-            path="/"
-            element={<Main />}
-          />
-          <Route
-            path="/mySchedule"
-            element={<MySchedule2 />}
-          />
-          <Route
-            path="/mySchedule/:id"
-            element={<MySchedule />}
-          />
-          <Route
-            path="/login"
-            element={<LoginPage />}
-          />
-          <Route
-            path="/oauth/:where"
-            element={<OauthPage />}
-          />
-          <Route
-            path="/map/*"
-            element={<MapPage />}
-          />
-
-          <Route
-            path="/review/*"
-            element={<ReviewPage />}
-          />
-          <Route
-            path="/*"
-            element={<div>잘못된접근</div>}
-          />
-        </Routes>
-      </div> */}
     </div>
   );
 };

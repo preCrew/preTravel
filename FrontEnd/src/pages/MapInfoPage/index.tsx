@@ -11,11 +11,12 @@ import TopBar from '@src/components/common/TobBar';
 import Button from '@src/components/common/Button';
 import TopText from '@src/components/common/Text/TopText';
 import useLocationState from '@src/hooks/recoil/useLocationState';
-import BottomSheetWrap from '@src/components/scheduleDetail/BottomSheet/BottomSheetWrap';
+// import BottomSheetWrap from '@src/components/scheduleDetail/BottomSheet/BottomSheetWrap';
 import useAddPlaceinScehduleQuery from '@src/hooks/react-query/useAddPlaceinScehdule';
 import { useRecoilValue } from 'recoil';
 import { currentScheduleAtom, selectedDayAtom } from '@src/recoil/date/atom';
 import { locationAtom } from '@src/recoil/location/atom';
+import BottomSheetWrap from '@src/components/ScheduleDetail/BottomSheet/BottomSheetWrap';
 
 export interface MapInfoPageProps {}
 
@@ -54,7 +55,7 @@ const MapInfoPage = ({}: MapInfoPageProps) => {
   const handleClickAddScheduleButton = () => {
     mutateAddPlace({
       date: currentScheduleState.schedule[selectDayState].date,
-      sctIdx: currentScheduleState.id,
+      sctIdx: currentScheduleState.idx,
       list: [
         {
           placeName: currentPlaceState.selectData.body,
@@ -65,6 +66,7 @@ const MapInfoPage = ({}: MapInfoPageProps) => {
         },
       ],
     });
+  };
 
   const handleClickBackButton = () => {
     navigate(-1);
@@ -73,7 +75,6 @@ const MapInfoPage = ({}: MapInfoPageProps) => {
   const handleClickAddReviewButton = () => {
     navigate(`/review/edit`, { state: { topBarName: searchParamsObj.name } });
   };
-
 
   const handleClickLikeButton = async () => {
     // TODO: memberIdx 받아오도록 변경해야함.

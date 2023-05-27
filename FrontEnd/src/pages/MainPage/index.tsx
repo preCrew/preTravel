@@ -87,7 +87,7 @@ const MainPage = ({}: MainPageProps) => {
   }, [location.search]);
 
   const handleClickSearchButton = () => {
-    navigate('/map/search');
+    navigate('/search');
   };
   //클릭했을때 해당 버튼의 텍스트와 객체 타이틀 이름이 같으면 해당 마커들을 물러온다
   const onClickBtn = useCallback((e: React.MouseEvent<HTMLElement>) => {

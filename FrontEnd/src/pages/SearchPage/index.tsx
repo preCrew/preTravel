@@ -26,7 +26,7 @@ const SearchPage = ({}: SearchPageProps) => {
   }, []);
 
   const handleClickBackButton = () => {
-    navigate(-1);
+    navigate('/');
     setLocationState('map');
     setLocationRegion('');
   };

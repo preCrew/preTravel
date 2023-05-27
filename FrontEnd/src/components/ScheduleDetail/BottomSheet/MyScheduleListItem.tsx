@@ -5,11 +5,7 @@ import { useRecoilValue } from 'recoil';
 import MyScheduleListEditBtn from './MyScheduleListEditBtn';
 
 interface MyScheduleListItemProps {
-  data: {
-    id: string | number;
-    placeName: string;
-    order: number;
-  };
+  data: any;
   index: number;
   edit: boolean;
 }
@@ -18,11 +14,13 @@ const MyScheduleListItem = ({ data, index, edit }: MyScheduleListItemProps) => {
   const modalDragOn = useRecoilValue(modalDragAtom);
   const edtiBtnOn = edit && modalDragOn;
 
+  console.log(modalDragOn, data, index, edit);
+
   return (
     <>
       <Draggable
-        key={data.order}
-        draggableId={data.id + ''}
+        key={data.idx}
+        draggableId={data.idx}
         index={index}
         isDragDisabled={modalDragOn}
       >

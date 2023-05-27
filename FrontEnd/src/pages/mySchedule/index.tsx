@@ -12,9 +12,9 @@ import Button from '@src/components/common/Button';
 import MyScheduleCardList from '@src/components/MyScedule/MyScheduleCardList';
 import CancelBtn from '@src/components/MyScedule/CancelBtn';
 import { SkeletonMyScheduleCard } from '@src/components/MyScedule/MyScheduleCard';
-import IconBox from '@src/components/MyScedule/IconBox';
-import mySchedule from './style';
+import { MyScheduleDiv } from './style';
 import SelectNumberBox from '@src/components/MyScedule/SelectNumberBox';
+import IconBox from '@src/components/MyScedule/IconBox';
 
 const MySchedule2 = () => {
   const navigate = useNavigate();
@@ -46,9 +46,9 @@ const MySchedule2 = () => {
 
   return (
     <>
-      <div className={mySchedule.childrenBox}>
-        <div className={mySchedule.title}>내 일정</div>
-        <div className={mySchedule.buttonBox}>
+      <div className={MyScheduleDiv.childrenBox}>
+        <div className={MyScheduleDiv.title}>내 일정</div>
+        <div className={MyScheduleDiv.buttonBox}>
           {isDeleteMode ? (
             <div className="flex">
               <CancelBtn onClick={handleClickCancelButton} />
