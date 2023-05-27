@@ -8,7 +8,6 @@ import useCardListState from '@src/hooks/recoil/useCardListState';
 
 import useMyScheduleDeleteQuery from '@src/hooks/react-query/useDeleteMyScheduleQuery';
 
-import TopBar from '@src/components/common/TobBar';
 import Button from '@src/components/common/Button';
 import MyScheduleCardList from '@src/components/MyScedule/MyScheduleCardList';
 import CancelBtn from '@src/components/MyScedule/CancelBtn';

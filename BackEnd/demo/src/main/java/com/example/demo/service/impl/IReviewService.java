@@ -121,6 +121,12 @@ public class IReviewService implements ReviewService {
 
     @Override
     public List<Review> findByNameAndLatitudeAndLongitude(String name, String latitude, String longitude) {
+        List<Review> list =  dao.findByNameAndLatitudeAndLongitude(name, Double.valueOf(latitude), Double.valueOf(longitude));
+
+        for (Review review : list) {
+            List<File> tmpList = fileService.findByBoardNameAndBoardIdx("review", review.getIdx());
+            review.setFile(tmpList);
+        }
         return dao.findByNameAndLatitudeAndLongitude(name, Double.valueOf(latitude), Double.valueOf(longitude));
     }
 
