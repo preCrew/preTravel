@@ -61,14 +61,14 @@ const MySchedule = () => {
 
   return (
     <>
-      <header className="fixed left-0 right-0 top-5 z-10">
+      <header className="fixed left-0 right-0 z-10 top-5">
         <Title title={currentScheduleState.name} />
         <Button
           onClick={onClickBack}
           name="나가기"
           style="absolute right-basic top-0"
         />
-        <div className="relative ml-basic mt-4">
+        <div className="relative mt-4 ml-basic">
           <CalendarBtn />
           {!calendarIsOpenState && (
             <TabSlide
