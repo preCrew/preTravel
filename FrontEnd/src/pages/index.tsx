@@ -5,24 +5,22 @@ import { Suspense, useEffect } from 'react';
 import MyPlace from './MyPlaceInSchedule';
 import LoginPage from './LoginPage';
 import OauthPage from './OauthPage';
-import MapPage from './MainPage';
-import MainPage from './MainPage';
 import SearchPage from './SearchPage';
 import PlacePlan from './PlacePlan';
 import MapInfoPage from './MapInfoPage';
-import MySchedule from './MyPlaceInSchedule';
 import SchedulePlan from './SchedulePlan';
+import MainPage from './MainPage/index';
+import MySchedule from './MySchedule';
 
 const App = () => {
   useEffect(() => {
-    console.log('다시시작');
     // TODO:
     //  - 새로고침 될때 혹은 주소창에 직접 url을 입력할 때
     //    쿠키에 저장된 리프레시 토큰을 서버가 확인후 액세스 토큰을 설정해줘야함
     //  - useSilentRefresh 훅을 생성해서 요청하면 될듯.
   });
   return (
-    <div className="h-full w-full safe-top safe-left safe-right safe-bottom">
+    <div className="w-full h-full safe-top safe-left safe-right safe-bottom">
       <Helmet>
         <title>여행</title>
         <meta charSet="UTF-8" />
@@ -37,10 +35,14 @@ const App = () => {
         />
       </Helmet>
       <Routes>
-        {/* <Route
+        <Route
           path="/"
-          element={<Main />}
-        /> */}
+          element={
+            <Suspense fallback={'지도 로딩중...'}>
+              <MainPage />
+            </Suspense>
+          }
+        />
         <Route
           path="/mySchedule"
           element={<MySchedule />}
@@ -77,18 +79,10 @@ const App = () => {
           path="/oauth/:where"
           element={<OauthPage />}
         />
-        <Route
-          path="/map/main"
-          element={
-            <Suspense fallback={'로딩즁,,,'}>
-              <MainPage />
-            </Suspense>
-          }
-        />
-        <Route
+        {/* <Route
           path="/map/*"
           element={<MapPage />}
-        />
+        /> */}
         <Route
           path="/*"
           element={<div>잘못된접근</div>}
