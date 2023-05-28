@@ -1,14 +1,12 @@
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import React, {
   ReactNode,
-  Suspense,
   useEffect,
   useState,
-  useRef,
   useCallback,
   useMemo,
 } from 'react';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import tw from 'twin.macro';
 
 import useToast from '@src/hooks/useToast';
