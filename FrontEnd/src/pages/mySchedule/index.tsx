@@ -9,14 +9,14 @@ import useCardListState from '@src/hooks/recoil/useCardListState';
 import useMyScheduleDeleteQuery from '@src/hooks/react-query/useDeleteMyScheduleQuery';
 
 import Button from '@src/components/common/Button';
-import MyScheduleCardList from '@src/components/MyScedule/MyScheduleCardList';
-import CancelBtn from '@src/components/MyScedule/CancelBtn';
-import { SkeletonMyScheduleCard } from '@src/components/MyScedule/MyScheduleCard';
-import IconBox from '@src/components/MyScedule/IconBox';
+import MyScheduleCardList from '@src/components/MySceduleList/MyScheduleCardList';
+import CancelBtn from '@src/components/MySceduleList/CancelBtn';
+import { SkeletonMyScheduleCard } from '@src/components/MySceduleList/MyScheduleCard';
+import IconBox from '@src/components/MySceduleList/IconBox';
 import mySchedule from './style';
-import SelectNumberBox from '@src/components/MyScedule/SelectNumberBox';
+import SelectNumberBox from '@src/components/MySceduleList/SelectNumberBox';
 
-const MySchedule2 = () => {
+const MySchedule = () => {
   const navigate = useNavigate();
   const [isDeleteMode, setIsDeleteMode] = useState(false);
 
@@ -82,4 +82,4 @@ const MySchedule2 = () => {
   );
 };
 
-export default MySchedule2;
+export default MySchedule;
