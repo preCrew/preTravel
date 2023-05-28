@@ -33,7 +33,7 @@ const TabSlide = ({ active, data, category, onClick }: TabSlideProps) => {
   );
 
   const btnActive = (i: number) => {
-    if (!active) {
+    if (i < -1) {
       return (active = true);
     } else {
       return selectedDayState === i && `active`;
