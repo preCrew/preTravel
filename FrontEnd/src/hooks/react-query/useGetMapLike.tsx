@@ -9,24 +9,25 @@ export interface ILikeMapData {
 }
 // https://port-0-pretravel-ll32glc6adwo3.gksl2.cloudtype.app/like
 
-const areaMarekerFunc = async (data: any) => {
+const areaMarekerFunc = async (data: ILikeMapData) => {
   console.log(data);
   try {
     const response = await axios.get(
-      `https://port-0-pretravel-ll32glc6adwo3.gksl2.cloudtype.app/like/map?memberIdx=${data.memberIdx}&smallLa=${data.smallLa}&largeLa=${data.largeLa}&smallLo=${data.smallLo}&largeLo=${data.largeLo}`,
+      `${process.env.REAL_SERVER_URL}/like/map?memberIdx=${data.memberIdx}&smallLa=${data.smallLa}&largeLa=${data.largeLa}&smallLo=${data.smallLo}&largeLo=${data.largeLo}`,
     );
-    //console.log(response.data);
-    return response.data;
+    return response.data.data;
   } catch (err) {
     if (err instanceof Error) console.log(err.message);
   }
 };
 
-const useGetLike = (data: any) => {
+const useGetMapLike = (data: ILikeMapData) => {
   //const { setGetLike } = useMarkerState();
 
-  return useQuery(['getAreaLike', data], () => areaMarekerFunc(data), {
+  return useQuery(['getMapLike'], () => areaMarekerFunc(data), {
     enabled: false,
+    // cacheTime: 50000,
+    // staleTime: 50000,
     onSuccess: () => {
       console.log('성공');
       //setGetLike(true);
@@ -34,4 +35,4 @@ const useGetLike = (data: any) => {
   });
 };
 
-export default useGetLike;
+export default useGetMapLike;

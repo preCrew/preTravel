@@ -20,7 +20,6 @@ export const useScript = (src: string) => {
     };
     const handleError = (error: ErrorEvent) => {
       console.log('에러즁');
-
       setError(error.message);
     };
 
