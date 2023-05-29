@@ -137,4 +137,16 @@ public class ISpotService implements SpotService {
 
         return map;
     }
+
+    @Override
+    public List<Spot> findByNameAndLatitudeAndLongitude(Map<String, Object> map) {
+        String lat = map.get("latitude").toString();
+        String lon = map.get("longitude").toString();
+        String name = map.get("name").toString();
+        String memberIdx = map.get("memberIdx").toString();
+        List<Spot> result = dao.findByScheduleMemberIdxAndNameAndLatitudeAndLongitude(name, memberIdx, lat, lon);
+        System.out.println(result);
+        return result;
+    }
+
 }

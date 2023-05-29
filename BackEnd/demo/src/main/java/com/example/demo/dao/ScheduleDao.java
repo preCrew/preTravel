@@ -29,7 +29,4 @@ public class ScheduleDao {
     public Schedule findByIdx(Long idx) {
         return repository.findByIdx(idx);
     }
-
-
-
 }
