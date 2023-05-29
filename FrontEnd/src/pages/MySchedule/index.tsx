@@ -15,6 +15,7 @@ import { SkeletonMyScheduleCard } from '@src/components/MyScedule/MyScheduleCard
 import { MyScheduleDiv } from './style';
 import SelectNumberBox from '@src/components/MyScedule/SelectNumberBox';
 import IconBox from '@src/components/MyScedule/IconBox';
+import useSearchRegionOvelay from '@src/hooks/ovelay/Ovelays/useSearchRegionOvelay';
 
 const MySchedule2 = () => {
   const navigate = useNavigate();
@@ -25,11 +26,13 @@ const MySchedule2 = () => {
 
   const { mutate: deleteScheduleQuery } = useMyScheduleDeleteQuery();
 
+  const searchRegionOvelay = useSearchRegionOvelay();
+
   const handleClickBackButton = () => {
     navigate(-1);
   };
   const handleClickAddButton = () => {
-    navigate('/search');
+    searchRegionOvelay.open();
   };
   const handleClickTopRemoveButton = () => {
     setIsDeleteMode(true);
