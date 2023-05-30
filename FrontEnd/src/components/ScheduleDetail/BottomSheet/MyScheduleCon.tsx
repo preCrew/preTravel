@@ -10,7 +10,7 @@ import { modalAtom, modalDragAtom } from '@src/recoil/modal/atom';
 import withSelectedDay from '@src/recoil/date/withSelectedDay';
 import useLocationState from '@src/hooks/recoil/useLocationState';
 
-const MyScheduleCon = ({ region }: any) => {
+const MyScheduleCon = () => {
   const [drag, setDrag] = useState(false);
 
   const { setLocationRegion, setSelectData } = useLocationState();
@@ -22,15 +22,16 @@ const MyScheduleCon = ({ region }: any) => {
   const [edit, setEdit] = useState(false);
   const edtiBtnOn = edit && modalDragOn;
 
+  console.log(currentScheduleState);
   const navigate = useNavigate();
 
   useEffect(() => {
     setmodalOpen(true);
-  });
+  }, []);
 
-  const onClickAddSchedule = () => {
-    setLocationRegion(region);
-    navigate('/search');
+  const onClickAddSchedule = async () => {
+    setLocationRegion(currentScheduleState.city);
+    navigate(`/search/place/${currentScheduleState.city}`);
   };
 
   const onClickEdit = () => {

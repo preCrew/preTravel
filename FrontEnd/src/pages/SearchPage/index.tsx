@@ -1,61 +1,43 @@
-import { Suspense, useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import tw from 'twin.macro';
-
-import useOnChange from '@src/hooks/useOnChange';
-
-import useLocationState from '../../hooks/recoil/useLocationState';
-
-import TopBar from '@src/components/common/TobBar';
-import SearchButton from '@src/components/common/Button/SearchButton';
-import RegionPlaceList from '@src/components/RegionPlaceList';
-import LoadingData from '@src/components/common/DataList/LoadingData';
+import {
+  Route,
+  Routes,
+  useLocation,
+  useNavigationType,
+} from 'react-router-dom';
+import SearchRegion from './SearchRegion';
+import SearchPlace from './SearchPlace';
+import { useEffect } from 'react';
+import useSearchPageState from '@src/hooks/recoil/useSearchPageState';
 
 interface SearchPageProps {}
+
 const SearchPage = ({}: SearchPageProps) => {
-  const navigate = useNavigate();
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  const { value: inputVal, onChange: onChangeInput } = useOnChange();
-  const [isCommit, setIsCommit] = useState(false);
-
-  const { setLocationRegion, setLocationState } = useLocationState();
+  const navigationType = useNavigationType();
+  const { resetSearchState } = useSearchPageState();
 
   useEffect(() => {
-    inputRef.current?.focus();
+    console.log(navigationType);
+    if (navigationType === 'PUSH') {
+      resetSearchState();
+    }
   }, []);
-
-  const handleClickBackButton = () => {
-    navigate(-1);
-    setLocationState('map');
-    setLocationRegion('');
-  };
-
-  const handleSubmit = () => {
-    inputRef.current?.blur();
-    setIsCommit(true);
-  };
-
   return (
-    <div css={tw`absolute top-0 z-20 w-full h-full bg-white`}>
-      <TopBar onClickBackButton={handleClickBackButton}>
-        <SearchButton
-          nowPage={'search'}
-          inputRef={inputRef}
-          onChangeInput={onChangeInput}
-          inputVal={inputVal}
-          onSubmit={handleSubmit}
+    <>
+      <Routes>
+        <Route
+          path="/region"
+          element={<SearchRegion />}
         />
-      </TopBar>
-      <Suspense fallback={<LoadingData />}>
-        <RegionPlaceList
-          inputRef={inputRef}
-          inputVal={inputVal}
-          isCommit={isCommit}
-          setIsCommit={setIsCommit}
+        <Route
+          path="/place/:region"
+          element={<SearchPlace />}
         />
-      </Suspense>
-    </div>
+        <Route
+          path="*"
+          element={<div>잘못된 접근</div>}
+        />
+      </Routes>
+    </>
   );
 };
 

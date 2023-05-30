@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
-import useKakaoMap from '@src/components/common/Map/useKakaoMap';
+// import useKakaoMap from '@src/components/common/Map/useKakaoMap';
 import TabSlide from '@src/components/common/TabSlide/TabSlide';
 import Button from '@src/components/ScheduleDetail/BottomSheet/Button';
 import CalendarCon from '@src/components/ScheduleDetail/BottomSheet/CalendarCon';
@@ -80,11 +80,7 @@ const MySchedule = () => {
       </header>
       {/*====지도====*/}
       {/* {onCallMap()} */}
-      {calendarIsOpenState ? (
-        <CalendarCon />
-      ) : (
-        <MyScheduleCon region={data.region} />
-      )}
+      {calendarIsOpenState ? <CalendarCon /> : <MyScheduleCon />}
     </>
   );
 };

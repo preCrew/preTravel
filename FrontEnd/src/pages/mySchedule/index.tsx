@@ -12,9 +12,10 @@ import Button from '@src/components/common/Button';
 import MyScheduleCardList from '@src/components/MyScedule/MyScheduleCardList';
 import CancelBtn from '@src/components/MyScedule/CancelBtn';
 import { SkeletonMyScheduleCard } from '@src/components/MyScedule/MyScheduleCard';
-import IconBox from '@src/components/MyScedule/IconBox';
-import mySchedule from './style';
+import { MyScheduleDiv } from './style';
 import SelectNumberBox from '@src/components/MyScedule/SelectNumberBox';
+import IconBox from '@src/components/MyScedule/IconBox';
+import useSearchRegionOvelay from '@src/hooks/ovelay/Ovelays/useSearchRegionOvelay';
 
 const MySchedule2 = () => {
   const navigate = useNavigate();
@@ -25,11 +26,13 @@ const MySchedule2 = () => {
 
   const { mutate: deleteScheduleQuery } = useMyScheduleDeleteQuery();
 
+  const searchRegionOvelay = useSearchRegionOvelay();
+
   const handleClickBackButton = () => {
     navigate(-1);
   };
   const handleClickAddButton = () => {
-    navigate('/search');
+    searchRegionOvelay.open();
   };
   const handleClickTopRemoveButton = () => {
     setIsDeleteMode(true);
@@ -46,9 +49,9 @@ const MySchedule2 = () => {
 
   return (
     <>
-      <div className={mySchedule.childrenBox}>
-        <div className={mySchedule.title}>내 일정</div>
-        <div className={mySchedule.buttonBox}>
+      <div className={MyScheduleDiv.childrenBox}>
+        <div className={MyScheduleDiv.title}>내 일정</div>
+        <div className={MyScheduleDiv.buttonBox}>
           {isDeleteMode ? (
             <div className="flex">
               <CancelBtn onClick={handleClickCancelButton} />

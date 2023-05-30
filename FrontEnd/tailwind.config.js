@@ -238,6 +238,47 @@ module.exports = {
         'pulse-dot': 'pulseDot 1.25s cubic-bezier(0.455, 0.03, 0.515, 0.955) -0.4s infinite',
         'pulse-ring': 'pulseRing 1.25s cubic-bezier(0.215, 0.61, 0.355, 1) infinite'        
       },
+      keyframes: {
+        pulseRing: {
+          '0%': {
+            transform: 'scale(.33)'
+          },
+          '80%, 100%': {
+            opacity: 0
+          }
+        },
+        pulseDot: {
+          '0%': {
+            transform: 'scale(.8)'
+          },
+          '50%': {
+            transform: 'scale(1)'
+          },
+          '100%': {
+            transform: 'scale(.8)'
+          }
+        },        
+        down: {
+          '0%': { opacity: 0 },
+          '100%': { opacity: 1 },
+        },
+        up: {
+          '0%': { opacity: 1 },
+          '100%': { opacity: 0 },
+        },
+        skeletonData: {
+          to: {
+            backgroundPosition: '100% 13px, 16px 13px, 0 49px',
+          },
+        },
+      },
+      animation: {
+        down: 'down 1.0s ease-in-out',
+        up: 'up 1.0s ease-in-out',
+        skeletonData: 'skeletonData 1.5s infinite ',
+        'pulse-dot': 'pulseDot 1.25s cubic-bezier(0.455, 0.03, 0.515, 0.955) -0.4s infinite',
+        'pulse-ring': 'pulseRing 1.25s cubic-bezier(0.215, 0.61, 0.355, 1) infinite'        
+      },
     },
   },
   variants: {},

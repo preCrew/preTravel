@@ -1,40 +1,47 @@
-import { File } from '@src/hooks/react-query/useUpdateReviewQuery';
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import tw, { css } from 'twin.macro';
+
 import ImageBox from './ImageBox';
+import useUploadImages, { File } from '@src/hooks/react-query/useAddImages';
+import useModal from '@src/hooks/useModal';
+import LoadingModal from '@src/components/Modal/LoadingModal';
+import useDeleteImage from '@src/hooks/react-query/useDeleteImage';
 
 interface UploadImageProps {
-  files: File[];
-  setFiles: Dispatch<SetStateAction<File[]>>;
+  imgFiles: File[];
+  setImgFiles: Dispatch<SetStateAction<File[]>>;
+  imgNum: number;
+  // setImgNum: (num: number) => void;
+  increseImgNum: (num: number) => void;
+  decreseImgNum: () => void;
 }
 
 const errorMessages = {
   selectMoreThan10:
     '사진은 최대 10장까지 선택 합니다.\n10장 외에는 선택되지 않습니다.',
-  selectDuplicateOrOverSize: '중복된 사진이 있거나 사이즈가 1 MB를 초과합니다.',
+  selectDuplicateOrOverSize: '사이즈가 1 MB가 초과하는 사진은 제외됩니다.',
   nowMoreThan10: '사진은 최대 10장까지 선택 가능합니다.',
 };
 
-const getDuplicateFilesNameSize = (files: { name: string; size: number }[]) =>
-  files
-    .map(file => {
-      const name = file.name;
-      const size = file.size / 1024 / 1024;
-      let sizeString = '';
-
-      if (size < 0.01) sizeString = size * 1024 + 'KB';
-      else sizeString = size.toString().slice(0, 4) + 'MB';
-
-      return `${name} (${sizeString})`;
-    })
-    .join('\n');
-
 const UploadImage = ({
-  files: imgFiles,
-  setFiles: setImgFiles,
+  imgFiles,
+  setImgFiles,
+  imgNum,
+  increseImgNum,
+  decreseImgNum,
 }: UploadImageProps) => {
-  const [imgNum, setImgNum] = useState<number>(0);
+  // const [imgNum, setImgNum] = useState<number>(0);
   const inputRef = useRef<HTMLInputElement>(null);
+  const { Modal, showModal } = useModal('loadingModal');
+
+  const onSucessAddImages = (data: File[]) => {
+    setImgFiles(prev => [...prev, ...data]);
+  };
+
+  const { mutate, isLoading: uploadingImages } =
+    useUploadImages(onSucessAddImages);
+
+  const { mutate: mutateDeleteImage } = useDeleteImage();
 
   useEffect(() => {
     return () => {
@@ -43,68 +50,45 @@ const UploadImage = ({
     };
   });
 
-  const handleUploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (!files) return;
-    const duplicateFiles: { name: string; size: number }[] = [];
-    const notDuplicateFiles: File[] = [];
+  const handleUploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const targetFiles = e.target.files;
+    if (!targetFiles) return;
 
-    // 1. 중복된 파일을 걸러냄
-    for (let i = 0; i < files.length; i++) {
-      const current = {
-        url: URL.createObjectURL(files[i]),
-        file: files[i],
-        key: files[i].name + files[i].size,
-      };
+    const inputFiles = Array.from(targetFiles);
+    const filesLen = imgFiles.length; // 3개
+    const inputFilesLen = inputFiles.length; // 9개
 
-      if (
-        imgFiles.some(
-          img => img.key === current.key || files[i].size >= 1024 * 1024,
-        )
-      ) {
-        duplicateFiles.push({ name: files[i].name, size: files[i].size });
-      } else {
-        notDuplicateFiles.push(current);
-      }
-    }
-
-    // 2. 중복되지 않은 파일 + imgFiles.length > 10 라면 배열을 자름
-    if (notDuplicateFiles.length + imgFiles.length > 10) {
+    if (filesLen + inputFilesLen > 10) {
+      const diff = filesLen + inputFilesLen - 10;
+      inputFiles.splice(inputFilesLen - diff, diff);
       alert(errorMessages.selectMoreThan10);
-      notDuplicateFiles.splice(-1);
     }
 
-    // 3. 중복되지 않은 파일 + imgFiles.length <= 10 이라면 imgFiles에 추가
-    if (notDuplicateFiles.length + imgFiles.length <= 10) {
-      setImgFiles(prev => [...prev, ...notDuplicateFiles]);
-      setImgNum(prev => prev + notDuplicateFiles.length);
-    }
+    mutate({ boardName: 'review', files: inputFiles });
+    increseImgNum(inputFiles.length);
+    showModal();
 
-    // 4. 중복 혹은 사이즈 초과된 파일이 있다면 경고창 띄움
-    if (duplicateFiles.length > 0) {
-      const duplicateFilesNameSize = getDuplicateFilesNameSize(duplicateFiles);
-      alert(
-        `${errorMessages.selectDuplicateOrOverSize}\n\n${duplicateFilesNameSize}`,
-      );
-    }
-    // 동일요소 선택시 이벤트가 발생되지 않으므로 value를 비워줌
     e.target.value = '';
   };
 
   const handleClickUploadButton = () => {
     if (!inputRef.current) return;
-    if (imgFiles.length >= 10) return alert(errorMessages.nowMoreThan10);
-
     inputRef.current.click();
   };
 
-  const handleClickCloseButton = (key: string) => {
-    setImgFiles(prev => prev.filter(img => img.key !== key));
-    setImgNum(prev => prev - 1);
+  const handleClickCloseButton = (idx: string) => {
+    setImgFiles(prev => prev.filter(i => i.idx !== idx));
+    decreseImgNum();
+    mutateDeleteImage(idx);
   };
 
   return (
     <>
+      {uploadingImages && (
+        <Modal noClose>
+          <LoadingModal text="사진을 등록 중입니다..." />
+        </Modal>
+      )}
       <input
         type="file"
         accept="image/*"
@@ -124,14 +108,15 @@ const UploadImage = ({
       >
         <ImageBox
           onClick={handleClickUploadButton}
-          selectButton
           imgNum={imgNum}
+          type={'add'}
         />
         {imgFiles.map(img => (
           <ImageBox
-            key={img.key}
-            onClose={() => handleClickCloseButton(img.key)}
+            key={img.idx}
+            onClose={() => handleClickCloseButton(img.idx)}
             imgSrc={img.url}
+            type="image"
           />
         ))}
       </div>
