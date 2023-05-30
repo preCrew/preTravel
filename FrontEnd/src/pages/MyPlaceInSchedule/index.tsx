@@ -80,11 +80,7 @@ const MySchedule = () => {
       </header>
       {/*====지도====*/}
       {/* {onCallMap()} */}
-      {calendarIsOpenState ? (
-        <CalendarCon />
-      ) : (
-        <MyScheduleCon region={data.region} />
-      )}
+      {calendarIsOpenState ? <CalendarCon /> : <MyScheduleCon />}
     </>
   );
 };

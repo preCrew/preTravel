@@ -14,6 +14,7 @@ export const locationAtom = atom<LocationAtom>({
     nowPage: 'map',
     region: '',
     selectData: {
+      region: '',
       address: '',
       name: '',
       roadAddress: '',

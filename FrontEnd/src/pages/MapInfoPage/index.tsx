@@ -13,10 +13,12 @@ import TopText from '@src/components/common/Text/TopText';
 import useLocationState from '@src/hooks/recoil/useLocationState';
 // import BottomSheetWrap from '@src/components/scheduleDetail/BottomSheet/BottomSheetWrap';
 import useAddPlaceinScehduleQuery from '@src/hooks/react-query/useAddPlaceinScehdule';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { currentScheduleAtom, selectedDayAtom } from '@src/recoil/date/atom';
 import { locationAtom } from '@src/recoil/location/atom';
 import BottomSheetWrap from '@src/components/ScheduleDetail/BottomSheet/BottomSheetWrap';
+import { modalAtom } from '@src/recoil/modal/atom';
+import useSearchPlaceOvelay from '@src/hooks/ovelay/Ovelays/useSearchPlaceOvelay';
 
 export interface MapInfoPageProps {}
 
@@ -28,6 +30,7 @@ const MapInfoPage = ({}: MapInfoPageProps) => {
   const { mutate: mutateAddPlace, isSuccess: isSuccessAddPlace } =
     useAddPlaceinScehduleQuery();
 
+  const [modalOpen, setModalOpen] = useRecoilState(modalAtom);
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const searchParamsObj = Object.fromEntries(searchParams);
@@ -50,7 +53,11 @@ const MapInfoPage = ({}: MapInfoPageProps) => {
 
   const { mutate: deleteLikeMutation } = useDeleteLike(like?.idx ?? '');
 
-  const { setSelectData } = useLocationState();
+  const searchPlaceOvelay = useSearchPlaceOvelay('강남구');
+
+  useEffect(() => {
+    setModalOpen(true);
+  }, []);
 
   const handleClickAddScheduleButton = () => {
     mutateAddPlace({
@@ -77,7 +84,7 @@ const MapInfoPage = ({}: MapInfoPageProps) => {
   };
 
   const handleClickLikeButton = async () => {
-    // TODO: memberIdx 받아오도록 변경해야함.
+    // TODO: 실제 memberIdx 받아오도록 변경해야함.
     const tempLikeData: Like = {
       name: searchParamsObj.name,
       address: searchParamsObj.address,
@@ -99,14 +106,17 @@ const MapInfoPage = ({}: MapInfoPageProps) => {
         <div
           css={tw`w-full absolute text-center text-h4Bold pointer-events-none`}
         >
-          {selectData.name}
+          {searchParamsObj.name}
         </div>
       </TopBar>
       <BottomSheetWrap drag={true}>
         <div css={tw`p-2 flex flex-col items-center gap-3`}>
-          <div css={tw`text-h5 `}>{selectData.roadAddress}</div>
+          <div css={tw`text-h5 `}>{searchParamsObj.address}</div>
           <div css={tw`w-30 h-30 flex-with-center bg-gray3 rounded-full`}>
-            <IconButton type="heart" />
+            <IconButton
+              type={like ? 'heartFill' : 'heart'}
+              onClick={handleClickLikeButton}
+            />
           </div>
           <div css={tw`flex w-full gap-5 justify-evenly`}>
             <Button
