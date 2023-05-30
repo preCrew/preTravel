@@ -9,6 +9,7 @@ import MainPage from './MainPage';
 import PlacePlan from './PlacePlan';
 import MapInfoPage from './MapInfoPage';
 import SchedulePlan from './SchedulePlan';
+import SearchPage from './SearchPage';
 
 const App = () => {
   return (
@@ -48,8 +49,16 @@ const App = () => {
           element={<SchedulePlan />}
         />
         <Route
+          path="/search/*"
+          element={<SearchPage />}
+        />
+        <Route
           path="/map/info"
-          element={<MapInfoPage />}
+          element={
+            <Suspense>
+              <MapInfoPage />
+            </Suspense>
+          }
         />
         <Route
           path="/login"
