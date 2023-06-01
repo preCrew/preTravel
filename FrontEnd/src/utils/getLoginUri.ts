@@ -2,12 +2,14 @@ export const getLoginUri = (where: 'naver' | 'kakao' | 'base') => {
   const mode = process.env.NODE_ENV as 'development' | 'production';
   const uri = {
     naver: {
-      development: 'http://localhost:3001/getCode/naver',
+      development:
+        'https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=76Nr2e2G6KuBeyuVPqbf&state=STATE_STRING&redirect_uri=https://web-fronttest-ll32glc6adwo3.gksl2.cloudtype.app/oauth/naver',
       production:
         'https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=76Nr2e2G6KuBeyuVPqbf&state=STATE_STRING&redirect_uri=https://web-fronttest-ll32glc6adwo3.gksl2.cloudtype.app/oauth/naver',
     },
     kakao: {
-      development: 'http://localhost:3001/getCode/kakao',
+      development:
+        'https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=2581cd83651b3e51982587f4cb1652f5&redirect_uri=https://web-fronttest-ll32glc6adwo3.gksl2.cloudtype.app/oauth/kakao',
       production:
         'https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=2581cd83651b3e51982587f4cb1652f5&redirect_uri=https://web-fronttest-ll32glc6adwo3.gksl2.cloudtype.app/oauth/kakao',
     },

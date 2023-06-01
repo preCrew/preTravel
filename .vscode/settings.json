@@ -33,7 +33,27 @@
     "typescript": "javascript",
     "typescriptreact": "javascript"
   },
-  "java.compile.nullAnalysis.mode": "automatic"
+  "java.compile.nullAnalysis.mode": "automatic",
+  "todo-tree.highlights.customHighlight":{
+    "TODO": {
+      "icon": "checkbox",
+      "foreground": "white",
+      "background": "green",
+      "iconColour": "green",
+    },
+    "FIXME": {
+      "icon": "alert",
+      "foreground": "white",
+      "background": "orange",
+      "iconColour": "orange",
+    },
+    "BUG": {
+      "icon": "bug",
+      "foreground": "white",
+      "background": "red",
+      "iconColour": "red",
+    }
+  }
 
   
 }

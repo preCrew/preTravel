@@ -1,37 +1,39 @@
 import axios from 'axios';
-import { useMutation, useQuery } from '@tanstack/react-query';
-export interface ILikeMapData {
-  memberIdx: string | null;
-  smallLa: string | null;
-  largeLa: string | null;
-  smallLo: string | null;
-  largeLo: string | null;
-}
-// https://port-0-pretravel-ll32glc6adwo3.gksl2.cloudtype.app/like
+import { Response } from './responseInterfaces';
+import { useQuery } from '@tanstack/react-query';
 
-const areaMarekerFunc = async (data: any) => {
-  console.log(data);
+export interface Like {
+  idx: string;
+  memberIdx: string;
+  name: string;
+  address: string;
+  latitude: string;
+  longitude: string;
+}
+const likeFetch = async (
+  memberIdx: string,
+  name: string,
+  latitude: string,
+  longitude: string,
+) => {
   try {
-    const response = await axios.get(
-      `https://port-0-pretravel-ll32glc6adwo3.gksl2.cloudtype.app/like/map?memberIdx=${data.memberIdx}&smallLa=${data.smallLa}&largeLa=${data.largeLa}&smallLo=${data.smallLo}&largeLo=${data.largeLo}`,
+    const response = await axios.get<Response<Like[]>>(
+      `${process.env.REAL_SERVER_URL}/like/search?memberIdx=${memberIdx}&name=${name}&latitude=${latitude}&longitude=${longitude}`,
     );
-    //console.log(response.data);
-    return response.data;
+    return response.data.data[0] || null;
   } catch (err) {
     if (err instanceof Error) console.log(err.message);
   }
 };
 
-const useGetLike = (data: any) => {
-  //const { setGetLike } = useMarkerState();
-
-  return useQuery(['getAreaLike', data], () => areaMarekerFunc(data), {
-    enabled: false,
-    onSuccess: () => {
-      console.log('성공');
-      //setGetLike(true);
-    },
-  });
+const useGetLike = (name: string, latitude: string, longitude: string) => {
+  // TODO: recoil에 저장된 memberIdx 받아오도록 변경해야함.
+  const memberIdx = '1';
+  return useQuery(
+    ['like'],
+    () => likeFetch(memberIdx, name, latitude, longitude),
+    { cacheTime: 0 },
+  );
 };
 
 export default useGetLike;
