@@ -10,7 +10,6 @@ export interface ILikeMapData {
 // https://port-0-pretravel-ll32glc6adwo3.gksl2.cloudtype.app/like
 
 const areaMarekerFunc = async (data: ILikeMapData) => {
-  console.log(data);
   try {
     const response = await axios.get(
       `${process.env.REAL_SERVER_URL}/like/map?memberIdx=${data.memberIdx}&smallLa=${data.smallLa}&largeLa=${data.largeLa}&smallLo=${data.smallLo}&largeLo=${data.largeLo}`,
@@ -29,7 +28,7 @@ const useGetMapLike = (data: ILikeMapData) => {
     // cacheTime: 50000,
     // staleTime: 50000,
     onSuccess: () => {
-      console.log('성공');
+      //console.log('성공');
       //setGetLike(true);
     },
   });
