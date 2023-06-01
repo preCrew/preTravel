@@ -4,10 +4,11 @@ interface MarkerProps {
   map?: any;
   la: string;
   lo: string;
+  onClick?: () => void;
   icon: React.FC<React.SVGProps<SVGSVGElement>>;
 }
 
-const Marker = ({ map, icon, la, lo }: MarkerProps) => {
+const Marker = ({ map, icon, la, lo, onClick }: MarkerProps) => {
   useEffect(() => {
     if (map) {
       const imageSize = new window.kakao.maps.Size(30, 30);
@@ -20,11 +21,15 @@ const Marker = ({ map, icon, la, lo }: MarkerProps) => {
       });
       marker.setMap(map);
 
+      if (onClick) {
+        window.kakao.maps.event.addListener(marker, 'click', onClick);
+      }
+
       return () => {
         marker.setMap(null);
       };
     }
-  }, [map]);
+  }, [map, icon]);
 
   return <div></div>;
 };

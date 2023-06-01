@@ -1,4 +1,5 @@
 import { useRecoilState } from 'recoil';
+import tw from 'twin.macro';
 
 import Map from '@src/components/common/Map';
 import TabSlide from '@src/components/common/TabSlide/TabSlide';
@@ -6,13 +7,25 @@ import useMap from '@src/hooks/map/useMap';
 import Markers from '@src/components/common/Map/Markers';
 import { selectedDayAtom } from '@src/recoil/date/atom';
 import { mainTabCategory } from './data/mainTabCategory';
-import tw from 'twin.macro';
+import BottomSheetWrap from '@src/components/ScheduleDetail/BottomSheet/BottomSheetWrap';
+import { modalAtom } from '@src/recoil/modal/atom';
+import { useEffect } from 'react';
+import MainModal from '@src/components/common/Main/MainModal';
+import { clickMarkerAtom } from '@src/recoil/map/atom';
 
 const MainPage = () => {
   const { initializeMap, mapLoad } = useMap();
+  const [isOpenState, setOpenState] = useRecoilState(modalAtom);
+  const [onClickMarkState, setOnClickMarkState] =
+    useRecoilState(clickMarkerAtom);
 
   const [selectedDayState, setSelectedDayState] =
     useRecoilState(selectedDayAtom);
+
+  useEffect(() => {
+    if (onClickMarkState) setOpenState(true);
+    console.log(onClickMarkState);
+  }, [onClickMarkState]);
 
   const onLoadMap = (map: any) => {
     initializeMap(map);
@@ -34,6 +47,7 @@ const MainPage = () => {
           iconNum={selectedDayState}
         />
       ) : null}
+      {onClickMarkState && <MainModal data={onClickMarkState} />}
     </>
   );
 };

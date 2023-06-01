@@ -2,6 +2,7 @@ import Sheet from 'react-modal-sheet';
 import { useEffect, useState } from 'react';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { modalAtom } from '@src/recoil/modal/atom';
+import { clickMarkerAtom } from '@src/recoil/map/atom';
 
 interface BottomSheetProps {
   children?: React.ReactNode;
@@ -32,14 +33,15 @@ const BottomSheet = ({
   // const [isOpen, setOpen] = useState(false);
   const sheetDetent = contentH ? 'full-height' : 'content-height';
   const [isOpenState, setOpenState] = useRecoilState(modalAtom);
+  const [onClickMarkState, setOnClickMarkState] =
+    useRecoilState(clickMarkerAtom);
 
-  useEffect(() => {
-    console.log(open);
-  }, [open, isOpenState]);
+  useEffect(() => {}, [open, isOpenState]);
 
   const onCloseSheet = () => {
-    console.log('닫기');
     setOpenState(false);
+    //닫으면 메인 모달 데이터 삭제
+    setOnClickMarkState(null);
   };
 
   return (
@@ -53,7 +55,7 @@ const BottomSheet = ({
         detent={sheetDetent}
         disableDrag={dragOn}
       >
-        <Sheet.Container className="px-basic">
+        <Sheet.Container className="pb-4 px-basic">
           <Sheet.Header />
           <Sheet.Content>{children}</Sheet.Content>
         </Sheet.Container>

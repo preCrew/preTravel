@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useRecoilState } from 'recoil';
 
 import IcoFavorite from '@src/assets/svgs/ico-favorite.svg?url';
 import IcoReview from '@src/assets/svgs/ico-review.svg?url';
@@ -7,6 +8,7 @@ import IcoReview from '@src/assets/svgs/ico-review.svg?url';
 import useGetMapLike from '@src/hooks/react-query/useGetMapLike';
 import Marker from './Marker';
 import useGetMapReview from '@src/hooks/react-query/useGetMapReview';
+import { clickMarkerAtom } from '@src/recoil/map/atom';
 
 interface MarkersPops {
   mapLoad: boolean;
@@ -17,14 +19,15 @@ interface MarkersPops {
 const Markers = ({ mapLoad, iconNum, categoryNum }: MarkersPops) => {
   const queryClient = useQueryClient();
   const mapRef = useRef<any>(null);
-  const [markerData, setMarkerData] = useState<any>([]);
 
+  const [onClickMarkState, setOnClickMarkState] =
+    useRecoilState(clickMarkerAtom);
   const [mapInfo, setMapInfo] = useState({
     memberIdx: '1',
-    smallLa: '12',
-    largeLa: '12',
-    smallLo: '12',
-    largeLo: '12',
+    smallLa: '36.63303803799248',
+    largeLa: '125.41149898298343',
+    smallLo: '38.24346000847417',
+    largeLo: '128.8627576902043',
   });
   const { data: likeData, refetch: refetchLike } = useGetMapLike(mapInfo);
   const { data: reviewData, refetch: refetchReview } = useGetMapReview(mapInfo);
@@ -37,11 +40,15 @@ const Markers = ({ mapLoad, iconNum, categoryNum }: MarkersPops) => {
     if (categoryNum === currentNum) {
       const fetchLike = async () => {
         await fetchFunc();
-        setMarkerData(data);
       };
       fetchLike();
     }
   };
+
+  const currentMarkerData = useCallback(() => {
+    if (categoryNum === 0) return likeData;
+    if (categoryNum === 1) return reviewData;
+  }, [likeData, reviewData, categoryNum]);
 
   useEffect(() => {
     if (mapLoad) {
@@ -83,21 +90,21 @@ const Markers = ({ mapLoad, iconNum, categoryNum }: MarkersPops) => {
   useEffect(() => {
     fetchMarker(0, refetchLike, likeData);
     fetchMarker(1, refetchReview, reviewData);
-  }, [mapInfo]);
+  }, [mapInfo, currentMarkerData, categoryNum]);
 
   return (
     <>
-      {markerData &&
-        markerData.map((marker: any) => (
+      {currentMarkerData() &&
+        currentMarkerData().map((marker: any) => (
           <Marker
             key={marker.idx}
             map={mapRef.current}
             la={marker.latitude}
             lo={marker.longitude}
+            onClick={() => setOnClickMarkState(marker)}
             icon={iconGenerater(iconNum)}
           />
         ))}
-      {}
     </>
   );
 };

@@ -21,7 +21,7 @@ const areaMarekerFunc = async (data: any) => {
 };
 
 const useGetMapReview = (data: any) =>
-  useQuery(['getAreaReview'], {
+  useQuery(['getMapReview'], {
     enabled: false,
     // cacheTime: 50000,
     // staleTime: 50000,
