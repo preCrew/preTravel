@@ -10,6 +10,7 @@ import PlacePlan from './PlacePlan';
 import MapInfoPage from './MapInfoPage';
 import SchedulePlan from './SchedulePlan';
 import SearchPage from './SearchPage';
+import MySchedule from './MySchedule2';
 
 const App = () => {
   return (
@@ -28,6 +29,14 @@ const App = () => {
         />
       </Helmet>
       <Routes>
+        <Route
+          path="/"
+          element={<MySchedule />}
+        />
+        <Route
+          path="/mySchedule"
+          element={<MySchedule />}
+        />
         <Route
           path="/"
           element={<MainPage />}
