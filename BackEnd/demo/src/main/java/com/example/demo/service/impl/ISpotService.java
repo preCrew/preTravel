@@ -40,6 +40,7 @@ public class ISpotService implements SpotService {
 
         result.put("idx", schedule.getIdx());
         result.put("name", schedule.getName());
+        result.put("city", schedule.getCity());
 
         Map<String, Object> dateRange = new HashMap();
         dateRange.put("start", schedule.getStartDate());
@@ -137,4 +138,15 @@ public class ISpotService implements SpotService {
 
         return map;
     }
+
+    @Override
+    public List<Spot> findByNameAndLatitudeAndLongitude(Map<String, Object> map) {
+        String lat = map.get("latitude").toString();
+        String lon = map.get("longitude").toString();
+        String name = map.get("name").toString();
+        String memberIdx = map.get("memberIdx").toString();
+        List<Spot> result = dao.findByScheduleMemberIdxAndNameAndLatitudeAndLongitude(name, memberIdx, lat, lon);
+        return result;
+    }
+
 }

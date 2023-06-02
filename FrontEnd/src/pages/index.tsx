@@ -1,26 +1,19 @@
 import { Routes, Route } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { Suspense, useEffect } from 'react';
+import { Suspense } from 'react';
 
 import MyPlace from './MyPlaceInSchedule';
 import LoginPage from './LoginPage';
 import OauthPage from './OauthPage';
-import MapPage from './MainPage';
 import MainPage from './MainPage';
-import SearchPage from './SearchPage';
 import PlacePlan from './PlacePlan';
 import MapInfoPage from './MapInfoPage';
-import MySchedule from './MySchedule';
 import SchedulePlan from './SchedulePlan';
+import SearchPage from './SearchPage';
+import MySchedule from './MySchedule2';
+import MyScheduleEdit from './SchedulePlan/edit';
 
 const App = () => {
-  useEffect(() => {
-    console.log('다시시작');
-    // TODO:
-    //  - 새로고침 될때 혹은 주소창에 직접 url을 입력할 때
-    //    쿠키에 저장된 리프레시 토큰을 서버가 확인후 액세스 토큰을 설정해줘야함
-    //  - useSilentRefresh 훅을 생성해서 요청하면 될듯.
-  });
   return (
     <div className="h-full w-full safe-top safe-left safe-right safe-bottom">
       <Helmet>
@@ -37,13 +30,17 @@ const App = () => {
         />
       </Helmet>
       <Routes>
-        {/* <Route
+        <Route
           path="/"
-          element={<Main />}
-        /> */}
+          element={<MySchedule />}
+        />
         <Route
           path="/mySchedule"
           element={<MySchedule />}
+        />
+        <Route
+          path="/"
+          element={<MainPage />}
         />
         <Route
           path="/mySchedule/:id"
@@ -62,12 +59,20 @@ const App = () => {
           element={<SchedulePlan />}
         />
         <Route
-          path="search"
+          path="/schedulePlan/edit"
+          element={<MyScheduleEdit />}
+        />
+        <Route
+          path="/search/*"
           element={<SearchPage />}
         />
         <Route
           path="/map/info"
-          element={<MapInfoPage />}
+          element={
+            <Suspense>
+              <MapInfoPage />
+            </Suspense>
+          }
         />
         <Route
           path="/login"
@@ -78,59 +83,10 @@ const App = () => {
           element={<OauthPage />}
         />
         <Route
-          path="/map/main"
-          element={
-            <Suspense fallback={'로딩즁,,,'}>
-              <MainPage />
-            </Suspense>
-          }
-        />
-        <Route
-          path="/map/*"
-          element={<MapPage />}
-        />
-        <Route
           path="/*"
           element={<div>잘못된접근</div>}
         />
       </Routes>
-      {/* <div css={tw`relative flex flex-col w-full h-full xsm:w-380`}>
-        <Routes>
-          <Route
-            path="/"
-            element={<Main />}
-          />
-          <Route
-            path="/mySchedule"
-            element={<MySchedule2 />}
-          />
-          <Route
-            path="/mySchedule/:id"
-            element={<MySchedule />}
-          />
-          <Route
-            path="/login"
-            element={<LoginPage />}
-          />
-          <Route
-            path="/oauth/:where"
-            element={<OauthPage />}
-          />
-          <Route
-            path="/map/*"
-            element={<MapPage />}
-          />
-
-          <Route
-            path="/review/*"
-            element={<ReviewPage />}
-          />
-          <Route
-            path="/*"
-            element={<div>잘못된접근</div>}
-          />
-        </Routes>
-      </div> */}
     </div>
   );
 };

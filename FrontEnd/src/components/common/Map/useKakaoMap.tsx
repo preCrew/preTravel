@@ -1,26 +1,13 @@
-// import { loadKakaoMapScript } from '@src/hooks/useKakaoMapScript';
 import { modalAtom } from '@src/recoil/modal/atom';
-import { userFavoriteAtom } from '@src/recoil/user/getLike/atom';
-import {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import useScript from '../../../hooks/useScript';
-import IcoFavorite from '@src/assets/svgs/ico-favorite.svg?url';
-import IcoReview from '@src/assets/svgs/ico-review.svg?url';
-import { userReviewAtom } from '@src/recoil/user/review/atom';
-import { mapAreaInfoAtom, markerAtom } from '@src/recoil/marker/atom';
-import useGetAreaMarker from '@src/hooks/react-query/useGetAreaMarker';
-import axios from 'axios';
+import { mapAreaInfoAtom } from '@src/recoil/marker/atom';
 import { categoryAtom } from '@src/recoil/marker/category/atom';
-import useGetLike from '@src/hooks/react-query/useGetLike';
-import useGetReview from '@src/hooks/react-query/useGetReview';
 import { mapAtom } from '@src/recoil/map/atom';
+import useGetUserLike from '@src/hooks/react-query/useGetUserLike';
+import useGetUserReview from '@src/hooks/react-query/useGetUserReview';
 declare global {
   interface Window {
     kakao: any;
@@ -57,12 +44,13 @@ function useKakaoMap() {
   const [isOpenState, setIsOpenState] = useRecoilState(modalAtom);
   const [mapAreaInfoState, setMapAreaInfoState] =
     useRecoilState(mapAreaInfoAtom);
-  const { refetch: refetchLike, data: getLike } = useGetLike(mapAreaInfoState);
+  const { refetch: refetchLike, data: getLike } =
+    useGetUserLike(mapAreaInfoState);
   const {
     refetch: refetchReview,
     data: getReview,
     isLoading,
-  } = useGetReview(mapAreaInfoState);
+  } = useGetUserReview(mapAreaInfoState);
 
   //map 불러오기
   const [success, error] = useScript(src);

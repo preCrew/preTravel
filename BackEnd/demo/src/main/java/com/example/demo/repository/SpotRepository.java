@@ -23,4 +23,15 @@ public interface SpotRepository extends JpaRepository<Spot, Long> {
 
     void deleteBySctIdx(String sctIdx);
 
+    @Query("SELECT sp FROM Schedule sc JOIN Spot sp ON sc.idx = sp.sctIdx " +
+            "WHERE sc.memberIdx = :memberIdx " +
+            "AND sp.name = :spotName " +
+            "AND sp.latitude = :latitude " +
+            "AND sp.longitude = :longitude")
+    List<Spot> findSpotsByScheduleAndCriteria(
+            @Param("memberIdx") String memberIdx,
+            @Param("spotName") String spotName,
+            @Param("latitude") String latitude,
+            @Param("longitude") String longitude
+    );
 }

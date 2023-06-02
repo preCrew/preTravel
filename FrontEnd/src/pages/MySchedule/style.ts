@@ -10,10 +10,9 @@ const title = `
 const buttonBox = `
   flex gap-5
 `;
-const mySchedule = {
+export const MyScheduleDiv = {
   page,
   childrenBox,
   title,
   buttonBox,
 };
-export default mySchedule;

@@ -1,37 +1,83 @@
 import axios from 'axios';
-import { useMutation, useQuery } from '@tanstack/react-query';
-export interface ILikeMapData {
-  memberIdx: string | null;
-  smallLa: string | null;
-  largeLa: string | null;
-  smallLo: string | null;
-  largeLo: string | null;
-}
-// https://port-0-pretravel-ll32glc6adwo3.gksl2.cloudtype.app/like
+import { Response } from './responseInterfaces';
+import { useQuery } from '@tanstack/react-query';
 
-const areaMarekerFunc = async (data: any) => {
-  //  console.log(memberIdx, smallLa, largeLa, smallLo, largeLo);
-  // const params = new FormData();
-  // params.append('memberIdx', '12');
-  // params.append('smallLa', data.get('smallLa'));
-  // params.append('largeLa', data.get('largeLa'));
-  // params.append('smallLo', data.get('smallLo'));
-  // params.append('largeLo', data.get('largeLo'));
+interface IReviewFile {
+  idx: string;
+  boardName: string;
+  boardIdx: string;
+  fileDir: string;
+  fileName: string;
+}
+export interface IReview {
+  idx: string;
+  memberIdx: string;
+  name: string;
+  address: string;
+  city: string;
+  star: string;
+  latitude: string;
+  longitude: string;
+  revisit: string;
+  contents: string;
+  createDate: string;
+  file: IReviewFile[];
+  dir?: string[];
+}
+const reviewFetch = async (
+  storeName: string,
+  latitude: string,
+  longitude: string,
+) => {
+  const requestURL = new URLSearchParams(
+    `${process.env.REAL_SERVER_URL}/review/detail`,
+  );
+  requestURL.append('name', storeName);
+  requestURL.append('latitude', latitude);
+  requestURL.append('longitude', longitude);
+
   try {
-    const response = await axios.get(
-      `https://port-0-pretravel-ll32glc6adwo3.gksl2.cloudtype.app/review?memberIdx=${data.memberIdx}&smallLa=${data.smallLa}&largeLa=${data.largeLa}&smallLo=${data.smallLo}&largeLo=${data.largeLo}`,
+    const response = await axios.get<Response<IReview[]>>(
+      requestURL.toString(),
     );
-    //console.log(response.data);
-    return response.data;
+    if (response.data.code !== 200) {
+      throw new Error('리뷰 상세 조회 실패');
+    }
+
+    const mapedResponse = response.data.data.map(res => ({
+      ...res,
+      createDate: res.createDate.slice(0, 10).replaceAll('-', '.'),
+      dir: res.file.map(item => item.fileDir),
+    }));
+    // const createDate = response.data.data.createDate
+    //   .slice(0, 10)
+    //   // .split(' ')[0]
+    //   .replaceAll('-', '.');
+    // const file = response.data.data.file.map(item => item.fileDir);
+    // const newData = {
+    //   ...response.data.data,
+    //   createDate,
+    //   file,
+    //   originFile: response.data.data.file,
+    // };
+    return mapedResponse;
   } catch (err) {
-    if (err instanceof Error) console.log(err.message);
+    if (err instanceof Error) {
+      console.log(err.message);
+    }
   }
 };
 
-const useGetReview = (data: any) =>
-  useQuery(['getAreaReview'], {
-    enabled: false,
-    queryFn: () => areaMarekerFunc(data),
-  });
+const useGetReview = (storeName: string, latitude: string, longitude: string) =>
+  useQuery(
+    ['review', storeName, latitude, longitude],
+    () => reviewFetch(storeName, latitude, longitude),
+    {
+      onError: err => console.log(err),
+      // cacheTime: 0,
+      staleTime: 0,
+      enabled: false,
+    },
+  );
 
 export default useGetReview;
