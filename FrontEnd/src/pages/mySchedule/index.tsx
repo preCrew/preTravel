@@ -9,23 +9,13 @@ import useCardListState from '@src/hooks/recoil/useCardListState';
 import useMyScheduleDeleteQuery from '@src/hooks/react-query/useDeleteMyScheduleQuery';
 
 import Button from '@src/components/common/Button';
-<<<<<<<< HEAD:FrontEnd/src/pages/mySchedule/index.tsx
 import MyScheduleCardList from '@src/components/MyScedule/MyScheduleCardList';
 import CancelBtn from '@src/components/MyScedule/CancelBtn';
 import { SkeletonMyScheduleCard } from '@src/components/MyScedule/MyScheduleCard';
 import SelectNumberBox from '@src/components/MyScedule/SelectNumberBox';
 import IconBox from '@src/components/MyScedule/IconBox';
-import mySchedule from './style';
-========
 import { MyScheduleDiv } from './style';
-
 import useSearchRegionOvelay from '@src/hooks/ovelay/Ovelays/useSearchRegionOvelay';
-import SelectNumberBox from '@src/components/myScedule/SelectNumberBox';
-import IconBox from '@src/components/myScedule/IconBox';
-import CancelBtn from '@src/components/myScedule/CancelBtn';
-import MyScheduleCardList from '@src/components/myScedule/MyScheduleCardList';
-import { SkeletonMyScheduleCard } from '@src/components/myScedule/MyScheduleCard';
->>>>>>>> front-end/fix/myschedule-and-spot:FrontEnd/src/pages/MySchedule/index.tsx
 
 const MySchedule = () => {
   const navigate = useNavigate();
