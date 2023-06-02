@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import tw from 'twin.macro';
@@ -19,6 +19,7 @@ import { locationAtom } from '@src/recoil/location/atom';
 import BottomSheetWrap from '@src/components/ScheduleDetail/BottomSheet/BottomSheetWrap';
 import { modalAtom } from '@src/recoil/modal/atom';
 import useSearchPlaceOvelay from '@src/hooks/ovelay/Ovelays/useSearchPlaceOvelay';
+import { TCurrentplace, currentPlaceAtom } from '@src/recoil/place/atom';
 
 export interface MapInfoPageProps {}
 
@@ -27,30 +28,31 @@ const MapInfoPage = ({}: MapInfoPageProps) => {
   const {
     locationState: { selectData },
   } = useLocationState();
-  const { mutate: mutateAddPlace, isSuccess: isSuccessAddPlace } =
-    useAddPlaceinScehduleQuery();
 
-  const [modalOpen, setModalOpen] = useRecoilState(modalAtom);
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const searchParamsObj = Object.fromEntries(searchParams);
+
+  const [modalOpen, setModalOpen] = useRecoilState(modalAtom);
+  const currentScheduleState = useRecoilValue(currentScheduleAtom);
+  const [currentPlaceState, setCurrentPlaceState] =
+    useRecoilState(currentPlaceAtom);
+  const selectDayState = useRecoilValue(selectedDayAtom);
+  const [placeAdd, setPlaceAdd] = useState(false);
 
   const { data: like, refetch: getLikeRefetch } = useGetLike(
     searchParamsObj.name,
     searchParamsObj.latitude,
     searchParamsObj.longitude,
   );
-  const currentScheduleState = useRecoilValue(currentScheduleAtom);
-  const currentPlaceState = useRecoilValue(locationAtom);
-  const selectDayState = useRecoilValue(selectedDayAtom);
-
+  const { mutate: mutateAddPlace, isLoading: isLoadingAddPlace } =
+    useAddPlaceinScehduleQuery();
   const { mutate: addLikeMutation } = useAddLike(
     searchParamsObj.name,
     searchParamsObj.address,
     searchParamsObj.latitude,
     searchParamsObj.longitude,
   );
-
   const { mutate: deleteLikeMutation } = useDeleteLike(like?.idx ?? '');
 
   const searchPlaceOvelay = useSearchPlaceOvelay('강남구');
@@ -60,20 +62,28 @@ const MapInfoPage = ({}: MapInfoPageProps) => {
   }, []);
 
   const handleClickAddScheduleButton = () => {
-    mutateAddPlace({
+    const schdule = {
+      placeName: searchParamsObj.name,
+      address: searchParamsObj.address,
+      order: '1',
+      la: searchParamsObj.latitude,
+      lo: searchParamsObj.longitude,
+    };
+    //장소 리스트 recoil에 저장
+    setCurrentPlaceState((state: TCurrentplace) => ({
       date: currentScheduleState.schedule[selectDayState].date,
-      sctIdx: currentScheduleState.idx,
-      list: [
-        {
-          placeName: currentPlaceState.selectData.body,
-          address: currentPlaceState.selectData.address,
-          order: null,
-          la: currentPlaceState.selectData.y,
-          lo: currentPlaceState.selectData.x,
-        },
-      ],
-    });
+      sctIdx: currentScheduleState.idx + '',
+      list: [...state.list, schdule],
+    }));
+    setPlaceAdd(true);
+    // mutateAddPlace(currentPlaceState);
   };
+
+  useEffect(() => {
+    //장소 추가(요청)
+    if (placeAdd) mutateAddPlace(currentPlaceState);
+    setPlaceAdd(false);
+  }, [currentPlaceState]);
 
   const handleClickBackButton = () => {
     navigate(-1);
@@ -104,15 +114,15 @@ const MapInfoPage = ({}: MapInfoPageProps) => {
     <>
       <TopBar onClickBackButton={handleClickBackButton}>
         <div
-          css={tw`w-full absolute text-center text-h4Bold pointer-events-none`}
+          css={tw`absolute w-full text-center pointer-events-none text-h4Bold`}
         >
           {searchParamsObj.name}
         </div>
       </TopBar>
       <BottomSheetWrap drag={true}>
-        <div css={tw`p-2 flex flex-col items-center gap-3`}>
+        <div css={tw`flex flex-col items-center gap-3 p-2`}>
           <div css={tw`text-h5 `}>{searchParamsObj.address}</div>
-          <div css={tw`w-30 h-30 flex-with-center bg-gray3 rounded-full`}>
+          <div css={tw`rounded-full w-30 h-30 flex-with-center bg-gray3`}>
             <IconButton
               type={like ? 'heartFill' : 'heart'}
               onClick={handleClickLikeButton}

@@ -23,7 +23,7 @@ const MyScheduleList = ({ drag, setDrag, edit }: MyScheduleListProps) => {
 
   useEffect(() => {
     setonDragScheduleData(currentScheduleState.schedule[selectedDayState].list);
-  }, [selectedDayState]);
+  }, [selectedDayState, currentScheduleState]);
 
   const onDragStart = () => {
     setDrag(true);
