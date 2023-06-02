@@ -11,6 +11,7 @@ import MapInfoPage from './MapInfoPage';
 import SchedulePlan from './SchedulePlan';
 import SearchPage from './SearchPage';
 import MySchedule from './MySchedule2';
+import MyScheduleEdit from './SchedulePlan/edit';
 
 const App = () => {
   return (
@@ -56,6 +57,10 @@ const App = () => {
         <Route
           path="/schedulePlan"
           element={<SchedulePlan />}
+        />
+        <Route
+          path="/schedulePlan/edit"
+          element={<MyScheduleEdit />}
         />
         <Route
           path="/search/*"
