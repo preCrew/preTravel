@@ -6,7 +6,7 @@ import { MdModeEditOutline } from 'react-icons/md';
 import TabSlide from '@src/components/common/TabSlide/TabSlide';
 import Button from '@src/components/ScheduleDetail/BottomSheet/Button';
 import CalendarCon from '@src/components/ScheduleDetail/BottomSheet/CalendarCon';
-import MyScheduleCon from '@src/components/ScheduleDetail/BottomSheet/MyScheduleCon';
+
 import CalendarBtn from '@src/components/ScheduleDetail/CalendarBtn';
 import Title from '@src/components/ScheduleDetail/Title';
 
@@ -16,6 +16,7 @@ import useLocationState from '@src/hooks/recoil/useLocationState';
 import { currentScheduleAtom, selectedDayAtom } from '@src/recoil/date/atom';
 import { calendarIsOpenAtom } from '@src/recoil/modal/atom';
 import { currentPlaceAtom } from '@src/recoil/place/atom';
+import MyScheduleCon from '@src/components/ScheduleDetail/BottomSheet/MyScheduleCon';
 
 const MySchedule = () => {
   const { id } = useParams();
