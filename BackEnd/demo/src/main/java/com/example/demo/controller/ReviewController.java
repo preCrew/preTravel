@@ -53,10 +53,9 @@ public class ReviewController {
     }
 
     @GetMapping("name")
-    public ResponseEntity<ResponseDTO> findByNameAndLatitudeAndLongitude(String name, String latitude, String longitude) {
-        System.out.println(name + latitude + longitude);
+    public ResponseEntity<ResponseDTO> findByNameAndAndMemberIdxAndLatitudeAndLongitude(String name, String memberIdx, String latitude, String longitude) {
         log.info("리뷰 이름, 위경도 조회");
-        List<Review> review = service.findByNameAndLatitudeAndLongitude(name, latitude, longitude);
+        List<Review> review = service.findByNameAndAndMemberIdxAndLatitudeAndLongitude(name, memberIdx, latitude, longitude);
         return returnUtil.code200("리뷰 이름, 위경도 조회", review);
     }
 
