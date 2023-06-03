@@ -12,11 +12,11 @@ import Button from '@src/components/common/Button';
 import { MyScheduleDiv } from './style';
 
 import useSearchRegionOvelay from '@src/hooks/ovelay/Ovelays/useSearchRegionOvelay';
-import SelectNumberBox from '@src/components/myScedule/SelectNumberBox';
-import IconBox from '@src/components/myScedule/IconBox';
-import CancelBtn from '@src/components/myScedule/CancelBtn';
-import MyScheduleCardList from '@src/components/myScedule/MyScheduleCardList';
-import { SkeletonMyScheduleCard } from '@src/components/myScedule/MyScheduleCard';
+import SelectNumberBox from '@src/components/MyScedule/SelectNumberBox';
+import IconBox from '@src/components/MyScedule/IconBox';
+import CancelBtn from '@src/components/MyScedule/CancelBtn';
+import MyScheduleCardList from '@src/components/MyScedule/MyScheduleCardList';
+import { SkeletonMyScheduleCard } from '@src/components/MyScedule/MyScheduleCard';
 
 const MySchedule2 = () => {
   const navigate = useNavigate();
