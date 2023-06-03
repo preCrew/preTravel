@@ -24,7 +24,8 @@ class _WebViewExampleState extends State<WebView> {
     controller
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..loadRequest(Uri.parse(
-          'https://web-fronttest-ll32glc6adwo3.gksl2.cloudtype.app/'));
+          // 'https://web-pretravelfrontend-lhe2blhxg4o79.sel4.cloudtype.app/map'));
+          'http://localhost:8080/'));
 
     if (controller.platform is AndroidWebViewController) {
       AndroidWebViewController.enableDebugging(true);
