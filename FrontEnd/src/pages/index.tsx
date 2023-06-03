@@ -31,14 +31,6 @@ const App = () => {
       <Routes>
         <Route
           path="/"
-          element={<MySchedule />}
-        />
-        <Route
-          path="/mySchedule"
-          element={<MySchedule />}
-        />
-        <Route
-          path="/"
           element={<MainPage />}
         />
         <Route
