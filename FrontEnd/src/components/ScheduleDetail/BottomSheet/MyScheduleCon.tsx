@@ -16,7 +16,8 @@ const MyScheduleCon = ({ region }: any) => {
   const { setLocationRegion, setSelectData } = useLocationState();
   const currentScheduleState = useRecoilValue(currentScheduleAtom);
   const withSelectedDayState = useRecoilValue(withSelectedDay);
-  const selectedDayState = useRecoilValue(selectedDayAtom);
+  const [selectedDayState, setSelectedDayState] =
+    useRecoilState(selectedDayAtom);
   const setmodalOpen = useSetRecoilState(modalAtom);
   const [modalDragOn, setModalDraOn] = useRecoilState(modalDragAtom);
   const [edit, setEdit] = useState(false);
@@ -25,8 +26,9 @@ const MyScheduleCon = ({ region }: any) => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    setSelectedDayState(0);
     setmodalOpen(true);
-  });
+  }, []);
 
   const onClickAddSchedule = () => {
     setLocationRegion(region);
@@ -56,7 +58,7 @@ const MyScheduleCon = ({ region }: any) => {
       <div className="flex justify-between">
         <h4 className="flex items-end text-body1Bold">
           {currentScheduleState.schedule[selectedDayState]?.date}
-          <sub className="ml-2 rounded bg-gray4 p-1 text-body4Bold text-primary1">
+          <sub className="p-1 ml-2 rounded bg-gray4 text-body4Bold text-primary1">
             {withSelectedDayState}일차
           </sub>
         </h4>

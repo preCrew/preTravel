@@ -9,12 +9,12 @@ import useCardListState from '@src/hooks/recoil/useCardListState';
 import useMyScheduleDeleteQuery from '@src/hooks/react-query/useDeleteMyScheduleQuery';
 
 import Button from '@src/components/common/Button';
-import MyScheduleCardList from '@src/components/MyScedule/MyScheduleCardList';
-import CancelBtn from '@src/components/MyScedule/CancelBtn';
-import { SkeletonMyScheduleCard } from '@src/components/MyScedule/MyScheduleCard';
+import CancelBtn from '@src/components/MySceduleList/CancelBtn';
+import SelectNumberBox from '@src/components/MySceduleList/SelectNumberBox';
+import IconBox from '@src/components/MySceduleList/IconBox';
+import { SkeletonMyScheduleCard } from '@src/components/MySceduleList/MyScheduleCard';
 import { MyScheduleDiv } from './style';
-import SelectNumberBox from '@src/components/MyScedule/SelectNumberBox';
-import IconBox from '@src/components/MyScedule/IconBox';
+import MyScheduleCardList from '@src/components/MySceduleList/MyScheduleCardList';
 
 const MySchedule2 = () => {
   const navigate = useNavigate();

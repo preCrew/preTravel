@@ -27,13 +27,13 @@ const TabSlide = ({ active, data, category, onClick }: TabSlideProps) => {
     (i: number) => (event: React.MouseEvent) => {
       setSelectedDayState(i);
       // if (!active) active = true;
-      console.log(active, i, selectedDayState);
+      // console.log(active, i, selectedDayState);
     },
     [active],
   );
 
   const btnActive = (i: number) => {
-    if (!active) {
+    if (i < -1) {
       return (active = true);
     } else {
       return selectedDayState === i && `active`;
