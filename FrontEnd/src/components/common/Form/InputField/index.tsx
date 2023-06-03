@@ -8,6 +8,7 @@ interface InputFieldProps {
   onChange?: () => void;
   value?: string;
   fieldType?: fieldType;
+  defaultVal?: string;
   children?: React.ReactNode;
 }
 
@@ -16,16 +17,17 @@ const InputField = ({
   value,
   onChange,
   children,
+  defaultVal,
 }: InputFieldProps) => {
   return (
-    <div className="w-full px-4 overflow-hidden border rounded border-gray5 h-50">
+    <div className="h-50 w-full overflow-hidden rounded border border-gray5 px-4">
       {fieldType === 'calendar' && children}
       {!fieldType && (
         <input
           type="text"
           onChange={onChange}
           value={value}
-          className="w-full h-full"
+          className="h-full w-full text-body1"
         />
       )}
     </div>

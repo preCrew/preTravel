@@ -11,6 +11,7 @@ import {
   DayPicker,
   SelectRangeEventHandler,
 } from 'react-day-picker';
+import { ko } from 'date-fns/esm/locale';
 import { useRecoilState } from 'recoil';
 
 import BottomSheet from '@src/components/BottomSheet';
@@ -18,9 +19,13 @@ import { modalAtom } from '@src/recoil/modal/atom';
 
 interface InputCalendarProps {
   value: Dispatch<SetStateAction<any | undefined>>;
+  defaultRange?: {
+    from: string;
+    to: string;
+  };
 }
 
-const InputCalendar = ({ value }: InputCalendarProps) => {
+const InputCalendar = ({ value, defaultRange }: InputCalendarProps) => {
   const [selectedRange, setSelectedRange] = useState<DateRange>();
   const [fromValue, setFromValue] = useState<string>('');
   const [toValue, setToValue] = useState<string>('');
@@ -84,23 +89,24 @@ const InputCalendar = ({ value }: InputCalendarProps) => {
         className="h-full"
       >
         <input
-          size={10}
+          size={8}
           placeholder="YYYY-MM-DD"
-          value={fromValue}
+          value={fromValue || defaultRange?.from}
           onChange={handleFromChange}
-          className="h-full bg-white text-body1 input-reset w-90"
+          className="input-reset h-full w-90 bg-white text-body1"
         />
         {'–'}
         <input
           size={10}
           placeholder="YYYY-MM-DD"
-          value={toValue}
+          value={toValue || defaultRange?.to}
           onChange={handleToChange}
-          className="h-full ml-1 bg-white text-body1 input-reset w-90"
+          className="input-reset ml-1 h-full w-90 bg-white text-body1"
         />
       </div>
       <BottomSheet open={isOpen}>
         <DayPicker
+          locale={ko}
           mode="range"
           selected={selectedRange}
           onSelect={handleRangeSelect}

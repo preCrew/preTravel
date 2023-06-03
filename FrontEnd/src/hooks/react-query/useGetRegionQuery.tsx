@@ -1,14 +1,14 @@
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { Response } from './responseInterfaces';
 export interface RegionData {
-  idx: number;
+  idx: string;
   body: string;
   latitude: string;
   longitude: string;
 }
 interface RegionResponseData {
-  idx: number;
+  idx: string;
   si: string;
   gu: string;
   dong: string;
@@ -17,6 +17,7 @@ interface RegionResponseData {
 }
 
 const getData = async (region: string) => {
+  console.log('data from server');
   const res = await axios.get<Response<RegionResponseData[]>>(
     `${process.env.REAL_SERVER_URL}/map?keyword=${region}`,
   );
@@ -26,13 +27,17 @@ const getData = async (region: string) => {
     body: `${r.si} ${r.gu} ${r.dong}`,
   }));
 
-  return data;
+  return {
+    boardPage: data,
+    currentPage: 1,
+    isLast: false,
+  };
 };
 
-const useRegionGetQuery = (region: string) =>
-  useQuery(['region', region], {
-    queryFn: () => getData(region),
+const useRegionGetQuery = (region: string) => {
+  return useInfiniteQuery(['region', region], () => getData(region), {
     enabled: false,
   });
+};
 
 export default useRegionGetQuery;

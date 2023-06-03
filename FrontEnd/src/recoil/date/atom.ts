@@ -9,6 +9,7 @@ interface IdateAtom {
   idx: string;
   name: string;
   region: string;
+  city: string;
   dateRange: {
     start: string;
     end: string;
@@ -22,6 +23,7 @@ const currentScheduleAtom = atom<IdateAtom>({
     idx: '',
     name: '',
     region: '',
+    city: '',
     dateRange: {
       start: '',
       end: '',

@@ -2,19 +2,16 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
 export interface PlaceData {
-  idx?: string;
-  body?: string;
+  idx: string;
+  body: string;
   address: string;
-  roadAddress?: string;
+  roadAddress: string;
   name: string;
   x: string;
   y: string;
+  region: string;
 }
-interface PlaceDataExport {
-  boardPage: PlaceData[];
-  currentPage: number;
-  isLast: boolean;
-}
+
 interface RegionResponseData {
   code: number;
   msg: string;
@@ -48,15 +45,7 @@ const getData = async (pageParam: number, place: string) => {
 };
 
 const usePlaceGetQuery = (region: string, place: string) => {
-  const {
-    data,
-    fetchNextPage,
-    isFetchingNextPage,
-    isLoading,
-    isFetched,
-    isFetching,
-    hasNextPage,
-  } = useInfiniteQuery(
+  return useInfiniteQuery(
     ['place', region, place],
     ({ pageParam = 1 }) => getData(pageParam, `${region} ${place}`),
     {
@@ -68,16 +57,6 @@ const usePlaceGetQuery = (region: string, place: string) => {
       enabled: false,
     },
   );
-
-  return {
-    data: data,
-    fetchNextPage,
-    isFetchingNextPage,
-    isLoading,
-    isFetched,
-    isFetching,
-    hasNextPage,
-  };
 };
 
 export default usePlaceGetQuery;

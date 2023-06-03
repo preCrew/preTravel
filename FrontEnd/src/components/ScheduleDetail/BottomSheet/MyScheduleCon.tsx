@@ -9,8 +9,12 @@ import { currentScheduleAtom, selectedDayAtom } from '@src/recoil/date/atom';
 import { modalAtom, modalDragAtom } from '@src/recoil/modal/atom';
 import withSelectedDay from '@src/recoil/date/withSelectedDay';
 import useLocationState from '@src/hooks/recoil/useLocationState';
+import { TCurrentplace, currentPlaceAtom } from '@src/recoil/place/atom';
+interface TMyschedulConProps {
+  id: string;
+}
 
-const MyScheduleCon = ({ region }: any) => {
+const MyScheduleCon = ({ id }: TMyschedulConProps) => {
   const [drag, setDrag] = useState(false);
 
   const { setLocationRegion, setSelectData } = useLocationState();
@@ -19,9 +23,10 @@ const MyScheduleCon = ({ region }: any) => {
   const [selectedDayState, setSelectedDayState] =
     useRecoilState(selectedDayAtom);
   const setmodalOpen = useSetRecoilState(modalAtom);
+  const [currentPlaceState, setCurrentPlaceState] =
+    useRecoilState(currentPlaceAtom);
   const [modalDragOn, setModalDraOn] = useRecoilState(modalDragAtom);
   const [edit, setEdit] = useState(false);
-  const edtiBtnOn = edit && modalDragOn;
 
   const navigate = useNavigate();
 
@@ -30,13 +35,30 @@ const MyScheduleCon = ({ region }: any) => {
     setmodalOpen(true);
   }, []);
 
-  const onClickAddSchedule = () => {
-    setLocationRegion(region);
-    navigate('/search');
+  useEffect(() => {
+    //해당 날짜 일정 recoil 저장
+    if (currentScheduleState.schedule.length) {
+      //기존 일정 idx빼고 order string 변환(일정추가시 요청 이슈로 인해..)
+      const currentPlaceList = currentScheduleState.schedule[
+        selectedDayState
+      ].list?.map(({ idx, order, ...rest }) => ({
+        ...rest,
+        order: String(order),
+      }));
+      // recoil 저장
+      setCurrentPlaceState((state: TCurrentplace) => ({
+        ...state,
+        list: currentPlaceList,
+      }));
+    }
+  }, [selectedDayState, currentScheduleState]);
+
+  const onClickAddSchedule = async () => {
+    setLocationRegion(currentScheduleState.city);
+    navigate(`/search/place/${currentScheduleState.city}`);
   };
 
   const onClickEdit = () => {
-    console.log(1);
     setEdit(true);
   };
 

@@ -9,12 +9,14 @@ import useCardListState from '@src/hooks/recoil/useCardListState';
 import useMyScheduleDeleteQuery from '@src/hooks/react-query/useDeleteMyScheduleQuery';
 
 import Button from '@src/components/common/Button';
+
 import CancelBtn from '@src/components/MySceduleList/CancelBtn';
 import SelectNumberBox from '@src/components/MySceduleList/SelectNumberBox';
 import IconBox from '@src/components/MySceduleList/IconBox';
 import { SkeletonMyScheduleCard } from '@src/components/MySceduleList/MyScheduleCard';
 import { MyScheduleDiv } from './style';
 import MyScheduleCardList from '@src/components/MySceduleList/MyScheduleCardList';
+import useSearchRegionOvelay from '@src/hooks/ovelay/Ovelays/useSearchRegionOvelay';
 
 const MySchedule2 = () => {
   const navigate = useNavigate();
@@ -25,11 +27,13 @@ const MySchedule2 = () => {
 
   const { mutate: deleteScheduleQuery } = useMyScheduleDeleteQuery();
 
+  const searchRegionOvelay = useSearchRegionOvelay();
+
   const handleClickBackButton = () => {
     navigate(-1);
   };
   const handleClickAddButton = () => {
-    navigate('/search');
+    searchRegionOvelay.open();
   };
   const handleClickTopRemoveButton = () => {
     setIsDeleteMode(true);

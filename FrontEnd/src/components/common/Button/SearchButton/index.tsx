@@ -1,7 +1,4 @@
-import { useState } from 'react';
 import tw from 'twin.macro';
-
-import useLocationState from '@src/hooks/recoil/useLocationState';
 
 import { BiSearch } from 'react-icons/bi';
 import Button, { ButtonColors } from '..';

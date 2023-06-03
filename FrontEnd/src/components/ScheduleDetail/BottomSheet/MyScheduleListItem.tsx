@@ -14,13 +14,11 @@ const MyScheduleListItem = ({ data, index, edit }: MyScheduleListItemProps) => {
   const modalDragOn = useRecoilValue(modalDragAtom);
   const edtiBtnOn = edit && modalDragOn;
 
-  console.log(modalDragOn, data, index, edit);
-
   return (
     <>
       <Draggable
         key={data.idx}
-        draggableId={data.idx}
+        draggableId={data.idx + ''}
         index={index}
         isDragDisabled={modalDragOn}
       >

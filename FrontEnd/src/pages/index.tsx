@@ -9,6 +9,9 @@ import MainPage from './MainPage';
 import PlacePlan from './PlacePlan';
 import MapInfoPage from './MapInfoPage';
 import SchedulePlan from './SchedulePlan';
+import SearchPage from './SearchPage';
+import MySchedule from './MySchedule2';
+import MyScheduleEdit from './SchedulePlan/edit';
 
 const App = () => {
   return (
@@ -27,6 +30,14 @@ const App = () => {
         />
       </Helmet>
       <Routes>
+        <Route
+          path="/"
+          element={<MySchedule />}
+        />
+        <Route
+          path="/mySchedule"
+          element={<MySchedule />}
+        />
         <Route
           path="/"
           element={<MainPage />}
@@ -48,8 +59,20 @@ const App = () => {
           element={<SchedulePlan />}
         />
         <Route
+          path="/schedulePlan/edit"
+          element={<MyScheduleEdit />}
+        />
+        <Route
+          path="/search/*"
+          element={<SearchPage />}
+        />
+        <Route
           path="/map/info"
-          element={<MapInfoPage />}
+          element={
+            <Suspense>
+              <MapInfoPage />
+            </Suspense>
+          }
         />
         <Route
           path="/login"
