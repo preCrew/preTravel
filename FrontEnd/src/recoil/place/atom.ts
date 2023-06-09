@@ -1,9 +1,16 @@
 import { atom } from 'recoil';
 
+export type Tplace = {
+  placeName: string;
+  address: string;
+  order: string;
+  la: string;
+  lo: string;
+};
 export interface TCurrentplace {
   date: string;
   sctIdx: string;
-  list: any[];
+  list: Tplace[];
 }
 
 export const currentPlaceAtom = atom<TCurrentplace>({
