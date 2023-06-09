@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
@@ -10,6 +10,7 @@ import { modalAtom, modalDragAtom } from '@src/recoil/modal/atom';
 import withSelectedDay from '@src/recoil/date/withSelectedDay';
 import useLocationState from '@src/hooks/recoil/useLocationState';
 import { TCurrentplace, currentPlaceAtom } from '@src/recoil/place/atom';
+import { SheetRef } from 'react-modal-sheet';
 interface TMyschedulConProps {
   id: string;
 }
@@ -27,6 +28,7 @@ const MyScheduleCon = ({ id }: TMyschedulConProps) => {
     useRecoilState(currentPlaceAtom);
   const [modalDragOn, setModalDraOn] = useRecoilState(modalDragAtom);
   const [edit, setEdit] = useState(false);
+  const [moreOnClick, setMoreOnClick] = useState<boolean>(true);
 
   const navigate = useNavigate();
 
@@ -76,11 +78,15 @@ const MyScheduleCon = ({ id }: TMyschedulConProps) => {
   };
 
   return (
-    <BottomSheetWrap drag={drag}>
+    <BottomSheetWrap
+      drag={drag}
+      moreOnClick={moreOnClick}
+      setMoreOnClick={setMoreOnClick}
+    >
       <div className="flex justify-between">
         <h4 className="flex items-end text-body1Bold">
           {currentScheduleState.schedule[selectedDayState]?.date}
-          <sub className="p-1 ml-2 rounded bg-gray4 text-body4Bold text-primary1">
+          <sub className="ml-2 rounded bg-gray4 p-1 text-body4Bold text-primary1">
             {withSelectedDayState}일차
           </sub>
         </h4>
@@ -141,6 +147,7 @@ const MyScheduleCon = ({ id }: TMyschedulConProps) => {
         drag={drag}
         setDrag={setDrag}
         edit={edit}
+        moreOnClick={moreOnClick}
       />
     </BottomSheetWrap>
   );
