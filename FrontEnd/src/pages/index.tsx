@@ -35,14 +35,6 @@ const App = () => {
           element={<MainPage />}
         />
         <Route
-          path="/mySchedule"
-          element={<MySchedule />}
-        />
-        <Route
-          path="/"
-          element={<MainPage />}
-        />
-        <Route
           path="/mySchedule/:id"
           element={
             <Suspense fallback={'내 장소 로딩중....'}>

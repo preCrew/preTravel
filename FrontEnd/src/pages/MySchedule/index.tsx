@@ -10,13 +10,14 @@ import useMyScheduleDeleteQuery from '@src/hooks/react-query/useDeleteMySchedule
 
 import Button from '@src/components/common/Button';
 
-import CancelBtn from '@src/components/MySceduleList/CancelBtn';
-import SelectNumberBox from '@src/components/MySceduleList/SelectNumberBox';
-import IconBox from '@src/components/MySceduleList/IconBox';
-import { SkeletonMyScheduleCard } from '@src/components/MySceduleList/MyScheduleCard';
 import { MyScheduleDiv } from './style';
-import MyScheduleCardList from '@src/components/MySceduleList/MyScheduleCardList';
+
 import useSearchRegionOvelay from '@src/hooks/ovelay/Ovelays/useSearchRegionOvelay';
+import SelectNumberBox from '@src/components/MyScedule/SelectNumberBox';
+import CancelBtn from '@src/components/MyScedule/CancelBtn';
+import IconBox from '@src/components/MyScedule/IconBox';
+import { SkeletonMyScheduleCard } from '@src/components/MyScedule/MyScheduleCard';
+import MyScheduleCardList from '@src/components/MyScedule/MyScheduleCardList';
 
 const MySchedule2 = () => {
   const navigate = useNavigate();
