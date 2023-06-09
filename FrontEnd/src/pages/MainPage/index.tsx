@@ -1,4 +1,5 @@
 import { useRecoilState } from 'recoil';
+import { useEffect } from 'react';
 import tw from 'twin.macro';
 
 import Map from '@src/components/common/Map';
@@ -7,9 +8,7 @@ import useMap from '@src/hooks/map/useMap';
 import Markers from '@src/components/common/Map/Markers';
 import { selectedDayAtom } from '@src/recoil/date/atom';
 import { mainTabCategory } from './data/mainTabCategory';
-import BottomSheetWrap from '@src/components/ScheduleDetail/BottomSheet/BottomSheetWrap';
 import { modalAtom } from '@src/recoil/modal/atom';
-import { useEffect } from 'react';
 import MainModal from '@src/components/common/Main/MainModal';
 import { clickMarkerAtom } from '@src/recoil/map/atom';
 
@@ -24,7 +23,6 @@ const MainPage = () => {
 
   useEffect(() => {
     if (onClickMarkState) setOpenState(true);
-    console.log(onClickMarkState);
   }, [onClickMarkState]);
 
   const onLoadMap = (map: any) => {
