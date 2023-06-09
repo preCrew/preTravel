@@ -4,7 +4,8 @@ import React, { useEffect } from 'react';
 interface OrderMarkerProps {
   data: Tplace;
   map: any;
-
+  mapLoad?: boolean;
+}
 const OrderMarker = ({ data, map, mapLoad }: OrderMarkerProps) => {
   useEffect(() => {
     if (mapLoad) {

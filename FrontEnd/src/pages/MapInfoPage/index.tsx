@@ -69,14 +69,20 @@ const MapInfoPage = ({}: MapInfoPageProps) => {
       la: searchParamsObj.latitude,
       lo: searchParamsObj.longitude,
     };
-    //장소 리스트 recoil에 저장
+    // order 순차적으로 변경
+    const copyPlaceList = [...currentPlaceState.list, schdule];
+    const newPlaceList = copyPlaceList.map((place, idx) => ({
+      ...place,
+      order: (idx + 1).toString(),
+    }));
+
+    //장소 리스트 recoil에 선 저장
     setCurrentPlaceState((state: TCurrentplace) => ({
       date: currentScheduleState.schedule[selectDayState].date,
       sctIdx: currentScheduleState.idx + '',
-      list: [...state.list, schdule],
+      list: newPlaceList,
     }));
     setPlaceAdd(true);
-    // mutateAddPlace(currentPlaceState);
   };
 
   useEffect(() => {

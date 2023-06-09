@@ -17,11 +17,15 @@ import { currentScheduleAtom, selectedDayAtom } from '@src/recoil/date/atom';
 import { calendarIsOpenAtom } from '@src/recoil/modal/atom';
 import { currentPlaceAtom } from '@src/recoil/place/atom';
 import MyScheduleCon from '@src/components/ScheduleDetail/BottomSheet/MyScheduleCon';
+import useMap from '@src/hooks/map/useMap';
+import Map from '@src/components/common/Map';
+import OrderMarkers from '@src/components/ScheduleDetail/PlaceMarker/OrderMarkers';
 
 const MySchedule = () => {
   const { id } = useParams();
   const { state } = useLocation();
   const navigate = useNavigate();
+  const { initializeMap, mapLoad } = useMap();
   const { data, refetch: refetchMyPlace } = useGetMyPlaceInSchedule(
     id as string,
   );
@@ -34,14 +38,11 @@ const MySchedule = () => {
   const selectedDayState = useRecoilValue(selectedDayAtom);
   const calendarIsOpenState = useRecoilValue(calendarIsOpenAtom);
 
-  // const { Map, setNowLocation, drawOverlayOnMap } = useKakaoMap();
-
   const scheduleDaysArr: number[] = Array(data.schedule.length)
     .fill(null)
     .map((_, i) => i + 1);
 
   useEffect(() => {
-    console.log('데이터추가');
     refetchMyPlace();
   }, [data]);
 
@@ -54,30 +55,37 @@ const MySchedule = () => {
   }, [selectedDayState]);
 
   useEffect(() => {
+    //지역 저장
     setLocationRegion(state as string);
+    //현재 일정 저장
     setCurrentScheduleState(data);
-
-    // setSchedulePlaceState()
   }, [currentScheduleState, data]);
 
-  // useEffect(() => {
-  //   //데이터 받아온후 지도 그리기
-  //   const introLocation = setTimeout(() => {
-  //     if (currentScheduleState) {
-  //       drawOverlayOnMap(currentScheduleState.schedule[selectedDayState]?.list);
-  //     }
-  //   }, 1000);
-  //   return () => clearTimeout(introLocation);
-  // }, [currentScheduleState, currentScheduleState.schedule[selectedDayState]]);
+  const onLoadMap = useCallback((map: any) => {
+    initializeMap(map);
+  }, []);
 
-  const onClickBack = () => {};
+  const onClickBack = useCallback(() => {
+    navigate(-1);
+  }, []);
+
   const onClickEdit = useCallback(() => {
     navigate('/schedulePlan/edit', { state: data });
   }, []);
 
-  // const onCallMap = useCallback(() => {
-  //   return <Map />;
-  // }, [currentScheduleState]);
+  const currentList = currentScheduleState.schedule[selectedDayState]?.list;
+
+  const allLatitude =
+    currentPlaceState &&
+    currentPlaceState.list.reduce((acc: number, curr: any) => {
+      return acc + curr.la * 1;
+    }, 0) / currentList?.length;
+
+  const allLongitude =
+    currentList &&
+    currentPlaceState.list.reduce((acc: number, curr: any) => {
+      return acc + curr.lo * 1;
+    }, 0) / currentList?.length;
 
   return (
     <>
@@ -105,7 +113,18 @@ const MySchedule = () => {
         </div>
       </header>
       {/*====지도====*/}
-      {/* {onCallMap()} */}
+
+      <Map
+        onLoad={onLoadMap}
+        initialCetner={
+          currentPlaceState.list.length ? [allLatitude, allLongitude] : 0
+        }
+      />
+      <OrderMarkers
+        data={currentPlaceState}
+        mapLoad={mapLoad}
+      />
+      {/*/////====지도====*/}
       {calendarIsOpenState ? (
         <CalendarCon />
       ) : (

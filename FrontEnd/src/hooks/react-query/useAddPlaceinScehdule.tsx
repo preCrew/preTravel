@@ -16,7 +16,6 @@ const useAddPlaceinScehduleQuery = () => {
   return useMutation(['addMyScheduleDetail'], {
     mutationFn: (data: any) => add(data),
     onSuccess: (data: any, value) => {
-      console.log(data, value);
       navigate(`/mySchedule/${value.sctIdx}`);
       //console.log('!');
     },
