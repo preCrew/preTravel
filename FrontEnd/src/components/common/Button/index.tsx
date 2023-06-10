@@ -55,7 +55,7 @@ const Button = ({
         css`
           background: var(--${color});
         `,
-        disabled && tw`brightness-[60%]`,
+        disabled && tw`text-gray-300`,
       ]}
     >
       {children}

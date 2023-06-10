@@ -1,41 +1,37 @@
 import { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-
+import { createSearchParams, useLocation, useNavigate } from 'react-router-dom';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import tw from 'twin.macro';
+
+import { currentScheduleAtom, selectedDayAtom } from '@src/recoil/date/atom';
+import { locationAtom } from '@src/recoil/location/atom';
+import { modalAtom } from '@src/recoil/modal/atom';
+
+import useAddPlaceinScehduleQuery from '@src/hooks/react-query/useAddPlaceinScehdule';
 import useGetLike, { Like } from '@src/hooks/react-query/useGetLike';
 import useDeleteLike from '@src/hooks/react-query/useDeleteLike';
 import useAddLike from '@src/hooks/react-query/useAddLike';
 
-import IconButton from '@src/components/common/Button/IconButton';
-import TopBar from '@src/components/common/TobBar';
-import Button from '@src/components/common/Button';
-import TopText from '@src/components/common/Text/TopText';
-import useLocationState from '@src/hooks/recoil/useLocationState';
-// import BottomSheetWrap from '@src/components/scheduleDetail/BottomSheet/BottomSheetWrap';
-import useAddPlaceinScehduleQuery from '@src/hooks/react-query/useAddPlaceinScehdule';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { currentScheduleAtom, selectedDayAtom } from '@src/recoil/date/atom';
-import { locationAtom } from '@src/recoil/location/atom';
 import BottomSheetWrap from '@src/components/ScheduleDetail/BottomSheet/BottomSheetWrap';
-import { modalAtom } from '@src/recoil/modal/atom';
-import useSearchPlaceOvelay from '@src/hooks/ovelay/Ovelays/useSearchPlaceOvelay';
+import IconButton from '@src/components/common/Button/IconButton';
+import Button from '@src/components/common/Button';
+import TopBar from '@src/components/common/TobBar';
+import useGetUserVisitedPlace from '@src/hooks/react-query/useGetUserVisitedPlace';
+import useGetReview, { IReview } from '@src/hooks/react-query/useGetReview';
+import useGetReviewByName from '@src/hooks/react-query/useGetReviewByName';
 
 export interface MapInfoPageProps {}
 
 const MapInfoPage = ({}: MapInfoPageProps) => {
   const navigate = useNavigate();
-  const {
-    locationState: { selectData },
-  } = useLocationState();
-  const { mutate: mutateAddPlace, isSuccess: isSuccessAddPlace } =
-    useAddPlaceinScehduleQuery();
+  const { mutate: mutateAddPlace } = useAddPlaceinScehduleQuery();
 
   const [modalOpen, setModalOpen] = useRecoilState(modalAtom);
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const searchParamsObj = Object.fromEntries(searchParams);
 
-  const { data: like, refetch: getLikeRefetch } = useGetLike(
+  const { data: like } = useGetLike(
     searchParamsObj.name,
     searchParamsObj.latitude,
     searchParamsObj.longitude,
@@ -51,9 +47,19 @@ const MapInfoPage = ({}: MapInfoPageProps) => {
     searchParamsObj.longitude,
   );
 
+  const { data: isVisitedPlace } = useGetUserVisitedPlace(
+    searchParamsObj.name,
+    searchParamsObj.latitude,
+    searchParamsObj.longitude,
+  );
+
   const { mutate: deleteLikeMutation } = useDeleteLike(like?.idx ?? '');
 
-  const searchPlaceOvelay = useSearchPlaceOvelay('강남구');
+  const { data: reviewData } = useGetReviewByName(
+    searchParamsObj.name,
+    searchParamsObj.latitude,
+    searchParamsObj.longitude,
+  );
 
   useEffect(() => {
     setModalOpen(true);
@@ -80,11 +86,39 @@ const MapInfoPage = ({}: MapInfoPageProps) => {
   };
 
   const handleClickAddReviewButton = () => {
-    navigate(`/review/edit`, { state: { topBarName: searchParamsObj.name } });
+    // 리뷰가 존재한다면 리뷰 보기로 이동
+    if (reviewData) {
+      const searchParam = createSearchParams({
+        name: searchParamsObj.name,
+        latitude: searchParamsObj.latitude,
+        longitude: searchParamsObj.longitude,
+      });
+
+      navigate({
+        pathname: '/review',
+        search: `?${searchParam}`,
+      });
+    }
+    // 리뷰가 존재하지 않는다면 리뷰 작성으로 이동
+    else {
+      navigate(`/review/edit`, {
+        state: {
+          name: searchParamsObj.name,
+          address: searchParamsObj.address,
+          latitude: searchParamsObj.latitude,
+          longitude: searchParamsObj.longitude,
+        },
+      });
+    }
+  };
+
+  const handleClickisabledReviewButton = () => {
+    alert(
+      '현재 장소에 방문한적이 없었습니다. \n일정에 추가후 리뷰를 작성해주세요',
+    );
   };
 
   const handleClickLikeButton = async () => {
-    // TODO: 실제 memberIdx 받아오도록 변경해야함.
     const tempLikeData: Like = {
       name: searchParamsObj.name,
       address: searchParamsObj.address,
@@ -124,8 +158,10 @@ const MapInfoPage = ({}: MapInfoPageProps) => {
               color="gray3"
               css={tw`text-black`}
               onClick={handleClickAddReviewButton}
+              disabled={false}
+              onClickDisabled={handleClickisabledReviewButton}
             >
-              리뷰작성
+              {true ? '리뷰 작성' : '리뷰 보기'}
             </Button>
             <Button
               type="large"
