@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { createSearchParams, useLocation, useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import tw from 'twin.macro';
@@ -19,27 +19,36 @@ import TopBar from '@src/components/common/TobBar';
 import useGetUserVisitedPlace from '@src/hooks/react-query/useGetUserVisitedPlace';
 import useGetReview, { IReview } from '@src/hooks/react-query/useGetReview';
 import useGetReviewByName from '@src/hooks/react-query/useGetReviewByName';
+import { TCurrentplace, currentPlaceAtom } from '@src/recoil/place/atom';
+import useLocationState from '@src/hooks/recoil/useLocationState';
 
 export interface MapInfoPageProps {}
 
 const MapInfoPage = ({}: MapInfoPageProps) => {
   const navigate = useNavigate();
+  const {
+    locationState: { selectData },
+  } = useLocationState();
   const { mutate: mutateAddPlace } = useAddPlaceinScehduleQuery();
 
-  const [modalOpen, setModalOpen] = useRecoilState(modalAtom);
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const searchParamsObj = Object.fromEntries(searchParams);
 
-  const { data: like } = useGetLike(
+  const [modalOpen, setModalOpen] = useRecoilState(modalAtom);
+  const currentScheduleState = useRecoilValue(currentScheduleAtom);
+  const [currentPlaceState, setCurrentPlaceState] =
+    useRecoilState(currentPlaceAtom);
+  const selectDayState = useRecoilValue(selectedDayAtom);
+  const [placeAdd, setPlaceAdd] = useState(false);
+
+  const { data: like, refetch: getLikeRefetch } = useGetLike(
     searchParamsObj.name,
     searchParamsObj.latitude,
     searchParamsObj.longitude,
   );
-  const currentScheduleState = useRecoilValue(currentScheduleAtom);
-  const currentPlaceState = useRecoilValue(locationAtom);
-  const selectDayState = useRecoilValue(selectedDayAtom);
-
+  // const { mutate: mutateAddPlace, isLoading: isLoadingAddPlace } =
+  //   useAddPlaceinScehduleQuery();
   const { mutate: addLikeMutation } = useAddLike(
     searchParamsObj.name,
     searchParamsObj.address,
@@ -66,20 +75,34 @@ const MapInfoPage = ({}: MapInfoPageProps) => {
   }, []);
 
   const handleClickAddScheduleButton = () => {
-    mutateAddPlace({
+    const schdule = {
+      placeName: searchParamsObj.name,
+      address: searchParamsObj.address,
+      order: '1',
+      la: searchParamsObj.latitude,
+      lo: searchParamsObj.longitude,
+    };
+    // order 순차적으로 변경
+    const copyPlaceList = [...currentPlaceState.list, schdule];
+    const newPlaceList = copyPlaceList.map((place, idx) => ({
+      ...place,
+      order: (idx + 1).toString(),
+    }));
+
+    //장소 리스트 recoil에 선 저장
+    setCurrentPlaceState((state: TCurrentplace) => ({
       date: currentScheduleState.schedule[selectDayState].date,
-      sctIdx: currentScheduleState.idx,
-      list: [
-        {
-          placeName: currentPlaceState.selectData.body,
-          address: currentPlaceState.selectData.address,
-          order: null,
-          la: currentPlaceState.selectData.y,
-          lo: currentPlaceState.selectData.x,
-        },
-      ],
-    });
+      sctIdx: currentScheduleState.idx + '',
+      list: newPlaceList,
+    }));
+    setPlaceAdd(true);
   };
+
+  useEffect(() => {
+    //장소 추가(요청)
+    if (placeAdd) mutateAddPlace(currentPlaceState);
+    setPlaceAdd(false);
+  }, [currentPlaceState]);
 
   const handleClickBackButton = () => {
     navigate(-1);
@@ -138,15 +161,15 @@ const MapInfoPage = ({}: MapInfoPageProps) => {
     <>
       <TopBar onClickBackButton={handleClickBackButton}>
         <div
-          css={tw`w-full absolute text-center text-h4Bold pointer-events-none`}
+          css={tw`absolute w-full text-center pointer-events-none text-h4Bold`}
         >
           {searchParamsObj.name}
         </div>
       </TopBar>
       <BottomSheetWrap drag={true}>
-        <div css={tw`p-2 flex flex-col items-center gap-3`}>
+        <div css={tw`flex flex-col items-center gap-3 p-2`}>
           <div css={tw`text-h5 `}>{searchParamsObj.address}</div>
-          <div css={tw`w-30 h-30 flex-with-center bg-gray3 rounded-full`}>
+          <div css={tw`rounded-full w-30 h-30 flex-with-center bg-gray3`}>
             <IconButton
               type={like ? 'heartFill' : 'heart'}
               onClick={handleClickLikeButton}
@@ -158,10 +181,10 @@ const MapInfoPage = ({}: MapInfoPageProps) => {
               color="gray3"
               css={tw`text-black`}
               onClick={handleClickAddReviewButton}
-              disabled={false}
+              disabled={isVisitedPlace}
               onClickDisabled={handleClickisabledReviewButton}
             >
-              {true ? '리뷰 작성' : '리뷰 보기'}
+              {isVisitedPlace ? '리뷰 작성' : '리뷰 보기'}
             </Button>
             <Button
               type="large"

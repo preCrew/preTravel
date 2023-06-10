@@ -19,15 +19,13 @@ interface ImainTabCategory {
 }
 
 const Main = () => {
-  const { Map, removeMarker, getCurrentLocation } = useKakaoMap();
+  const { Map, removeMarker } = useKakaoMap();
 
   //const { data: userReview } = useGetReveiw('1');
 
   const map = useMemo(() => <Map />, []);
 
-  useEffect(() => {
-    getCurrentLocation();
-  }, []);
+  useEffect(() => {}, []);
 
   //const mainTabCategory = ['찜한장소', '리뷰 쓴 곳', '전체'];
 

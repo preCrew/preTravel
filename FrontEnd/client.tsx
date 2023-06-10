@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { BrowserRouter } from 'react-router-dom';
 import { createRoot } from 'react-dom/client';
 import { RecoilRoot } from 'recoil';
@@ -37,5 +38,9 @@ createRoot(container as Element).render(
         </HelmetProvider>
       </BrowserRouter>
     </RecoilRoot>
+    <ReactQueryDevtools
+      initialIsOpen={false}
+      position="bottom-right"
+    />
   </QueryClientProvider>,
 );

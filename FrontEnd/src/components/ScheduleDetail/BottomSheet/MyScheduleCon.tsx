@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
@@ -9,25 +9,51 @@ import { currentScheduleAtom, selectedDayAtom } from '@src/recoil/date/atom';
 import { modalAtom, modalDragAtom } from '@src/recoil/modal/atom';
 import withSelectedDay from '@src/recoil/date/withSelectedDay';
 import useLocationState from '@src/hooks/recoil/useLocationState';
+import { TCurrentplace, currentPlaceAtom } from '@src/recoil/place/atom';
+import { SheetRef } from 'react-modal-sheet';
+interface TMyschedulConProps {
+  id: string;
+}
 
-const MyScheduleCon = () => {
+const MyScheduleCon = ({ id }: TMyschedulConProps) => {
   const [drag, setDrag] = useState(false);
 
   const { setLocationRegion, setSelectData } = useLocationState();
   const currentScheduleState = useRecoilValue(currentScheduleAtom);
   const withSelectedDayState = useRecoilValue(withSelectedDay);
-  const selectedDayState = useRecoilValue(selectedDayAtom);
+  const [selectedDayState, setSelectedDayState] =
+    useRecoilState(selectedDayAtom);
   const setmodalOpen = useSetRecoilState(modalAtom);
+  const [currentPlaceState, setCurrentPlaceState] =
+    useRecoilState(currentPlaceAtom);
   const [modalDragOn, setModalDraOn] = useRecoilState(modalDragAtom);
   const [edit, setEdit] = useState(false);
-  const edtiBtnOn = edit && modalDragOn;
+  const [moreOnClick, setMoreOnClick] = useState<boolean>(true);
 
-  console.log(currentScheduleState);
   const navigate = useNavigate();
 
   useEffect(() => {
+    setSelectedDayState(0);
     setmodalOpen(true);
   }, []);
+
+  useEffect(() => {
+    //해당 날짜 일정 recoil 저장
+    if (currentScheduleState.schedule.length) {
+      //기존 일정 idx빼고 order string 변환(일정추가시 요청 이슈로 인해..)
+      const currentPlaceList = currentScheduleState.schedule[
+        selectedDayState
+      ].list?.map(({ idx, order, ...rest }) => ({
+        ...rest,
+        order: String(order),
+      }));
+      // recoil 저장
+      setCurrentPlaceState((state: TCurrentplace) => ({
+        ...state,
+        list: currentPlaceList,
+      }));
+    }
+  }, [selectedDayState, currentScheduleState]);
 
   const onClickAddSchedule = async () => {
     setLocationRegion(currentScheduleState.city);
@@ -35,7 +61,6 @@ const MyScheduleCon = () => {
   };
 
   const onClickEdit = () => {
-    console.log(1);
     setEdit(true);
   };
 
@@ -53,7 +78,11 @@ const MyScheduleCon = () => {
   };
 
   return (
-    <BottomSheetWrap drag={drag}>
+    <BottomSheetWrap
+      drag={drag}
+      moreOnClick={moreOnClick}
+      setMoreOnClick={setMoreOnClick}
+    >
       <div className="flex justify-between">
         <h4 className="flex items-end text-body1Bold">
           {currentScheduleState.schedule[selectedDayState]?.date}
@@ -118,6 +147,7 @@ const MyScheduleCon = () => {
         drag={drag}
         setDrag={setDrag}
         edit={edit}
+        moreOnClick={moreOnClick}
       />
     </BottomSheetWrap>
   );

@@ -1,13 +1,26 @@
+// import { loadKakaoMapScript } from '@src/hooks/useKakaoMapScript';
 import { modalAtom } from '@src/recoil/modal/atom';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { userFavoriteAtom } from '@src/recoil/user/getLike/atom';
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 
-import { useRecoilState } from 'recoil';
-import useScript from '../../../hooks/useScript';
-import { mapAreaInfoAtom } from '@src/recoil/marker/atom';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import useScript from '../../../hooks/map/useScript';
+import IcoFavorite from '@src/assets/svgs/ico-favorite.svg?url';
+import IcoReview from '@src/assets/svgs/ico-review.svg?url';
+import { userReviewAtom } from '@src/recoil/user/review/atom';
+import { mapAreaInfoAtom, markerAtom } from '@src/recoil/marker/atom';
+import useGetAreaMarker from '@src/hooks/react-query/useGetMapMarker';
+import axios from 'axios';
 import { categoryAtom } from '@src/recoil/marker/category/atom';
+import useGetMapLike from '@src/hooks/react-query/useGetMapLike';
+import useGetMapReview from '@src/hooks/react-query/useGetMapReview';
 import { mapAtom } from '@src/recoil/map/atom';
-import useGetUserLike from '@src/hooks/react-query/useGetUserLike';
-import useGetUserReview from '@src/hooks/react-query/useGetUserReview';
 declare global {
   interface Window {
     kakao: any;
@@ -44,13 +57,13 @@ function useKakaoMap() {
   const [isOpenState, setIsOpenState] = useRecoilState(modalAtom);
   const [mapAreaInfoState, setMapAreaInfoState] =
     useRecoilState(mapAreaInfoAtom);
-  const { refetch: refetchLike, data: getLike } =
-    useGetUserLike(mapAreaInfoState);
+  // const { refetch: refetchLike, data: getLike } =
+  //   useGetMapLike(mapAreaInfoState);
   const {
     refetch: refetchReview,
     data: getReview,
     isLoading,
-  } = useGetUserReview(mapAreaInfoState);
+  } = useGetMapReview(mapAreaInfoState);
 
   //map 불러오기
   const [success, error] = useScript(src);
@@ -65,6 +78,7 @@ function useKakaoMap() {
   };
   useEffect(() => {
     if (!success) return;
+    console.log(success);
     window.kakao.maps.load(() => {
       let container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
       let options = {
@@ -171,58 +185,58 @@ function useKakaoMap() {
     setMapAreaInfoState((state: any) => ({ ...state, ...data }));
   };
 
-  useEffect(() => {
-    if (map.current) {
-      setCategoryName(categoryState.title);
-      if (categoryName !== categoryState.title) {
-        console.log('이름바뀌다');
-        removeMarker();
-        idelEvent();
-      }
-      window.kakao.maps.event.addListener(map.current, 'idle', idelEvent);
-    }
+  // useEffect(() => {
+  //   if (map.current) {
+  //     setCategoryName(categoryState.title);
+  //     if (categoryName !== categoryState.title) {
+  //       console.log('이름바뀌다');
+  //       removeMarker();
+  //       idelEvent();
+  //     }
+  //     window.kakao.maps.event.addListener(map.current, 'idle', idelEvent);
+  //   }
 
-    return () => {
-      if (map.current)
-        window.kakao.maps.event.removeListener(map.current, 'idle', idelEvent);
-    };
-  }, [map.current, categoryState.title]);
+  //   return () => {
+  //     if (map.current)
+  //       window.kakao.maps.event.removeListener(map.current, 'idle', idelEvent);
+  //   };
+  // }, [map.current, categoryState.title]);
 
-  useEffect(() => {
-    if (!mapAreaInfoState.memberIdx) return;
+  // useEffect(() => {
+  //   if (!mapAreaInfoState.memberIdx) return;
 
-    switch (categoryState.type) {
-      case 1:
-        refetchLike();
-        break;
-      case 2:
-        refetchReview();
-        break;
-      case 3:
-        refetchReview();
-        refetchLike();
-        break;
-    }
-  }, [mapAreaInfoState, categoryState.type]);
+  //   switch (categoryState.type) {
+  //     case 1:
+  //       refetchLike();
+  //       break;
+  //     case 2:
+  //       refetchReview();
+  //       break;
+  //     case 3:
+  //       refetchReview();
+  //       refetchLike();
+  //       break;
+  //   }
+  // }, [mapAreaInfoState, categoryState.type]);
 
-  useEffect(() => {
-    if (getLike && categoryState.type === 1) {
-      drowOnMap({ data: getLike.data, type: 1 });
-    }
-    if (getReview && categoryState.type === 2) {
-      drowOnMap({ data: getReview.data, type: 2 });
-    }
-    if (getLike && getReview && categoryState.type === 3) {
-      drowOnMap({
-        data: getLike.data,
-        type: 1,
-      });
-      drowOnMap({
-        data: getReview.data,
-        type: 2,
-      });
-    }
-  }, [getLike, getReview, categoryState.type]);
+  // useEffect(() => {
+  //   if (getLike && categoryState.type === 1) {
+  //     drowOnMap({ data: getLike.data, type: 1 });
+  //   }
+  //   if (getReview && categoryState.type === 2) {
+  //     drowOnMap({ data: getReview.data, type: 2 });
+  //   }
+  //   if (getLike && getReview && categoryState.type === 3) {
+  //     drowOnMap({
+  //       data: getLike.data,
+  //       type: 1,
+  //     });
+  //     drowOnMap({
+  //       data: getReview.data,
+  //       type: 2,
+  //     });
+  //   }
+  // }, [getLike, getReview, categoryState.type]);
 
   const removeMarker = () => {
     console.log('삭제');
@@ -316,42 +330,42 @@ function useKakaoMap() {
   };
 
   // 현재 위치 불러오기
-  const getCurrentLocation = useCallback(() => {
-    if (!('geolocation' in navigator)) {
-      return console.log('위치정보가 없습니다.');
-    }
-    const onSucces = (position: any) => {
-      //console.log(position.coords);
-      const content = `<div class='absolute h-20 w-20 before:relative before:ml-[-100%] before:mt-[-100%] before:box-border before:block before:h-[300%] before:w-[300%] before:animate-pulse-ring before:rounded-[45px] before:content-[""] after:shadow-[0_0_8px_rgba(0,0,0,.3)] after:absolute after:left-0 after:top-0 after:block after:h-full after:w-full after:animate-pulse-dot after:rounded-[15px] after:bg-primary1 after:content-[""] before:bg-primary1'></div>`;
-      //현재위치 마커 표시
-      const markerPosition = new window.kakao.maps.LatLng(
-        position.coords.latitude,
-        position.coords.longitude,
-      );
-      const marker = new window.kakao.maps.CustomOverlay({
-        position: markerPosition,
-        content: content,
-      });
+  // const getCurrentLocation = useCallback(() => {
+  //   if (!('geolocation' in navigator)) {
+  //     return console.log('위치정보가 없습니다.');
+  //   }
+  //   const onSucces = (position: any) => {
+  //     //console.log(position.coords);
+  //     const content = `<div class='absolute h-20 w-20 before:relative before:ml-[-100%] before:mt-[-100%] before:box-border before:block before:h-[300%] before:w-[300%] before:animate-pulse-ring before:rounded-[45px] before:content-[""] after:shadow-[0_0_8px_rgba(0,0,0,.3)] after:absolute after:left-0 after:top-0 after:block after:h-full after:w-full after:animate-pulse-dot after:rounded-[15px] after:bg-primary1 after:content-[""] before:bg-primary1'></div>`;
+  //     //현재위치 마커 표시
+  //     const markerPosition = new window.kakao.maps.LatLng(
+  //       position.coords.latitude,
+  //       position.coords.longitude,
+  //     );
+  //     const marker = new window.kakao.maps.CustomOverlay({
+  //       position: markerPosition,
+  //       content: content,
+  //     });
 
-      marker.setMap(map.current);
-      //현재 위시 이동
-      setNowLocation({
-        lat: position.coords.latitude,
-        lng: position.coords.longitude,
-      });
-    };
-    const onError = (err: any) => {
-      console.warn(`ERROR(${err.code}): ${err.message}`);
-    };
-    navigator.geolocation.getCurrentPosition(onSucces, onError);
-  }, [map.current]);
+  //     marker.setMap(map.current);
+  //     //현재 위시 이동
+  //     setNowLocation({
+  //       lat: position.coords.latitude,
+  //       lng: position.coords.longitude,
+  //     });
+  //   };
+  //   const onError = (err: any) => {
+  //     console.warn(`ERROR(${err.code}): ${err.message}`);
+  //   };
+  //   navigator.geolocation.getCurrentPosition(onSucces, onError);
+  // }, [map.current]);
 
   return {
     Map,
     setNowLocation,
     removeMarker,
     drawOverlayOnMap,
-    getCurrentLocation,
+    // getCurrentLocation,
   };
 }
 

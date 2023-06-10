@@ -11,7 +11,6 @@ interface InputPhotoProps {
 }
 
 const InputPhoto = ({ file, onChange }: InputPhotoProps) => {
-  console.log(file);
   return (
     <>
       <div className={Input.photo}>

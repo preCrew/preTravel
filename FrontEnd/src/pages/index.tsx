@@ -10,7 +10,8 @@ import PlacePlan from './PlacePlan';
 import MapInfoPage from './MapInfoPage';
 import SchedulePlan from './SchedulePlan';
 import SearchPage from './SearchPage';
-import MySchedule from './MySchedule2';
+import MySchedule from './MySchedule';
+import MyScheduleEdit from './SchedulePlan/edit';
 import { useSetRecoilState } from 'recoil';
 import { userAtom } from '@src/recoil/user/atom';
 import ReviewPage from './ReviewPage';
@@ -45,6 +46,10 @@ const App = () => {
           element={<MainPage />}
         />
         <Route
+          path="/mySchedule"
+          element={<MySchedule />}
+        />
+        <Route
           path="/mySchedule/:id"
           element={
             <Suspense fallback={'내 장소 로딩중....'}>
@@ -59,6 +64,10 @@ const App = () => {
         <Route
           path="/schedulePlan"
           element={<SchedulePlan />}
+        />
+        <Route
+          path="/schedulePlan/edit"
+          element={<MyScheduleEdit />}
         />
         <Route
           path="/search/*"
