@@ -21,7 +21,7 @@ const ReviewEditPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const locationState = useMemo(
-    () => location.state as IReview,
+    () => (location.state ? (location.state as IReview) : ({} as IReview)),
     [location.state],
   );
 
