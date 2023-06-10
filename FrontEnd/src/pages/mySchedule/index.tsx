@@ -18,6 +18,7 @@ import CancelBtn from '@src/components/MyScedule/CancelBtn';
 import IconBox from '@src/components/MyScedule/IconBox';
 import { SkeletonMyScheduleCard } from '@src/components/MyScedule/MyScheduleCard';
 import MyScheduleCardList from '@src/components/MyScedule/MyScheduleCardList';
+import Nav from '@src/components/common/Layout/Nav';
 
 const MySchedule2 = () => {
   const navigate = useNavigate();
@@ -83,6 +84,8 @@ const MySchedule2 = () => {
           </Button>
         )}
       </div>
+      {/*nav*/}
+      <Nav />
     </>
   );
 };

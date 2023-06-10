@@ -11,6 +11,7 @@ import { mainTabCategory } from './data/mainTabCategory';
 import { modalAtom } from '@src/recoil/modal/atom';
 import MainModal from '@src/components/common/Main/MainModal';
 import { clickMarkerAtom } from '@src/recoil/map/atom';
+import Nav from '@src/components/common/Layout/Nav';
 
 const MainPage = () => {
   const { initializeMap, mapLoad } = useMap();
@@ -46,6 +47,7 @@ const MainPage = () => {
         />
       ) : null}
       {onClickMarkState && <MainModal data={onClickMarkState} />}
+      <Nav />
     </>
   );
 };
