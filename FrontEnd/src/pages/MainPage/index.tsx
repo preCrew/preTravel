@@ -1,125 +1,52 @@
-import { useNavigate } from 'react-router-dom';
-import React, {
-  ReactNode,
-  useEffect,
-  useCallback,
-  useMemo,
-  Suspense,
-} from 'react';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
+import { useEffect } from 'react';
 import tw from 'twin.macro';
 
-import useToast from '@src/hooks/useToast';
-
-import SearchButton from '@src/components/common/Button/SearchButton';
-import MarkerBottomSheet from '@src/components/Main/MarkerBottomSheet';
+import Map from '@src/components/common/Map';
 import TabSlide from '@src/components/common/TabSlide/TabSlide';
-import useKakaoMap from '@src/components/common/Map/useKakaoMap';
-import { categoryAtom } from '@src/recoil/marker/category/atom';
+import useMap from '@src/hooks/map/useMap';
+import Markers from '@src/components/common/Map/Markers';
+import { selectedDayAtom } from '@src/recoil/date/atom';
+import { mainTabCategory } from './data/mainTabCategory';
+import { modalAtom } from '@src/recoil/modal/atom';
+import MainModal from '@src/components/common/Main/MainModal';
+import { clickMarkerAtom } from '@src/recoil/map/atom';
 
-import { main } from './style';
-import IcoFavorite from '@src/assets/svgs/ico-favorite.svg?url';
-import IcoReview from '@src/assets/svgs/ico-review.svg?url';
-import { mapAtom } from '@src/recoil/map/atom';
-import useOvelay from '@src/hooks/ovelay/useOvelay';
-import SearchOvelay from '@src/components/Ovelays/SeaechOvelay';
-import useRegionGetQuery, {
-  RegionData,
-} from '@src/hooks/react-query/useGetRegionQuery';
-import useLocationState from '@src/hooks/recoil/useLocationState';
-import useSearchRegionOvelay from '@src/hooks/ovelay/Ovelays/useSearchRegionOvelay';
-import useSearchPageState from '@src/hooks/recoil/useSearchPageState';
+const MainPage = () => {
+  const { initializeMap, mapLoad } = useMap();
+  const [isOpenState, setOpenState] = useRecoilState(modalAtom);
+  const [onClickMarkState, setOnClickMarkState] =
+    useRecoilState(clickMarkerAtom);
 
-interface MainPageProps {}
+  const [selectedDayState, setSelectedDayState] =
+    useRecoilState(selectedDayAtom);
 
-interface ImainTabCategory {
-  category: {
-    title: string;
-    image?: ReactNode;
-    place: any;
-    type: number;
-  };
-}
-export const mainTabCategory: ImainTabCategory[] = [
-  {
-    category: {
-      title: '찜한장소',
-      image: IcoFavorite,
-      place: null,
-      type: 1,
-    },
-  },
-  {
-    category: {
-      title: '리뷰 쓴곳',
-      image: IcoReview,
-      place: null,
-      type: 2,
-    },
-  },
-  {
-    category: {
-      title: '전체',
-      image: [IcoFavorite, IcoReview],
-      place: null,
-      type: 3,
-    },
-  },
-];
+  useEffect(() => {
+    if (onClickMarkState) setOpenState(true);
+  }, [onClickMarkState]);
 
-const MainPage = ({}: MainPageProps) => {
-  // const { getCurrentLocation, Map } = useKakaoMap();
-  const { Toast } = useToast();
-
-  const setCategoryState = useSetRecoilState(categoryAtom);
-  // const [currentMapState, setCurrentMapState] = useRecoilState(mapAtom);
-
-  const navigate = useNavigate();
-
-  const handleClickSearchButton = () => {
-    navigate('/search/region');
+  const onLoadMap = (map: any) => {
+    initializeMap(map);
   };
 
-  //클릭했을때 해당 버튼의 텍스트와 객체 타이틀 이름이 같으면 해당 마커들을 물러온다
-  const onClickBtn = useCallback((e: React.MouseEvent<HTMLElement>) => {
-    e.preventDefault();
-
-    const target = e.target as HTMLElement;
-    const result = mainTabCategory.find(
-      el => el.category.title === target.textContent,
-    );
-    console.log('현재클릭', result);
-    setCategoryState(result?.category);
-  }, []);
-
-  // const map = useMemo(() => <Map />, []);
   return (
     <>
-      <header className={main.header}>
+      <header css={tw`fixed z-20 w-full left-5 top-5`}>
         <TabSlide
-          active={false}
           data={mainTabCategory}
           category="카테고리별"
-          onClick={onClickBtn}
         />
       </header>
-
-      <div
-        css={tw`fixed top-0 left-0 z-10 flex items-center justify-center w-full h-70`}
-      >
-        <SearchButton
-          bgColor="gray2"
-          placeHolder="장소를 검색해주세요"
-          onClickSearchButton={handleClickSearchButton}
-          css={tw`z-[15]`}
+      <Map onLoad={onLoadMap} />
+      {selectedDayState === 0 || selectedDayState === 1 ? (
+        <Markers
+          mapLoad={mapLoad}
+          categoryNum={selectedDayState}
+          iconNum={selectedDayState}
         />
-      </div>
-      {/* {map} */}
-      <Toast />
-
-      <MarkerBottomSheet />
+      ) : null}
+      {onClickMarkState && <MainModal data={onClickMarkState} />}
     </>
   );
 };
-
 export default MainPage;

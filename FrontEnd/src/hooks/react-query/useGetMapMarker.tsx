@@ -19,7 +19,7 @@ const areaMarekerFunc = async (data: any) => {
   // params.append('largeLo', data.get('largeLo'));
   try {
     const response = await axios.get(
-      `https://port-0-pretravel-ll32glc6adwo3.gksl2.cloudtype.app/like/map?memberIdx=${data.memberIdx}&smallLa=${data.smallLa}&largeLa=${data.largeLa}&smallLo=${data.smallLo}&largeLo=${data.largeLo}`,
+      `${process.env.SERVER_URL}/like/map?memberIdx=${data.memberIdx}&smallLa=${data.smallLa}&largeLa=${data.largeLa}&smallLo=${data.smallLo}&largeLo=${data.largeLo}`,
     );
 
     return response.data;
@@ -28,8 +28,8 @@ const areaMarekerFunc = async (data: any) => {
   }
 };
 
-const useGetAreaMarker = (data: any) =>
-  useQuery(['getArea'], () => areaMarekerFunc(data), {
+const useGetAreaMarker = () =>
+  useQuery(['getArea'], data => areaMarekerFunc(data), {
     enabled: false,
     //queryFn: ,
   });

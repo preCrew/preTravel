@@ -43,8 +43,6 @@ const MyScheduleCard = ({
   const bgColor = ['#fedcf5', '#c7ecf4', '#d6ede5', '#7ca3de', '#ffcfdb'];
   const bgColorValue = useMemo(() => bgColor[generateNum], []);
 
-  console.log(file.length);
-
   return (
     <li
       className={Card.block}

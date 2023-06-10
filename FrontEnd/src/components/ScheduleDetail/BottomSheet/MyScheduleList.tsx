@@ -6,24 +6,38 @@ import MyScheduleListItem from './MyScheduleListItem';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { currentScheduleAtom, selectedDayAtom } from '@src/recoil/date/atom';
 import { modalDragAtom } from '@src/recoil/modal/atom';
+import { currentPlaceAtom } from '@src/recoil/place/atom';
 
 interface MyScheduleListProps {
   drag: boolean;
   setDrag: React.Dispatch<React.SetStateAction<boolean>>;
   edit: boolean;
+  moreOnClick: boolean;
 }
 
-const MyScheduleList = ({ drag, setDrag, edit }: MyScheduleListProps) => {
+const MyScheduleList = ({
+  drag,
+  setDrag,
+  edit,
+  moreOnClick,
+}: MyScheduleListProps) => {
   const currentScheduleState = useRecoilValue(currentScheduleAtom);
   const selectedDayState = useRecoilValue(selectedDayAtom);
   const modalDragOn = useRecoilValue(modalDragAtom);
+  const currentPlaceState = useRecoilValue(currentPlaceAtom);
   const [onDragScheduleData, setonDragScheduleData] = useState([
     ...currentScheduleState.schedule[selectedDayState].list,
   ]);
 
   useEffect(() => {
+    let listStyle;
+    if (currentPlaceState.list.length > 5) {
+    }
+  }, []);
+
+  useEffect(() => {
     setonDragScheduleData(currentScheduleState.schedule[selectedDayState].list);
-  }, [selectedDayState]);
+  }, [selectedDayState, currentPlaceState]);
 
   const onDragStart = () => {
     setDrag(true);
@@ -53,7 +67,11 @@ const MyScheduleList = ({ drag, setDrag, edit }: MyScheduleListProps) => {
       <Droppable droppableId="column1">
         {(provided, snap) => (
           <ul
-            className={`${!modalDragOn ? `mt-4` : `mt-8`}`}
+            className={`${!modalDragOn ? `mt-4` : `mt-8`} ${
+              moreOnClick &&
+              currentPlaceState.list.length > 5 &&
+              `max-h-[20%] overflow-hidden`
+            }`}
             ref={provided.innerRef}
             {...provided.droppableProps}
           >

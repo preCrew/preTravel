@@ -33,7 +33,7 @@ const currentScheduleAtom = atom<IdateAtom>({
 });
 const selectedDayAtom = atom({
   key: 'selectedDayAtom',
-  default: 0,
+  default: -1,
 });
 
 export { selectedDayAtom, currentScheduleAtom };
