@@ -22,6 +22,6 @@ public interface ReviewService {
 
     List<Review> findByMemberIdxAndAddress(String memberIdx, String address);
 
-    List<Review> findByNameAndLatitudeAndLongitude(String name, String latitude, String longitude);
+    List<Review> findByNameAndAndMemberIdxAndLatitudeAndLongitude(String name, String memberIdx, String latitude, String longitude);
 
 }
