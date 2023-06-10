@@ -12,10 +12,11 @@ import SchedulePlan from './SchedulePlan';
 import SearchPage from './SearchPage';
 import MySchedule from './MySchedule';
 import MyScheduleEdit from './SchedulePlan/edit';
+import Mypage from './Mypage';
 
 const App = () => {
   return (
-    <div className="h-full w-full safe-top safe-left safe-right safe-bottom">
+    <div className="w-full h-full safe-top safe-left safe-right safe-bottom">
       <Helmet>
         <title>여행</title>
         <meta charSet="UTF-8" />
@@ -33,6 +34,10 @@ const App = () => {
         <Route
           path="/"
           element={<MainPage />}
+        />
+        <Route
+          path="/mypage"
+          element={<Mypage />}
         />
         <Route
           path="/mySchedule"
