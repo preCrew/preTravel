@@ -37,6 +37,11 @@ public class IReviewService implements ReviewService {
         List<Review> list = dao.findByLatitudeBetweenAndLongitudeBetweenAndMemberIdx(smallLa, largeLa, smallLo, largeLo,
                 memberIdx);
 
+        for (Review review : list) {
+            List<File> tmpList = fileService.findByBoardNameAndBoardIdx("review", review.getIdx());
+            review.setFile(tmpList);
+        }
+
         return list;
     }
 

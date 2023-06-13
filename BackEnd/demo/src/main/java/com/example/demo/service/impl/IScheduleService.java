@@ -1,5 +1,6 @@
 package com.example.demo.service.impl;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -82,5 +83,9 @@ public class IScheduleService implements ScheduleService {
         }
     }
 
-
+    @Override
+    public List<Schedule> findByMemberIdxAndEndDateLessThanEqual(String code, LocalDate now) {
+        List<Schedule> list = dao.findByMemberIdxAndEndDateLessThanEqual(code, now);    
+        return list;
+    }
 }
