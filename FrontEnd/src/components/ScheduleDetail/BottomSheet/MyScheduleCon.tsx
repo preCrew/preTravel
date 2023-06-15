@@ -9,14 +9,21 @@ import { currentScheduleAtom, selectedDayAtom } from '@src/recoil/date/atom';
 import { modalAtom, modalDragAtom } from '@src/recoil/modal/atom';
 import withSelectedDay from '@src/recoil/date/withSelectedDay';
 import useLocationState from '@src/hooks/recoil/useLocationState';
-import { TCurrentplace, currentPlaceAtom } from '@src/recoil/place/atom';
-import { SheetRef } from 'react-modal-sheet';
+import {
+  TCurrentplace,
+  Tplace,
+  currentPlaceAtom,
+} from '@src/recoil/place/atom';
+import useAddPlaceinScehduleQuery from '@src/hooks/react-query/useAddPlaceinScehdule';
 interface TMyschedulConProps {
   id: string;
 }
 
 const MyScheduleCon = ({ id }: TMyschedulConProps) => {
   const [drag, setDrag] = useState(false);
+  const [changedOrderState, setchangedOrderState] = useState([]);
+  const [changeOrder, setChangeOrder] = useState(false);
+  const [snap, setSnap] = useState(1);
 
   const { setLocationRegion, setSelectData } = useLocationState();
   const currentScheduleState = useRecoilValue(currentScheduleAtom);
@@ -30,8 +37,14 @@ const MyScheduleCon = ({ id }: TMyschedulConProps) => {
   const [edit, setEdit] = useState(false);
   const [moreOnClick, setMoreOnClick] = useState<boolean>(true);
 
-  const navigate = useNavigate();
+  const { mutate: mutateOrderChagePlace, isLoading: isLoadingAddPlace } =
+    useAddPlaceinScehduleQuery();
 
+  const navigate = useNavigate();
+  useEffect(() => {
+    console.log(snap);
+    //console.log('편집', changedOrderState);
+  });
   useEffect(() => {
     setSelectedDayState(0);
     setmodalOpen(true);
@@ -55,6 +68,12 @@ const MyScheduleCon = ({ id }: TMyschedulConProps) => {
     }
   }, [selectedDayState, currentScheduleState]);
 
+  useEffect(() => {
+    //순서변경후 요청
+    if (changeOrder) mutateOrderChagePlace(currentPlaceState);
+    setChangeOrder(false);
+  }, [currentPlaceState]);
+
   const onClickAddSchedule = async () => {
     setLocationRegion(currentScheduleState.city);
     navigate(`/search/place/${currentScheduleState.city}`);
@@ -71,10 +90,26 @@ const MyScheduleCon = ({ id }: TMyschedulConProps) => {
 
   const onClickOrderChange = () => {
     setModalDraOn(false);
+    setSnap(0);
   };
 
-  const onClickEditSubmit = () => {
+  const onClickOrderChangeSubmit = () => {
     setModalDraOn(true);
+
+    const copyPlaceList: Tplace[] = [...changedOrderState];
+    // order 순차적으로 변경
+    const newPlaceList = copyPlaceList.map((place, idx) => ({
+      ...place,
+      order: (idx + 1).toString(),
+    }));
+
+    // recoil에 선저장
+    setCurrentPlaceState((state: TCurrentplace) => ({
+      date: currentScheduleState.schedule[selectedDayState]?.date,
+      sctIdx: currentScheduleState.idx + '',
+      list: newPlaceList,
+    }));
+    setChangeOrder(true);
   };
 
   return (
@@ -82,11 +117,12 @@ const MyScheduleCon = ({ id }: TMyschedulConProps) => {
       drag={drag}
       moreOnClick={moreOnClick}
       setMoreOnClick={setMoreOnClick}
+      snapIndex={snap}
     >
       <div className="flex justify-between">
         <h4 className="flex items-end text-body1Bold">
           {currentScheduleState.schedule[selectedDayState]?.date}
-          <sub className="ml-2 rounded bg-gray4 p-1 text-body4Bold text-primary1">
+          <sub className="p-1 ml-2 rounded bg-gray4 text-body4Bold text-primary1">
             {withSelectedDayState}일차
           </sub>
         </h4>
@@ -111,12 +147,13 @@ const MyScheduleCon = ({ id }: TMyschedulConProps) => {
               </>
             ) : (
               <>
+                {/*순서변경 시*/}
                 <Button
                   onClick={onClickBack}
                   name="취소"
                 />
                 <Button
-                  onClick={onClickEditSubmit}
+                  onClick={onClickOrderChangeSubmit}
                   name="완료"
                   submitColor={true}
                 />
@@ -148,6 +185,7 @@ const MyScheduleCon = ({ id }: TMyschedulConProps) => {
         setDrag={setDrag}
         edit={edit}
         moreOnClick={moreOnClick}
+        setchangedOrderState={setchangedOrderState}
       />
     </BottomSheetWrap>
   );

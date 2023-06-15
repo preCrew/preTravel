@@ -5,6 +5,7 @@ import { SheetRef } from 'react-modal-sheet';
 interface BottomSheetWrapProps {
   drag: boolean;
   children: React.ReactNode;
+  snapIndex?: number | undefined;
   // onClickSnap?: (snap: number) => void;
   setMoreOnClick?: React.Dispatch<React.SetStateAction<boolean>>;
   moreOnClick?: boolean;
@@ -15,9 +16,11 @@ const BottomSheetWrap = ({
   children,
   moreOnClick,
   setMoreOnClick,
+  snapIndex,
 }: BottomSheetWrapProps) => {
   return (
     <BottomSheet
+      snapIndex={snapIndex}
       dragOn={drag}
       bg={false}
       setMoreOnClick={setMoreOnClick}
