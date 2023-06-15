@@ -18,7 +18,7 @@ import CancelBtn from '@src/components/MyScedule/CancelBtn';
 import IconBox from '@src/components/MyScedule/IconBox';
 import { SkeletonMyScheduleCard } from '@src/components/MyScedule/MyScheduleCard';
 import MyScheduleCardList from '@src/components/MyScedule/MyScheduleCardList';
-import Nav from '@src/components/common/Layout/Nav';
+import Nav, { navH } from '@src/components/common/Layout/Nav';
 
 const MySchedule2 = () => {
   const navigate = useNavigate();
@@ -78,7 +78,7 @@ const MySchedule2 = () => {
             type="large"
             color="primary1"
             onClick={handleClickBottomRemoveButton}
-            css={tw`absolute bottom-2 `}
+            className={`fixed bottom-0 z-[51]`}
           >
             삭제하기
           </Button>
