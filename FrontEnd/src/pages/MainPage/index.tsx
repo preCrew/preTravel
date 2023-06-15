@@ -47,6 +47,7 @@ const MainPage = () => {
         />
       ) : null}
       {onClickMarkState && <MainModal data={onClickMarkState} />}
+
       <Nav />
     </>
   );

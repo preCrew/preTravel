@@ -42,7 +42,6 @@ const MyScheduleCon = ({ id }: TMyschedulConProps) => {
 
   const navigate = useNavigate();
   useEffect(() => {
-    console.log(snap);
     //console.log('편집', changedOrderState);
   });
   useEffect(() => {
