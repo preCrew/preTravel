@@ -1,13 +1,14 @@
-import { useEffect, useMemo } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-
-import useDeleteReview from '@src/hooks/react-query/useDeleteReview';
-import useGetReveiw, { IReview } from '@src/hooks/react-query/useGetReview';
+import { useNavigate } from 'react-router-dom';
 
 import { RatingNum } from '@src/components/common/Rating';
 import TopBar from '@src/components/common/TobBar';
 import TopText from '@src/components/common/Text/TopText';
 import Review from '@src/components/Review';
+import useSearchParamsWithError from '@src/hooks/useSearchParamsWithError';
+import useGetReviewByName from '@src/hooks/react-query/useGetReviewByName';
+import Column from '@src/components/common/FlexBox/Column';
+import tw from 'twin.macro';
+import { useEffect } from 'react';
 
 interface ReviewViewPageProps {
   idx: string;
@@ -17,71 +18,46 @@ interface ReviewViewPageProps {
 }
 
 const ReviewViewPage = () => {
-  const location = useLocation();
-  const locationState = useMemo(
-    () => location.state as ReviewViewPageProps,
-    [location.state],
+  const locationState = useSearchParamsWithError<ReviewViewPageProps>(
+    ['name', 'latitude', 'longitude'],
+    () => {
+      navigate('/');
+    },
   );
-
   const navigate = useNavigate();
 
-  const { data: reviewData, isError: isErrorGetReview } = useGetReveiw(
+  const { data: reviewData, refetch: refetchReviews } = useGetReviewByName(
     locationState.name,
     locationState.latitude,
     locationState.longitude,
   );
-  console.log(reviewData, locationState);
-
-  const { mutate: mutateDeleteReview } = useDeleteReview(locationState.idx); //서버에서 리뷰 삭제하는 쿼리
-
-  const handleClickDelete = () => {
-    mutateDeleteReview();
-    alert('리뷰가 정상적으로 삭제되었습니다. 첫 페이지로 돌아갑니다.');
-    navigate('/');
-  };
-
-  const handleClickModify = (review: IReview) => {
-    navigate(`/review/edit`, {
-      state: {
-        name: review.name,
-        latitude: review.latitude,
-        longitude: review.longitude,
-        idx: review.idx,
-        rating: review.star,
-        images: review.dir,
-        isRevisit: review.revisit,
-        review: review.contents,
-      },
-    });
-  };
-  const handleClickBackButton = () => {
-    navigate(-1);
-  };
 
   useEffect(() => {
-    if (isErrorGetReview) {
-      alert('잘못된 페이지입니다. 이전페이지로 돌아갑니다.');
-      navigate(-1);
-    }
+    refetchReviews();
   }, []);
 
+  const handleClickBackButton = () => {
+    navigate(-2);
+  };
+
   return (
-    <>
+    <div css={tw`w-h-full p-5`}>
       <TopBar onClickBackButton={handleClickBackButton}>
         <TopText>{locationState.name}</TopText>
       </TopBar>
-      {reviewData?.map(review => (
-        <Review
-          city={review.city}
-          rating={parseInt(review.star) as RatingNum}
-          images={review.dir}
-          contents={review.contents}
-          onClickModify={() => handleClickModify(review)}
-          onClickDelete={handleClickDelete}
-          createDate={review.createDate}
-        />
-      ))}
-    </>
+      <Column
+        gap={80}
+        css={tw`pt-[70px]`}
+      >
+        {reviewData?.map(review => (
+          <Review
+            key={review.idx}
+            rating={parseInt(review.star) as RatingNum}
+            review={review}
+          />
+        ))}
+      </Column>
+    </div>
   );
 };
 

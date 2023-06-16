@@ -5,9 +5,10 @@ import tw from 'twin.macro';
 import Row from '../common/FlexBox/Row';
 import Slider from '../common/Slider';
 import ImageCounter from './ImageCounter';
+import { IReviewFile } from '@src/hooks/react-query/useGetReview';
 
 interface ImageViewerProps {
-  images?: string[]; // 이미지 주소 url들
+  images?: IReviewFile[]; // 이미지 주소 url들
 }
 
 const ImageViewer = ({ images }: ImageViewerProps) => {
@@ -36,8 +37,8 @@ const ImageViewer = ({ images }: ImageViewerProps) => {
               <Row css={tw`w-h-full`}>
                 {images?.map(image => (
                   <img
-                    key={image}
-                    src={image}
+                    key={image.fileDir}
+                    src={image.fileDir}
                     css={tw`rounded-xl`}
                   />
                 ))}

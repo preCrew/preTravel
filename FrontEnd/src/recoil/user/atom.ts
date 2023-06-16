@@ -4,7 +4,7 @@ export const userAtom = atom({
   key: 'userAtom',
   default: {
     isLogin: false,
-    id: '',
+    id: '1',
     accessToken: '',
     testId: 12,
   },
