@@ -1,6 +1,8 @@
 import { Routes, Route } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Suspense, useEffect } from 'react';
+import { useSetRecoilState } from 'recoil';
+import { userAtom } from '@src/recoil/user/atom';
 
 import MyPlace from './MyPlaceInSchedule';
 import LoginPage from './LoginPage';
@@ -10,10 +12,8 @@ import PlacePlan from './PlacePlan';
 import MapInfoPage from './MapInfoPage';
 import SchedulePlan from './SchedulePlan';
 import SearchPage from './SearchPage';
-
 import MyScheduleEdit from './SchedulePlan/edit';
-import { useSetRecoilState } from 'recoil';
-import { userAtom } from '@src/recoil/user/atom';
+import Mypage from './Mypage';
 import ReviewPage from './ReviewPage';
 import MySchedule from './MySchedule';
 
@@ -45,6 +45,10 @@ const App = () => {
         <Route
           path="/"
           element={<MainPage />}
+        />
+        <Route
+          path="/mypage"
+          element={<Mypage />}
         />
         <Route
           path="/mySchedule"

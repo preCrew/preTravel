@@ -12,9 +12,11 @@ interface BottomSheetProps {
   dragOn?: boolean;
   bg?: boolean;
   open?: boolean;
+
   snapIdx?: number;
   close?: boolean;
   onClickSnap?: (snap: number) => void;
+  snapIndex?: number | undefined;
   moreOnClick?: boolean;
   setMoreOnClick?: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -31,6 +33,7 @@ const BottomSheet = ({
   snapIdx,
   moreOnClick,
   close,
+  snapIndex = undefined,
   setMoreOnClick,
 }: BottomSheetProps) => {
   // const [isOpen, setOpen] = useState(false);
@@ -46,6 +49,12 @@ const BottomSheet = ({
     useRecoilState(clickMarkerAtom);
 
   const [moreBtn, setMoreBtn] = useState(false);
+
+  useEffect(() => {
+    console.log(snapIndex);
+    if (snapIndex === 0) snapTo(snapIndex);
+  }, [snapIndex]);
+
   // useEffect(() => {
   //   // 장소 리스트가 5개 이상이면 더보기 버튼 노출
   //   if (currentPlaceState.list.length > 5) {
@@ -53,11 +62,11 @@ const BottomSheet = ({
   //   } else {
   //     setMoreBtn(false);
   //   }
+
   // }, [currentPlaceState]);
 
   const onCloseSheet = () => {
     //console.log('닫힘', isOpenState);
-    console.log(close);
     if (close) setOpenState(false);
     // setOpenState(false);
     snapTo(3);
@@ -67,7 +76,7 @@ const BottomSheet = ({
 
   const onClickSnap = () => {
     snapTo(0);
-    setMoreOnClick?.(false);
+    //setMoreOnClick?.(false);
   };
 
   const WithoutBgBottomSheet = ({ backSheet }: WithoutBgBottomSheetType) => {

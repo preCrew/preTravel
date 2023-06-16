@@ -15,7 +15,6 @@ const OrderMarker = ({ data, map, mapLoad }: OrderMarkerProps) => {
       });
 
       marker.setMap(map);
-
       return () => {
         marker.setMap(null);
       };

@@ -6,6 +6,7 @@ interface BottomSheetWrapProps {
   drag: boolean;
   children: React.ReactNode;
   snapIdx?: number;
+  snapIndex?: number | undefined;
   // onClickSnap?: (snap: number) => void;
   setMoreOnClick?: React.Dispatch<React.SetStateAction<boolean>>;
   moreOnClick?: boolean;
@@ -17,9 +18,11 @@ const BottomSheetWrap = ({
   moreOnClick,
   setMoreOnClick,
   snapIdx,
+  snapIndex,
 }: BottomSheetWrapProps) => {
   return (
     <BottomSheet
+      snapIndex={snapIndex}
       dragOn={drag}
       bg={false}
       setMoreOnClick={setMoreOnClick}

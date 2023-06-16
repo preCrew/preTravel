@@ -20,9 +20,20 @@ const useMap = () => {
     [queryClient],
   );
 
+  const getCenterMap = useCallback(
+    (loaction: string[]) => {
+      const mapData: any = queryClient.getQueryData(['/map']);
+      console.log(mapData);
+      const moveLatLon = new window.kakao.maps.LatLng(...loaction);
+      mapData.setCenter(moveLatLon);
+    },
+    [mapLoad],
+  );
+
   return {
     initializeMap,
     mapLoad,
+    getCenterMap,
   };
 };
 

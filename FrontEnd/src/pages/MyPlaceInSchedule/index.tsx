@@ -25,7 +25,7 @@ const MySchedule = () => {
   const { id } = useParams();
   const { state } = useLocation();
   const navigate = useNavigate();
-  const { initializeMap, mapLoad } = useMap();
+  const { initializeMap, mapLoad, getCenterMap } = useMap();
   const { data, refetch: refetchMyPlace } = useGetMyPlaceInSchedule(
     id as string,
   );
@@ -73,23 +73,28 @@ const MySchedule = () => {
     navigate('/schedulePlan/edit', { state: data });
   }, []);
 
-  const currentList = currentScheduleState.schedule[selectedDayState]?.list;
+  useEffect(() => {
+    const currentList = currentScheduleState.schedule[selectedDayState]?.list;
 
-  const allLatitude =
-    currentPlaceState &&
-    currentPlaceState.list.reduce((acc: number, curr: any) => {
-      return acc + curr.la * 1;
-    }, 0) / currentList?.length;
+    const allLatitude =
+      currentPlaceState &&
+      currentPlaceState.list.reduce((acc: number, curr: any) => {
+        return acc + curr.la * 1;
+      }, 0) / currentList?.length;
 
-  const allLongitude =
-    currentList &&
-    currentPlaceState.list.reduce((acc: number, curr: any) => {
-      return acc + curr.lo * 1;
-    }, 0) / currentList?.length;
+    const allLongitude =
+      currentList &&
+      currentPlaceState.list.reduce((acc: number, curr: any) => {
+        return acc + curr.lo * 1;
+      }, 0) / currentList?.length;
+
+    if (!allLatitude) return;
+    if (mapLoad) getCenterMap([allLatitude + '', allLongitude + '']);
+  }, [mapLoad]);
 
   return (
     <>
-      <header className="fixed left-0 right-0 top-5 z-10">
+      <header className="fixed left-0 right-0 z-10 top-5">
         <Title title={currentScheduleState.name} />
         <Button
           onClick={onClickBack}
@@ -113,12 +118,11 @@ const MySchedule = () => {
         </div>
       </header>
       {/*====지도====*/}
-
       <Map
         onLoad={onLoadMap}
-        initialCetner={
-          currentPlaceState.list.length ? [allLatitude, allLongitude] : 0
-        }
+        // initialCetner={
+        //   currentPlaceState.list.length ? [allLatitude, allLongitude] : 0
+        // }
       />
       <OrderMarkers
         data={currentPlaceState}
