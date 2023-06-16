@@ -10,11 +10,12 @@ import PlacePlan from './PlacePlan';
 import MapInfoPage from './MapInfoPage';
 import SchedulePlan from './SchedulePlan';
 import SearchPage from './SearchPage';
-import MySchedule from './MySchedule';
+
 import MyScheduleEdit from './SchedulePlan/edit';
 import { useSetRecoilState } from 'recoil';
 import { userAtom } from '@src/recoil/user/atom';
 import ReviewPage from './ReviewPage';
+import MySchedule from './MySchedule';
 
 const App = () => {
   // TODO: 아래는 테스트 용으로 유저 id를 1로 지정함.
