@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { Suspense, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import tw from 'twin.macro';
 
@@ -26,15 +26,17 @@ const MySchedule2 = () => {
   const { clearCardState } = useCardListState();
   const filterdSelectedListState = useRecoilValue(filteredCardListSelector);
 
-  const { mutate: deleteScheduleQuery } = useMyScheduleDeleteQuery();
+  const { mutate: deleteScheduleQuery, isSuccess } = useMyScheduleDeleteQuery();
 
-  const searchRegionOvelay = useSearchRegionOvelay();
+  useEffect(() => {
+    if (isSuccess) clearCardState();
+  }, [isSuccess]);
 
   const handleClickBackButton = () => {
     navigate(-1);
   };
   const handleClickAddButton = () => {
-    searchRegionOvelay.open();
+    navigate('/search/region');
   };
   const handleClickTopRemoveButton = () => {
     setIsDeleteMode(true);
@@ -42,7 +44,6 @@ const MySchedule2 = () => {
   const handleClickBottomRemoveButton = () => {
     setIsDeleteMode(false);
     deleteScheduleQuery();
-    clearCardState();
   };
   const handleClickCancelButton = () => {
     setIsDeleteMode(false);

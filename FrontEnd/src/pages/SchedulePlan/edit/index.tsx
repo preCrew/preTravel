@@ -31,7 +31,7 @@ const MyScheduleEdit = () => {
   const [range, setRange] = useState<any>();
   const [fieldCheck, setFieldCheck] = useState(false);
 
-  const { mutate: submitMutate, isSuccess: isSuccessSubmit } =
+  const { mutate: submitMutate, isLoading: isLoadingSubmit } =
     useUpdateScheduleQuery();
   const { mutate: imgUploadMutate } = useAddScheduleImgQuery();
 
@@ -89,7 +89,7 @@ const MyScheduleEdit = () => {
       file: scheduleData.file[0] || '',
     });
 
-    if (!isSuccessSubmit) navigate(`/mySchedule/${scheduleData.idx}`);
+    if (!isLoadingSubmit) navigate(`/mySchedule/${scheduleData.idx}`);
   };
 
   return (
