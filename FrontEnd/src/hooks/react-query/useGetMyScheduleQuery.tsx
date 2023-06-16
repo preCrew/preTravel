@@ -20,7 +20,7 @@ const getData = async (memberIdx: number) => {
     const response = await axios.get<AxiosResponse<MySchedule[]>>(
       `${process.env.REAL_SERVER_URL}/schedule?memberIdx=${memberIdx}`,
     );
-    console.log(response.data);
+
     return response.data.data;
   } catch (error) {
     console.log(error);
@@ -28,7 +28,9 @@ const getData = async (memberIdx: number) => {
 };
 const useMyScheduleGetQuery = () => {
   const userState = useRecoilValue(userAtom);
-  return useQuery(['mySchedule'], () => getData(userState.testId));
+  return useQuery(['mySchedule'], () => getData(userState.testId), {
+    //staleTime:
+  });
 };
 
 export default useMyScheduleGetQuery;

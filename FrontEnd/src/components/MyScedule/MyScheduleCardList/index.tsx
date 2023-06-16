@@ -2,6 +2,8 @@ import useMyScheduleGetQuery from '@src/hooks/react-query/useGetMyScheduleQuery'
 
 import { useNavigate } from 'react-router-dom';
 import MyScheduleCard from '../MyScheduleCard';
+import { useEffect } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface MyScheduleCardListProps {
   deleteMode?: boolean;
@@ -9,8 +11,13 @@ interface MyScheduleCardListProps {
 
 const MyScheduleCardList = ({ deleteMode }: MyScheduleCardListProps) => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const { data: lists } = useMyScheduleGetQuery();
+
+  useEffect(() => {
+    queryClient.invalidateQueries(['mySchedule']);
+  }, [queryClient]);
 
   const handleClickCard = (cardIdx: number, index: number) => {
     navigate(`${cardIdx}`, { state: lists?.[index].city });

@@ -104,7 +104,11 @@ const InputCalendar = ({ value, defaultRange }: InputCalendarProps) => {
           className="input-reset ml-1 h-full w-90 bg-white text-body1"
         />
       </div>
-      <BottomSheet open={isOpen}>
+      <BottomSheet
+        open={isOpen}
+        snapIdx={0}
+        close={true}
+      >
         <DayPicker
           locale={ko}
           mode="range"

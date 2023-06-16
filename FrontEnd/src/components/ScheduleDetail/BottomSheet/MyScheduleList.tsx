@@ -26,7 +26,7 @@ const MyScheduleList = ({
   const modalDragOn = useRecoilValue(modalDragAtom);
   const currentPlaceState = useRecoilValue(currentPlaceAtom);
   const [onDragScheduleData, setonDragScheduleData] = useState([
-    ...currentScheduleState.schedule[selectedDayState].list,
+    ...currentScheduleState.schedule[selectedDayState]?.list,
   ]);
 
   useEffect(() => {

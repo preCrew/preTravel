@@ -16,6 +16,7 @@ import useAddScheduleQuery from '@src/hooks/react-query/useAddSchedule';
 import { scheduleAtom } from '@src/recoil/schedule/atom';
 import { modalAtom } from '@src/recoil/modal/atom';
 import useUpdateScheduleQuery from '@src/hooks/react-query/useUpdateSchedule';
+import TopBar from '@src/components/common/TobBar';
 
 ////
 const MyScheduleEdit = () => {
@@ -52,6 +53,10 @@ const MyScheduleEdit = () => {
       setFieldCheck(true);
     }
   }, [title, range]);
+
+  const handleClickBackButton = () => {
+    console.log(1);
+  };
 
   const onChangeFile = (event: React.ChangeEvent) => {
     const target = event.target as HTMLInputElement;
@@ -94,7 +99,9 @@ const MyScheduleEdit = () => {
 
   return (
     <article className="content-inner">
-      <h2 className="mb-14 text-2xl font-medium">{locationState.region}</h2>
+      <TopBar onClickBackButton={handleClickBackButton}>
+        <h2 className="mb-14 text-2xl font-medium">{locationState.region}</h2>
+      </TopBar>
       <form onSubmit={onSubmit}>
         <div className="mb-10">
           <InputLabel

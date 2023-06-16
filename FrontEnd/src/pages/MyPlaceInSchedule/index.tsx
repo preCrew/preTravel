@@ -66,7 +66,7 @@ const MySchedule = () => {
   }, []);
 
   const onClickBack = useCallback(() => {
-    navigate(-1);
+    navigate('/mySchedule');
   }, []);
 
   const onClickEdit = useCallback(() => {

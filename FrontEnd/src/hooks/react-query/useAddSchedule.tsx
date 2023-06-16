@@ -1,6 +1,7 @@
 import { scheduleAtom } from '@src/recoil/schedule/atom';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 
 interface TsheduleAdd {
@@ -13,7 +14,6 @@ interface TsheduleAdd {
 }
 
 const add = async (data: TsheduleAdd) => {
-  console.log(data);
   try {
     const response = await axios.post(
       `${process.env.REAL_SERVER_URL}/schedule`,
@@ -40,9 +40,7 @@ const useAddScheduleQuery = () => {
     onMutate: () => {
       console.log('!');
     },
-    onSettled: () => {
-      console.log('111');
-    },
+    onSettled: data => {},
     onError: () => {
       console.log('!!!@#@!#');
     },
