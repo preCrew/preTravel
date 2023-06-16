@@ -1,8 +1,6 @@
 import { RatingNum } from '@src/components/common/Rating';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import useLocationState from '../recoil/useLocationState';
 
 export interface File {
   url: string;

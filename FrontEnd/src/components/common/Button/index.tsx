@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import tw from 'twin.macro';
 
 export type ButtonColors =
   | 'primary1'
@@ -18,9 +19,19 @@ interface ButtonProps {
   color?: ButtonColors;
   className?: string;
   onClick?: (e?: React.MouseEvent<HTMLButtonElement>) => void;
+  onClickDisabled?: () => void;
+  disabled?: boolean;
 }
 
-const Button = ({ children, type, color, className, onClick }: ButtonProps) => {
+const Button = ({
+  children,
+  type,
+  color,
+  className,
+  onClick,
+  onClickDisabled,
+  disabled,
+}: ButtonProps) => {
   const sizes = {
     small: 'w-80 h-30 text-body3',
     medium: 'w-160 h-50 text-body1Bold',
@@ -35,14 +46,17 @@ const Button = ({ children, type, color, className, onClick }: ButtonProps) => {
 
   return (
     <button
-      onClick={onClick}
+      onClick={disabled ? onClickDisabled : onClick}
       className={`
         ${type === 'none' ? '' : defaultClassName} 
         ${className}
       `}
-      css={css`
-        background: var(--${color});
-      `}
+      css={[
+        css`
+          background: var(--${color});
+        `,
+        disabled && tw`text-gray-300`,
+      ]}
     >
       {children}
     </button>

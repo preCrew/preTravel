@@ -1,40 +1,37 @@
-import { RatingNum } from '@src/components/common/Rating';
-import { LocationAtom } from '@src/recoil/location/atom';
 import {
   QueryClient,
   useMutation,
   useQueryClient,
 } from '@tanstack/react-query';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import useLocationState from '../recoil/useLocationState';
 import { File } from './useAddImages';
+import { IReview } from './useGetReview';
+import { useRecoilValue } from 'recoil';
+import { userAtom } from '@src/recoil/user/atom';
 
+// memberIdx	String	회원 idx
 const updateReview = async (
-  isRevisit: boolean,
-  rating: RatingNum,
-  textValue: string,
-  locationState: LocationAtom,
-  imgFiles?: File[],
-  reviewIdx?: string,
-  queryClient?: QueryClient,
+  queryClient: QueryClient,
+  review: IReview,
+  memberIdx: string,
+  file: File[],
 ) => {
   try {
+    console.log(review);
     const response = await axios.post(`${process.env.REAL_SERVER_URL}/review`, {
-      memberIdx: '1',
-      name: locationState.selectData.name,
-      address: locationState.selectData.address,
-      star: rating.toString(),
-      latitude: locationState.selectData.y,
-      longitude: locationState.selectData.x,
-      revisit: isRevisit.toString(),
-      contents: textValue,
-      idx: reviewIdx || '',
-      file: imgFiles?.map(file => file.idx.toString()),
+      memberIdx: memberIdx,
+      name: review.name,
+      address: review.address,
+      star: review.star,
+      latitude: review.latitude,
+      longitude: review.longitude,
+      revisit: review.revisit,
+      contents: review.contents,
+      idx: review.idx ?? '',
+      file: file.map(f => f.idx.toString()),
     });
     if (response.data.code === 200) {
-      console.log(reviewIdx, response);
-      queryClient?.invalidateQueries(['review', reviewIdx]);
+      queryClient.invalidateQueries(['useGetReviewByName', review.name]);
     }
     return response.data.data;
   } catch (e) {
@@ -42,27 +39,11 @@ const updateReview = async (
   }
 };
 
-const useReviewUpdateQuery = (
-  isRevisit: boolean,
-  rating: RatingNum,
-  textValue: string,
-  imgFiles?: File[],
-  reviewIdx?: string,
-) => {
-  const { locationState } = useLocationState();
+const useReviewUpdateQuery = (review: IReview, file: File[]) => {
+  const { id } = useRecoilValue(userAtom);
   const queryClient = useQueryClient();
 
-  return useMutation(() =>
-    updateReview(
-      isRevisit,
-      rating,
-      textValue,
-      locationState,
-      imgFiles,
-      reviewIdx,
-      queryClient,
-    ),
-  );
+  return useMutation(() => updateReview(queryClient, review, id, file));
 };
 
 export default useReviewUpdateQuery;

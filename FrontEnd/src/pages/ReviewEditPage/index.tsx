@@ -1,8 +1,9 @@
-import { useLocation, useNavigate } from 'react-router-dom';
+import { createSearchParams, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useMemo, useState } from 'react';
 import tw from 'twin.macro';
 
 import { File } from '@src/hooks/react-query/useAddImages';
+import { IReview } from '@src/hooks/react-query/useGetReview';
 import useOnChange from '@src/hooks/useOnChange';
 import useReviewUpdateQuery from '@src/hooks/react-query/useReviewUpdateQuery';
 
@@ -15,22 +16,12 @@ import FormText from '@src/components/common/Text/FormText';
 import Button from '@src/components/common/Button';
 import TopBar from '@src/components/common/TobBar';
 import TopText from '@src/components/common/Text/TopText';
-interface ReviewEditPageProps {
-  idx?: string;
-  rating?: RatingNum;
-  images?: File[];
-  isRevisit?: boolean;
-  review?: string;
-  name?: string;
-  latitude?: string;
-  longitude?: string;
-}
 
 const ReviewEditPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const locationState = useMemo(
-    () => location.state as ReviewEditPageProps,
+    () => (location.state ? (location.state as IReview) : ({} as IReview)),
     [location.state],
   );
 
@@ -39,9 +30,9 @@ const ReviewEditPage = () => {
     isRevisit: boolean;
     imgNum: number;
   }>({
-    rating: locationState.rating ?? 1,
-    isRevisit: locationState.isRevisit ?? false,
-    imgNum: locationState.images?.length ?? 0,
+    rating: locationState?.star ? (+locationState?.star as RatingNum) : 1,
+    isRevisit: locationState?.revisit === 'true' ?? false,
+    imgNum: locationState?.file?.length ?? 0,
   });
 
   const decreseImgNum = () => {
@@ -60,28 +51,34 @@ const ReviewEditPage = () => {
     setState(prev => ({ ...prev, isRevisit: !prev.isRevisit }));
   };
 
-  const { onChange: onChangeText, value: textValue } = useOnChange();
+  const { onChange: onChangeText, value: textValue } = useOnChange(
+    locationState.contents,
+  );
   const [files, setFiles] = useState<File[]>([]);
 
   const { mutate: updateReview, isSuccess: isSuccessUpdate } =
     useReviewUpdateQuery(
-      state.isRevisit,
-      state.rating,
-      textValue,
+      {
+        ...locationState,
+        contents: textValue,
+        star: state.rating.toString(),
+        revisit: state.isRevisit ? 'true' : 'false',
+      },
       files,
-      locationState.idx,
     );
 
   useEffect(() => {
     if (isSuccessUpdate) {
+      const searchParam = createSearchParams({
+        name: locationState.name,
+        latitude: locationState.latitude,
+        longitude: locationState.longitude,
+      });
+
       alert(`리뷰가 정상적으로 등록되었습니다.`);
-      navigate(`/review`, {
-        state: {
-          idx: locationState.idx,
-          name: locationState.name,
-          latitude: locationState.latitude,
-          longitude: locationState.longitude,
-        },
+      navigate({
+        pathname: '/review',
+        search: `?${searchParam}`,
       });
     }
   }, [isSuccessUpdate]);

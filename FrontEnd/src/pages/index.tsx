@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 
 import MyPlace from './MyPlaceInSchedule';
 import LoginPage from './LoginPage';
@@ -10,10 +10,22 @@ import PlacePlan from './PlacePlan';
 import MapInfoPage from './MapInfoPage';
 import SchedulePlan from './SchedulePlan';
 import SearchPage from './SearchPage';
-import MySchedule from './MySchedule';
+
 import MyScheduleEdit from './SchedulePlan/edit';
+import { useSetRecoilState } from 'recoil';
+import { userAtom } from '@src/recoil/user/atom';
+import ReviewPage from './ReviewPage';
+import MySchedule from './MySchedule';
 
 const App = () => {
+  // TODO: 아래는 테스트 용으로 유저 id를 1로 지정함.
+  // 테스트가 끝나면 아래 코드는 지워야함.
+  const setUserState = useSetRecoilState(userAtom);
+  useEffect(() => {
+    console.log('start');
+    setUserState(prev => ({ ...prev, id: '1' }));
+  }, []);
+
   return (
     <div className="h-full w-full safe-top safe-left safe-right safe-bottom">
       <Helmet>
@@ -77,6 +89,10 @@ const App = () => {
         <Route
           path="/oauth/:where"
           element={<OauthPage />}
+        />
+        <Route
+          path="/review/*"
+          element={<ReviewPage />}
         />
         <Route
           path="/*"

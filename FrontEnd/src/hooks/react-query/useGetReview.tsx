@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Response } from './responseInterfaces';
 import { useQuery } from '@tanstack/react-query';
 
-interface IReviewFile {
+export interface IReviewFile {
   idx: string;
   boardName: string;
   boardIdx: string;
@@ -49,17 +49,7 @@ const reviewFetch = async (
       createDate: res.createDate.slice(0, 10).replaceAll('-', '.'),
       dir: res.file.map(item => item.fileDir),
     }));
-    // const createDate = response.data.data.createDate
-    //   .slice(0, 10)
-    //   // .split(' ')[0]
-    //   .replaceAll('-', '.');
-    // const file = response.data.data.file.map(item => item.fileDir);
-    // const newData = {
-    //   ...response.data.data,
-    //   createDate,
-    //   file,
-    //   originFile: response.data.data.file,
-    // };
+
     return mapedResponse;
   } catch (err) {
     if (err instanceof Error) {

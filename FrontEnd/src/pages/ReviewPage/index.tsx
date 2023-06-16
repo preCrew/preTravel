@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import { Suspense } from 'react';
 import tw from 'twin.macro';
 
@@ -8,6 +8,7 @@ import ReviewViewPage from '../ReviewViewPage';
 interface ReviewPageProps {}
 
 const ReviewPage = ({}: ReviewPageProps) => {
+  const navigate = useNavigate();
   return (
     <div css={tw`w-full h-full flex flex-col`}>
       <Routes>
