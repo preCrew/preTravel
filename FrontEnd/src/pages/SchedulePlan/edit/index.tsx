@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import moment from 'moment';
 
@@ -24,8 +24,8 @@ const MyScheduleEdit = () => {
   const { state } = useLocation();
   const scheduleData: any = state;
   const defaultRange = {
-    from: scheduleData.dateRange.start,
-    to: scheduleData.dateRange.end,
+    from: scheduleData.startDate,
+    to: scheduleData.endDate,
   };
 
   const [title, setTitle, onChangeTitle] = useInput(scheduleData.name || '');
@@ -39,10 +39,19 @@ const MyScheduleEdit = () => {
   const setmodalOpen = useSetRecoilState(modalAtom);
   const { locationState } = useLocationState();
   const scheduleState = useRecoilValue(scheduleAtom);
-  const file = useRecoilValue(scheduleFileAtom);
+  const [file, setFile] = useRecoilState(scheduleFileAtom);
 
   useEffect(() => {
     setmodalOpen(false);
+  }, []);
+
+  useEffect(() => {
+    if (scheduleData.file.length) {
+      setFile(state => ({
+        idx: scheduleData.file[0].idx,
+        dir: scheduleData.file[0].fileDir,
+      }));
+    }
   }, []);
 
   useEffect(() => {
@@ -55,20 +64,16 @@ const MyScheduleEdit = () => {
   }, [title, range]);
 
   const handleClickBackButton = () => {
-    console.log(1);
+    navigate('/mySchedule');
   };
 
   const onChangeFile = (event: React.ChangeEvent) => {
     const target = event.target as HTMLInputElement;
-
+    console.log(event);
     const formData = new FormData();
 
     formData.append('file', target.files![0]);
     formData.append('boardName', 'schedule');
-
-    // for (let key of formData.keys()) {
-    //   console.log(key, ':', formData.get(key));
-    // }
 
     imgUploadMutate(formData);
   };
@@ -79,11 +84,11 @@ const MyScheduleEdit = () => {
     if (!fieldCheck) {
       return;
     }
-
+    console.log(scheduleData.file[0]?.idx || file?.idx + '');
     submitMutate({
       memberIdx: '12',
       idx: scheduleData.idx,
-      name: title || scheduleData.title,
+      name: title || scheduleData.name,
       city: scheduleData.city,
       startDate: range
         ? moment(range?.from).format('YYYY-MM-DD')
@@ -91,16 +96,16 @@ const MyScheduleEdit = () => {
       endDate: range
         ? moment(range?.to).format('YYYY-MM-DD')
         : scheduleData.endDate,
-      file: scheduleData.file[0] || '',
+      file: scheduleData.file[0]?.idx || file?.idx + '',
     });
 
-    if (!isLoadingSubmit) navigate(`/mySchedule/${scheduleData.idx}`);
+    if (!isLoadingSubmit) navigate(`/mySchedule`);
   };
 
   return (
-    <article className="content-inner">
+    <article className="mt-16 content-inner">
       <TopBar onClickBackButton={handleClickBackButton}>
-        <h2 className="mb-14 text-2xl font-medium">{locationState.region}</h2>
+        {/* <h2 className="text-2xl font-medium mb-14">{locationState.region}</h2> */}
       </TopBar>
       <form onSubmit={onSubmit}>
         <div className="mb-10">

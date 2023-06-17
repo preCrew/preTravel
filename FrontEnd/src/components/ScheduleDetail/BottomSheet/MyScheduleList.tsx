@@ -85,7 +85,6 @@ const MyScheduleList = ({
       ...place,
       order: (idx + 1).toString(),
     }));
-    console.log(currentScheduleState.schedule[selectDayState].date);
     //recoil에 선저장
     setCurrentPlaceState((state: TCurrentplace) => ({
       date: currentScheduleState.schedule[selectDayState].date,

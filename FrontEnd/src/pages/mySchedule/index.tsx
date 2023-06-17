@@ -23,6 +23,8 @@ import Nav, { navH } from '@src/components/common/Layout/Nav';
 const MySchedule2 = () => {
   const navigate = useNavigate();
   const [isDeleteMode, setIsDeleteMode] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [editCard, setEditCard] = useState<any>([]);
 
   const { clearCardState } = useCardListState();
   const filterdSelectedListState = useRecoilValue(filteredCardListSelector);
@@ -35,6 +37,10 @@ const MySchedule2 = () => {
 
   const handleClickBackButton = () => {
     navigate(-1);
+  };
+  const handleClickEditButton = () => {
+    //navigate('/schedulePlan/edit', { state: editCard });
+    setIsEditMode(prev => !prev);
   };
   const handleClickAddButton = () => {
     navigate('/search/region');
@@ -63,16 +69,23 @@ const MySchedule2 = () => {
             </div>
           ) : (
             <IconBox
+              onClickEditButton={handleClickEditButton}
               onClickAddButton={handleClickAddButton}
               onClickRemoveButton={handleClickTopRemoveButton}
             />
           )}
         </div>
       </div>
-
+      {isEditMode && (
+        <p className="px-5 text-body3">편집할 일정을 클릭하세요.</p>
+      )}
       <div css={tw`overflow-y-scroll`}>
         <Suspense fallback={<SkeletonMyScheduleCard />}>
-          <MyScheduleCardList deleteMode={isDeleteMode} />
+          <MyScheduleCardList
+            deleteMode={isDeleteMode}
+            editMode={isEditMode}
+            setEditCard={setEditCard}
+          />
         </Suspense>
         {filterdSelectedListState > 0 && (
           <Button

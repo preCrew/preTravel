@@ -59,12 +59,6 @@ const MySchedule = () => {
     setLocationRegion(state as string);
     //현재 일정 리코일 저장
     setCurrentScheduleState(data);
-    //현재
-    // console.log(currentScheduleState.schedule[selectedDayState]?.list);
-    // setCurrentPlaceState(state => ({
-    //   ...state,
-    //   list: currentScheduleState.schedule[selectedDayState]?.list,
-    // }));
   }, [currentScheduleState, data]);
 
   const onLoadMap = useCallback((map: any) => {
@@ -107,13 +101,6 @@ const MySchedule = () => {
           name="나가기"
           style="absolute right-basic top-0"
         />
-        {!calendarIsOpenState && (
-          <Button
-            onClick={onClickEdit}
-            name={<MdModeEditOutline />}
-            style="absolute right-basic top-20"
-          />
-        )}
 
         <div className="relative mt-4 ml-basic">
           {!calendarIsOpenState && (

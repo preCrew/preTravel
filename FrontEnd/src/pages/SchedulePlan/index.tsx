@@ -16,7 +16,6 @@ import useAddScheduleQuery from '@src/hooks/react-query/useAddSchedule';
 import { scheduleAtom } from '@src/recoil/schedule/atom';
 import TopBar from '@src/components/common/TobBar';
 import { modalAtom } from '@src/recoil/modal/atom';
-import tw from 'twin.macro';
 
 ////
 const SchedulePlan = () => {
@@ -31,7 +30,7 @@ const SchedulePlan = () => {
 
   const { locationState } = useLocationState();
   const scheduleState = useRecoilValue(scheduleAtom);
-  const file = useRecoilValue(scheduleFileAtom);
+  const [file, setFile] = useRecoilState(scheduleFileAtom);
   const [isOpenState, setOpenState] = useRecoilState(modalAtom);
 
   const handleClickBackButton = () => {
@@ -44,6 +43,10 @@ const SchedulePlan = () => {
 
   useEffect(() => {
     setOpenState(false);
+    setFile({
+      idx: '',
+      dir: '',
+    });
   }, []);
 
   useEffect(() => {
