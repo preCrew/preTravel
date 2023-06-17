@@ -18,13 +18,9 @@ const CalendarBtn = () => {
     <button
       type="button"
       onClick={onClick}
-      className="absolute top-0 left-0 bg-white border border-black rounded-full w-30 h-30"
+      className="absolute top-0 left-0 h-30 w-30 rounded-full border border-black bg-white"
     >
-      {calendarIsOpenState ? (
-        <IoMdClose className="m-auto" />
-      ) : (
-        <BiCalendar className="m-auto" />
-      )}
+      <BiCalendar className="m-auto" />
     </button>
   );
 };

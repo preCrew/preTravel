@@ -94,26 +94,30 @@ const MySchedule = () => {
 
   return (
     <>
-      <header className="fixed left-0 right-0 z-10 top-5">
+      <header className="fixed left-0 right-0 top-5 z-10">
         <Title title={currentScheduleState.name} />
         <Button
           onClick={onClickBack}
           name="나가기"
           style="absolute right-basic top-0"
         />
+        {!calendarIsOpenState && (
+          <Button
+            onClick={onClickEdit}
+            name={<MdModeEditOutline />}
+            style="absolute right-basic top-20"
+          />
+        )}
 
-        <Button
-          onClick={onClickEdit}
-          name={<MdModeEditOutline />}
-          style="absolute right-basic top-20"
-        />
         <div className="relative mt-4 ml-basic">
-          <CalendarBtn />
           {!calendarIsOpenState && (
-            <TabSlide
-              data={scheduleDaysArr}
-              category="일차별"
-            />
+            <>
+              <CalendarBtn />
+              <TabSlide
+                data={scheduleDaysArr}
+                category="일차별"
+              />
+            </>
           )}
         </div>
       </header>

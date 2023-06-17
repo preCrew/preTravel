@@ -51,8 +51,7 @@ const BottomSheet = ({
   const [moreBtn, setMoreBtn] = useState(false);
 
   useEffect(() => {
-    console.log(snapIndex);
-    if (snapIndex === 0) snapTo(snapIndex);
+    //if (snapIndex === 0) snapTo(snapIndex);
   }, [snapIndex]);
 
   // useEffect(() => {

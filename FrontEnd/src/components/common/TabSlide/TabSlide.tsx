@@ -20,6 +20,7 @@ const TabSlide = ({ active, data, category, onClick }: TabSlideProps) => {
     useRecoilState(selectedDayAtom);
 
   useEffect(() => {
+    console.log(selectedDayState);
     sliderRef.current?.slickGoTo(selectedDayState);
   }, [selectedDayState, sliderRef.current]);
 
@@ -65,6 +66,7 @@ const TabSlide = ({ active, data, category, onClick }: TabSlideProps) => {
             >
               <button
                 type="button"
+                data-idx={i}
                 onClick={onClick}
                 className={`${btnActive(
                   i,

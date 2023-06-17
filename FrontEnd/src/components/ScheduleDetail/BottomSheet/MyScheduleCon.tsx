@@ -45,17 +45,17 @@ const MyScheduleCon = ({ id }: TMyschedulConProps) => {
     //console.log('편집', changedOrderState);
   });
   useEffect(() => {
-    setSelectedDayState(0);
+    if (selectedDayState < 0) setSelectedDayState(0);
     setmodalOpen(true);
   }, []);
 
   useEffect(() => {
     //해당 날짜 일정 recoil 저장
-    if (currentScheduleState.schedule.length) {
+    if (currentScheduleState.schedule[selectedDayState]?.list.length) {
       //기존 일정 idx빼고 order string 변환(일정추가시 요청 이슈로 인해..)
       const currentPlaceList = currentScheduleState.schedule[
         selectedDayState
-      ].list?.map(({ idx, order, ...rest }) => ({
+      ]?.list?.map(({ idx, order, ...rest }) => ({
         ...rest,
         order: String(order),
       }));
@@ -121,7 +121,7 @@ const MyScheduleCon = ({ id }: TMyschedulConProps) => {
       <div className="flex justify-between">
         <h4 className="flex items-end text-body1Bold">
           {currentScheduleState.schedule[selectedDayState]?.date}
-          <sub className="p-1 ml-2 rounded bg-gray4 text-body4Bold text-primary1">
+          <sub className="ml-2 rounded bg-gray4 p-1 text-body4Bold text-primary1">
             {withSelectedDayState}일차
           </sub>
         </h4>
