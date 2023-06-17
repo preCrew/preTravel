@@ -8,7 +8,7 @@ interface TopBarProps {
 }
 
 const TopBar = ({ onClickBackButton, children, className }: TopBarProps) => {
-  const css = tw`fixed top-0 left-0 flex items-center w-full bg-white  h-70`;
+  const css = tw`fixed top-0 left-0 z-50 flex items-center w-full bg-white h-70`;
   return (
     <div css={css}>
       <div css={tw`pl-4`}>

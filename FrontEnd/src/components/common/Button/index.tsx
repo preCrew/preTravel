@@ -35,7 +35,7 @@ const Button = ({
   const sizes = {
     small: 'w-80 h-30 text-body3',
     medium: 'w-160 h-50 text-body1Bold',
-    large: `w-[calc(100%)] h-50 text-body1Bold z-[10] text-white`,
+    large: `w-[calc(100%)] h-50 text-body1Bold z-[51] text-white`,
     none: '',
   };
 

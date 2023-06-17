@@ -79,7 +79,7 @@ const MySchedule2 = () => {
             type="large"
             color="primary1"
             onClick={handleClickBottomRemoveButton}
-            className={`fixed bottom-0 z-[51]`}
+            className={`fixed bottom-0`}
           >
             삭제하기
           </Button>

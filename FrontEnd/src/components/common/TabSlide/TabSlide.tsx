@@ -20,7 +20,6 @@ const TabSlide = ({ active, data, category, onClick }: TabSlideProps) => {
     useRecoilState(selectedDayAtom);
 
   useEffect(() => {
-    console.log(selectedDayState);
     sliderRef.current?.slickGoTo(selectedDayState);
   }, [selectedDayState, sliderRef.current]);
 

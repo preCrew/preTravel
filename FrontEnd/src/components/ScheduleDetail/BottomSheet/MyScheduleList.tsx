@@ -46,7 +46,7 @@ const MyScheduleList = ({
 
   useEffect(() => {
     setonDragScheduleData(currentPlaceState.list);
-  }, [selectedDayState, currentPlaceState.list]);
+  }, [selectedDayState, currentPlaceState.list, currentScheduleState]);
 
   // 순서 체인지후 정렬된 배열 state에 저장
   useEffect(() => {
@@ -85,7 +85,7 @@ const MyScheduleList = ({
       ...place,
       order: (idx + 1).toString(),
     }));
-
+    console.log(currentScheduleState.schedule[selectDayState].date);
     //recoil에 선저장
     setCurrentPlaceState((state: TCurrentplace) => ({
       date: currentScheduleState.schedule[selectDayState].date,

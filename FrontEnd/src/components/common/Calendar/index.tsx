@@ -30,10 +30,6 @@ const Calendar = () => {
   const [calendarIsOpenState, setCalendarIsOpenState] =
     useRecoilState(calendarIsOpenAtom);
 
-  useEffect(() => {
-    console.log(selectedDayState);
-  }, []);
-
   const getDateDiff = (date1: any, date2: Date) => {
     const startDay = new Date(date1);
 

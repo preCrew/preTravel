@@ -41,11 +41,9 @@ const MyScheduleCon = ({ id }: TMyschedulConProps) => {
     useAddPlaceinScehduleQuery();
 
   const navigate = useNavigate();
+
   useEffect(() => {
-    //console.log('편집', changedOrderState);
-  });
-  useEffect(() => {
-    if (selectedDayState < 0) setSelectedDayState(0);
+    setSelectedDayState(0);
     setmodalOpen(true);
   }, []);
 
@@ -63,6 +61,11 @@ const MyScheduleCon = ({ id }: TMyschedulConProps) => {
       setCurrentPlaceState((state: TCurrentplace) => ({
         ...state,
         list: currentPlaceList,
+      }));
+    } else {
+      setCurrentPlaceState((state: TCurrentplace) => ({
+        ...state,
+        list: [],
       }));
     }
   }, [selectedDayState, currentScheduleState]);

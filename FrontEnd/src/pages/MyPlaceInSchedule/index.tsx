@@ -57,8 +57,14 @@ const MySchedule = () => {
   useEffect(() => {
     //지역 저장
     setLocationRegion(state as string);
-    //현재 일정 저장
+    //현재 일정 리코일 저장
     setCurrentScheduleState(data);
+    //현재
+    // console.log(currentScheduleState.schedule[selectedDayState]?.list);
+    // setCurrentPlaceState(state => ({
+    //   ...state,
+    //   list: currentScheduleState.schedule[selectedDayState]?.list,
+    // }));
   }, [currentScheduleState, data]);
 
   const onLoadMap = useCallback((map: any) => {
