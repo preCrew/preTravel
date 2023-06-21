@@ -22,7 +22,7 @@ const CategoryList = ({}: CategoryListProps) => {
 
 const category1 = [
   { menu: '내가 찜한 장소', route: 'like' },
-  { menu: '나의 리뷰', route: '/' },
+  { menu: '나의 리뷰', route: 'review' },
   { menu: '내가 방문한 장소', route: '/' },
 ];
 

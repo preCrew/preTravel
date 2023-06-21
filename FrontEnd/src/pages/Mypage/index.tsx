@@ -10,6 +10,7 @@ import useGetUserInfo from '@src/hooks/react-query/useGetUserInfo';
 import { userAtom } from '@src/recoil/user/atom';
 import MypageLike from './like';
 import MypageMain from './main';
+import MypageReview from './review';
 
 const Mypage = () => {
   return (
@@ -24,6 +25,14 @@ const Mypage = () => {
           element={
             <Suspense>
               <MypageLike />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/review"
+          element={
+            <Suspense>
+              <MypageReview />
             </Suspense>
           }
         />
