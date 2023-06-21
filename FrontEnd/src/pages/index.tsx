@@ -47,7 +47,7 @@ const App = () => {
           element={<MainPage />}
         />
         <Route
-          path="/mypage"
+          path="/mypage/*"
           element={<Mypage />}
         />
         <Route

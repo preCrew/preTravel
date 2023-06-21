@@ -2,14 +2,16 @@ import { Link } from 'react-router-dom';
 import tw from 'twin.macro';
 import { IoIosArrowBack } from 'react-icons/io';
 
-const CategoryList = () => {
+interface CategoryListProps {}
+
+const CategoryList = ({}: CategoryListProps) => {
   return (
     <section className="[&>ul:first:p-3] [&>ul+ul]:mt-[-0.5rem]">
       <CategoryUl>
         {category1.map(category => (
           <CategoryLi>
             <Link to={category.route}>{category.menu}</Link>
-            <IoIosArrowBack className="absolute right-0 rotate-180 top-3" />
+            <IoIosArrowBack className="absolute right-0 top-3 rotate-180" />
           </CategoryLi>
         ))}
       </CategoryUl>
@@ -19,7 +21,7 @@ const CategoryList = () => {
 };
 
 const category1 = [
-  { menu: '내가 찜한 장소', route: '/' },
+  { menu: '내가 찜한 장소', route: 'like' },
   { menu: '나의 리뷰', route: '/' },
   { menu: '내가 방문한 장소', route: '/' },
 ];

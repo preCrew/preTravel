@@ -7,5 +7,11 @@ export const userAtom = atom({
     id: '1',
     accessToken: '',
     testId: 12,
+    info: {
+      likespot: [],
+      member: null,
+      review: [],
+      schedule: [],
+    },
   },
 });
