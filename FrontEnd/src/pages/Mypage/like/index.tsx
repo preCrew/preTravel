@@ -28,9 +28,13 @@ const MypageLike = () => {
     });
   }, []);
 
+  const onClickBackButton = () => {
+    navigate(-1);
+  };
+
   return (
     <>
-      <TopBar></TopBar>
+      <TopBar onClickBackButton={onClickBackButton}></TopBar>
       <div className="pt-16">
         {likeSpot.map((spot: any) => (
           <Data onClickData={() => onClickLikeView(spot)}>{spot.name}</Data>
