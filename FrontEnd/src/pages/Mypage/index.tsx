@@ -1,16 +1,11 @@
-import tw, { css } from 'twin.macro';
 import { Routes, Route } from 'react-router-dom';
 import { Suspense, useEffect } from 'react';
-import { useRecoilState } from 'recoil';
 
-import CategoryList from '@src/components/common/Mypage/CategoryList';
-import Profile from '@src/components/common/Mypage/Profile';
-import Nav from '@src/components/common/Layout/Nav';
-import useGetUserInfo from '@src/hooks/react-query/useGetUserInfo';
-import { userAtom } from '@src/recoil/user/atom';
-import MypageLike from './like';
-import MypageMain from './main';
-import MypageReview from './review';
+import MypageLike from './MypageLike';
+import MypageMain from './MypageMain';
+import MypageReview from './MypageReview';
+import MypageVisit from './MypageVisit';
+import VisitedList from './MypageVisit/VisitedList';
 
 const Mypage = () => {
   return (
@@ -33,6 +28,22 @@ const Mypage = () => {
           element={
             <Suspense>
               <MypageReview />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/visit"
+          element={
+            <Suspense>
+              <MypageVisit />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/visit/list"
+          element={
+            <Suspense>
+              <VisitedList />
             </Suspense>
           }
         />

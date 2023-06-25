@@ -61,6 +61,7 @@ const MapInfoPage = ({}: MapInfoPageProps) => {
     searchParamsObj.name,
     searchParamsObj.latitude,
     searchParamsObj.longitude,
+    true,
   );
 
   const { mutate: deleteLikeMutation } = useDeleteLike(like?.idx ?? '');

@@ -12,7 +12,7 @@ import PlacePlan from './PlacePlan';
 import MapInfoPage from './MapInfoPage';
 import SchedulePlan from './SchedulePlan';
 import SearchPage from './SearchPage';
-import MyScheduleEdit from './SchedulePlan/edit';
+import MyScheduleEdit from './SchedulePlan/ScheduleEdit';
 import Mypage from './Mypage';
 import ReviewPage from './ReviewPage';
 import MySchedule from './MySchedule';
