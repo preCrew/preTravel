@@ -60,7 +60,7 @@ const MySchedule2 = () => {
   return (
     <>
       <div className={MyScheduleDiv.childrenBox}>
-        <div className={MyScheduleDiv.title}>내 일정</div>
+        <h2 className={MyScheduleDiv.title}>내 일정</h2>
         <div className={MyScheduleDiv.buttonBox}>
           {isDeleteMode ? (
             <div className="flex">
