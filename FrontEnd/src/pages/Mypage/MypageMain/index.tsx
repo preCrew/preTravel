@@ -2,8 +2,8 @@ import { css } from '@emotion/react';
 import tw from 'twin.macro';
 
 import Nav from '@src/components/common/Layout/Nav';
-import CategoryList from '@src/components/common/Mypage/CategoryList';
-import Profile from '@src/components/common/Mypage/Profile';
+import CategoryList from '@src/components/Mypage/CategoryList';
+import Profile from '@src/components/Mypage/Profile';
 
 const MypageMain = () => {
   return (
