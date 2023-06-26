@@ -36,6 +36,9 @@
   .content-inner{
     padding: var(--contentX);
   }  
+  .main-modal__slider{
+    
+  }
   .tab__slide .slick-track{
     margin: 0;
   }
