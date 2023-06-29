@@ -13,7 +13,7 @@ interface BottomSheetProps {
   dragOn?: boolean;
   bg?: boolean;
   open?: boolean;
-  onClickSnap?: (snap: number) => void;
+  snapIndex?: number | undefined;
   moreOnClick?: boolean;
   setMoreOnClick?: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -28,6 +28,7 @@ const BottomSheet = ({
   dragOn,
   bg,
   moreOnClick,
+  snapIndex = undefined,
   setMoreOnClick,
 }: BottomSheetProps) => {
   // const [isOpen, setOpen] = useState(false);
@@ -45,14 +46,19 @@ const BottomSheet = ({
   const [moreBtn, setMoreBtn] = useState(false);
 
   useEffect(() => {
-    // 장소 리스트가 5개 이상이면 더보기 버튼 노출
-    if (currentPlaceState.list.length > 5) {
-      setMoreBtn(true);
-    } else {
-      setMoreBtn(false);
-    }
-    console.log(currentPlaceState, moreBtn);
-  }, [currentPlaceState]);
+    console.log(snapIndex);
+    if (snapIndex === 0) snapTo(snapIndex);
+  }, [snapIndex]);
+
+  // useEffect(() => {
+  //   // 장소 리스트가 5개 이상이면 더보기 버튼 노출
+  //   if (currentPlaceState.list.length > 5) {
+  //     setMoreBtn(true);
+  //   } else {
+  //     setMoreBtn(false);
+  //   }
+  //   console.log(currentPlaceState, moreBtn);
+  // }, [currentPlaceState]);
 
   const onCloseSheet = () => {
     console.log('닫힘', isOpenState);
@@ -64,7 +70,7 @@ const BottomSheet = ({
 
   const onClickSnap = () => {
     snapTo(0);
-    setMoreOnClick?.(false);
+    //setMoreOnClick?.(false);
   };
 
   const WithoutBgBottomSheet = ({ backSheet }: WithoutBgBottomSheetType) => {
@@ -88,7 +94,7 @@ const BottomSheet = ({
         detent="full-height"
         disableDrag={dragOn}
       >
-        <Sheet.Container className="px-basic pb-4">
+        <Sheet.Container className="pb-4 px-basic">
           <Sheet.Header />
           <Sheet.Content>
             {children}

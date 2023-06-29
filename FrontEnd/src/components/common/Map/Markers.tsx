@@ -22,6 +22,7 @@ const Markers = ({ mapLoad, iconNum, categoryNum }: MarkersPops) => {
 
   const [onClickMarkState, setOnClickMarkState] =
     useRecoilState(clickMarkerAtom);
+
   const [mapInfo, setMapInfo] = useState({
     memberIdx: '1',
     smallLa: '36.63303803799248',

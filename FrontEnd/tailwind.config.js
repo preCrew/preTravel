@@ -20,6 +20,13 @@ module.exports = {
     },
     extend: {
       fontSize: {
+        h2Bold: [
+          remCalculate(42),
+          {
+            lineHeight: remCalculate(50),
+            fontWeight: '500',
+          },
+        ],        
         h4: [
           remCalculate(20),
           {

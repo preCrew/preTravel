@@ -1,6 +1,7 @@
 import { useRecoilState } from 'recoil';
 import { useEffect } from 'react';
 import tw from 'twin.macro';
+import { useNavigate } from 'react-router-dom';
 
 import Map from '@src/components/common/Map';
 import TabSlide from '@src/components/common/TabSlide/TabSlide';
@@ -12,8 +13,8 @@ import { modalAtom } from '@src/recoil/modal/atom';
 import MainModal from '@src/components/common/Main/MainModal';
 import { clickMarkerAtom } from '@src/recoil/map/atom';
 import SearchButton from '@src/components/common/Button/SearchButton';
-import { useNavigate } from 'react-router-dom';
 import Column from '@src/components/common/FlexBox/Column';
+import Nav from '@src/components/common/Layout/Nav';
 
 const MainPage = () => {
   const navigate = useNavigate();
@@ -62,6 +63,8 @@ const MainPage = () => {
         />
       ) : null}
       {onClickMarkState && <MainModal data={onClickMarkState} />}
+
+      <Nav />
     </>
   );
 };
