@@ -41,7 +41,6 @@ const PlacePlan = () => {
   }, [orderSelected]);
 
   const onChangeSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log(e.target.value);
     setOrderSelected(e.target.value);
   };
 

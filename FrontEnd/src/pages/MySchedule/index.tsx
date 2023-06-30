@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { Suspense, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import tw from 'twin.macro';
 
@@ -23,19 +23,27 @@ import Nav, { navH } from '@src/components/common/Layout/Nav';
 const MySchedule2 = () => {
   const navigate = useNavigate();
   const [isDeleteMode, setIsDeleteMode] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [editCard, setEditCard] = useState<any>([]);
 
   const { clearCardState } = useCardListState();
   const filterdSelectedListState = useRecoilValue(filteredCardListSelector);
 
-  const { mutate: deleteScheduleQuery } = useMyScheduleDeleteQuery();
+  const { mutate: deleteScheduleQuery, isSuccess } = useMyScheduleDeleteQuery();
 
-  const searchRegionOvelay = useSearchRegionOvelay();
+  useEffect(() => {
+    if (isSuccess) clearCardState();
+  }, [isSuccess]);
 
   const handleClickBackButton = () => {
     navigate(-1);
   };
+  const handleClickEditButton = () => {
+    //navigate('/schedulePlan/edit', { state: editCard });
+    setIsEditMode(prev => !prev);
+  };
   const handleClickAddButton = () => {
-    searchRegionOvelay.open();
+    navigate('/search/region');
   };
   const handleClickTopRemoveButton = () => {
     setIsDeleteMode(true);
@@ -43,7 +51,6 @@ const MySchedule2 = () => {
   const handleClickBottomRemoveButton = () => {
     setIsDeleteMode(false);
     deleteScheduleQuery();
-    clearCardState();
   };
   const handleClickCancelButton = () => {
     setIsDeleteMode(false);
@@ -62,23 +69,30 @@ const MySchedule2 = () => {
             </div>
           ) : (
             <IconBox
+              onClickEditButton={handleClickEditButton}
               onClickAddButton={handleClickAddButton}
               onClickRemoveButton={handleClickTopRemoveButton}
             />
           )}
         </div>
       </div>
-
+      {isEditMode && (
+        <p className="px-5 text-body3">편집할 일정을 클릭하세요.</p>
+      )}
       <div css={tw`overflow-y-scroll`}>
         <Suspense fallback={<SkeletonMyScheduleCard />}>
-          <MyScheduleCardList deleteMode={isDeleteMode} />
+          <MyScheduleCardList
+            deleteMode={isDeleteMode}
+            editMode={isEditMode}
+            setEditCard={setEditCard}
+          />
         </Suspense>
         {filterdSelectedListState > 0 && (
           <Button
             type="large"
             color="primary1"
             onClick={handleClickBottomRemoveButton}
-            className={`fixed bottom-0 z-[51]`}
+            className={`fixed bottom-0`}
           >
             삭제하기
           </Button>

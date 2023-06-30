@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
 
@@ -14,6 +14,8 @@ import useAddScheduleImgQuery from '@src/hooks/react-query/useAddScheduleImgQuer
 import { scheduleFileAtom } from '@src/recoil/schedule/file/atom';
 import useAddScheduleQuery from '@src/hooks/react-query/useAddSchedule';
 import { scheduleAtom } from '@src/recoil/schedule/atom';
+import TopBar from '@src/components/common/TobBar';
+import { modalAtom } from '@src/recoil/modal/atom';
 
 ////
 const SchedulePlan = () => {
@@ -28,7 +30,24 @@ const SchedulePlan = () => {
 
   const { locationState } = useLocationState();
   const scheduleState = useRecoilValue(scheduleAtom);
-  const file = useRecoilValue(scheduleFileAtom);
+  const [file, setFile] = useRecoilState(scheduleFileAtom);
+  const [isOpenState, setOpenState] = useRecoilState(modalAtom);
+
+  const handleClickBackButton = () => {
+    navigate(-1);
+  };
+
+  useEffect(() => {
+    if (isSuccessSubmit) navigate(`/mySchedule/${scheduleState.idx}`);
+  }, [isSuccessSubmit]);
+
+  useEffect(() => {
+    setOpenState(false);
+    setFile({
+      idx: '',
+      dir: '',
+    });
+  }, []);
 
   useEffect(() => {
     if (!title && !range) {
@@ -41,7 +60,6 @@ const SchedulePlan = () => {
 
   const onChangeFile = (event: React.ChangeEvent) => {
     const target = event.target as HTMLInputElement;
-    console.log(target.files?.[0].name);
 
     const formData = new FormData();
 
@@ -49,7 +67,7 @@ const SchedulePlan = () => {
     formData.append('boardName', 'schedule');
 
     for (let key of formData.keys()) {
-      console.log(key, ':', formData.get(key));
+      //console.log(key, ':', formData.get(key));
     }
 
     imgUploadMutate(formData);
@@ -59,7 +77,7 @@ const SchedulePlan = () => {
     e.preventDefault();
 
     if (!fieldCheck) {
-      console.log('미작성', fieldCheck);
+      //console.log('미작성', fieldCheck);
       return;
     }
 
@@ -71,13 +89,14 @@ const SchedulePlan = () => {
       endDate: moment(range?.to).format('YYYY-MM-DD'),
       file: file.idx + '',
     });
-
-    if (isSuccessSubmit) navigate(`/mySchedule/${scheduleState.idx}`);
   };
 
   return (
     <article className="content-inner">
-      <h2 className="mb-5 text-h5Bold">{locationState.region}</h2>
+      <TopBar onClickBackButton={handleClickBackButton}></TopBar>
+      <h2 className="mb-14 pt-12 text-2xl font-medium">
+        {locationState.region}
+      </h2>
       <form onSubmit={onSubmit}>
         <div className="mb-10">
           <InputLabel

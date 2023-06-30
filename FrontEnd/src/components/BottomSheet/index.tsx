@@ -5,7 +5,6 @@ import Sheet, { SheetRef } from 'react-modal-sheet';
 import { modalAtom } from '@src/recoil/modal/atom';
 import { clickMarkerAtom } from '@src/recoil/map/atom';
 import { currentPlaceAtom } from '@src/recoil/place/atom';
-import Button from '../common/Button';
 
 interface BottomSheetProps {
   children?: React.ReactNode;
@@ -13,6 +12,10 @@ interface BottomSheetProps {
   dragOn?: boolean;
   bg?: boolean;
   open?: boolean;
+
+  snapIdx?: number;
+  close?: boolean;
+  onClickSnap?: (snap: number) => void;
   snapIndex?: number | undefined;
   moreOnClick?: boolean;
   setMoreOnClick?: React.Dispatch<React.SetStateAction<boolean>>;
@@ -27,7 +30,9 @@ const BottomSheet = ({
   contentH,
   dragOn,
   bg,
+  snapIdx,
   moreOnClick,
+  close,
   snapIndex = undefined,
   setMoreOnClick,
 }: BottomSheetProps) => {
@@ -46,8 +51,7 @@ const BottomSheet = ({
   const [moreBtn, setMoreBtn] = useState(false);
 
   useEffect(() => {
-    console.log(snapIndex);
-    if (snapIndex === 0) snapTo(snapIndex);
+    //if (snapIndex === 0) snapTo(snapIndex);
   }, [snapIndex]);
 
   // useEffect(() => {
@@ -57,11 +61,12 @@ const BottomSheet = ({
   //   } else {
   //     setMoreBtn(false);
   //   }
-  //   console.log(currentPlaceState, moreBtn);
+
   // }, [currentPlaceState]);
 
   const onCloseSheet = () => {
-    console.log('닫힘', isOpenState);
+    //console.log('닫힘', isOpenState);
+    if (close) setOpenState(false);
     // setOpenState(false);
     snapTo(3);
     //닫으면 mainModal 데이터 삭제
@@ -89,12 +94,12 @@ const BottomSheet = ({
         ref={ref}
         isOpen={isOpenState}
         onClose={onCloseSheet}
-        snapPoints={[-50, 0.4, 100, 100]}
-        initialSnap={1}
+        snapPoints={[-50, 0.4, 0.3, 100]}
+        initialSnap={snapIdx ?? 1}
         detent="full-height"
         disableDrag={dragOn}
       >
-        <Sheet.Container className="pb-4 px-basic">
+        <Sheet.Container className="px-basic pb-4">
           <Sheet.Header />
           <Sheet.Content>
             {children}

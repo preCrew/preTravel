@@ -3,17 +3,12 @@ import IconButton from '../Button/IconButton';
 
 interface TopBarProps {
   onClickBackButton?: () => void;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   className?: string;
 }
 
 const TopBar = ({ onClickBackButton, children, className }: TopBarProps) => {
-  const css = tw`
-    w-full h-70
-    flex items-center
-    bg-white
-    fixed top-0 left-0
-  `;
+  const css = tw`fixed top-0 left-0 z-50 flex items-center w-full bg-white h-70`;
   return (
     <div css={css}>
       <div css={tw`pl-4`}>

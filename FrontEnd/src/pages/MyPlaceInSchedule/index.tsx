@@ -57,7 +57,7 @@ const MySchedule = () => {
   useEffect(() => {
     //지역 저장
     setLocationRegion(state as string);
-    //현재 일정 저장
+    //현재 일정 리코일 저장
     setCurrentScheduleState(data);
   }, [currentScheduleState, data]);
 
@@ -66,7 +66,7 @@ const MySchedule = () => {
   }, []);
 
   const onClickBack = useCallback(() => {
-    navigate(-1);
+    navigate('/mySchedule');
   }, []);
 
   const onClickEdit = useCallback(() => {
@@ -102,18 +102,15 @@ const MySchedule = () => {
           style="absolute right-basic top-0"
         />
 
-        <Button
-          onClick={onClickEdit}
-          name={<MdModeEditOutline />}
-          style="absolute right-basic top-20"
-        />
         <div className="relative mt-4 ml-basic">
-          <CalendarBtn />
           {!calendarIsOpenState && (
-            <TabSlide
-              data={scheduleDaysArr}
-              category="일차별"
-            />
+            <>
+              <CalendarBtn />
+              <TabSlide
+                data={scheduleDaysArr}
+                category="일차별"
+              />
+            </>
           )}
         </div>
       </header>

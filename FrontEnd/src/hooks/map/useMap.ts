@@ -23,17 +23,25 @@ const useMap = () => {
   const getCenterMap = useCallback(
     (loaction: string[]) => {
       const mapData: any = queryClient.getQueryData(['/map']);
-      console.log(mapData);
       const moveLatLon = new window.kakao.maps.LatLng(...loaction);
       mapData.setCenter(moveLatLon);
     },
     [mapLoad],
   );
 
+  const setLevelMap = useCallback(() => {
+    const mapData: any = queryClient.getQueryData(['/map']);
+    const level = mapData.getLevel();
+
+    // 지도를 1레벨 내립니다 (지도가 확대됩니다)
+    mapData.setLevel(level - 10);
+  }, [mapLoad]);
+
   return {
     initializeMap,
     mapLoad,
     getCenterMap,
+    setLevelMap,
   };
 };
 

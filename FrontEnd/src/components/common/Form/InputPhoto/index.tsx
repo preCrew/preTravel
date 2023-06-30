@@ -14,19 +14,21 @@ const InputPhoto = ({ file, onChange }: InputPhotoProps) => {
   return (
     <>
       <div className={Input.photo}>
-        {file.dir ? (
-          <img
-            src={file.dir}
-            className="h-full w-full object-cover"
+        <>
+          <input
+            type="file"
+            className={Input.file}
+            accept="image/jpg,impge/png,image/jpeg,image/gif"
+            onChange={onChange}
           />
-        ) : (
-          <>
-            <input
-              type="file"
-              className={Input.file}
-              accept="image/jpg,impge/png,image/jpeg,image/gif"
-              onChange={onChange}
+          {file.dir && (
+            <img
+              src={file.dir}
+              className="h-full w-full object-cover"
             />
+          )}
+
+          {!file.dir && (
             <i className="relative">
               <HiOutlinePhotograph
                 fontSize="24px"
@@ -37,8 +39,8 @@ const InputPhoto = ({ file, onChange }: InputPhotoProps) => {
                 className="absolute left-[14px] top-[-11px] border-gray1"
               />
             </i>
-          </>
-        )}
+          )}
+        </>
       </div>
     </>
   );
