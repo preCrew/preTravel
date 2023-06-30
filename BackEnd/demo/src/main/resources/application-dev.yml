@@ -20,7 +20,7 @@ oauth:
     user_host: https://kapi.kakao.com/v2/user/me
     grant_type: authorization_code
     rest_api_key: 2581cd83651b3e51982587f4cb1652f5 #신영수정
-    redirect_uri: https://web-fronttest-ll32glc6adwo3.gksl2.cloudtype.app/oauth/kakao
+    redirect_uri: https://port-0-pretravel-lhe2blhxg4o79.sel4.cloudtype.app/oauth/kakao
     logout_host: https://kauth.kakao.com/oauth/logout
     map:
       rest_api_key : 2581cd83651b3e51982587f4cb1652f5
