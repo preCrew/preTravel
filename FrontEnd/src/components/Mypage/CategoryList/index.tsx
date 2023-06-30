@@ -1,10 +1,18 @@
+import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import tw from 'twin.macro';
 import { IoIosArrowBack } from 'react-icons/io';
+import useGetLogout from '@src/hooks/react-query/useGetLogout';
 
 interface CategoryListProps {}
 
 const CategoryList = ({}: CategoryListProps) => {
+  const { refetch: refetchLogout } = useGetLogout();
+
+  const onClickLogout = useCallback(() => {
+    refetchLogout();
+  }, []);
+
   return (
     <section className="[&>ul:first:p-3] [&>ul+ul]:mt-[-0.5rem]">
       <CategoryUl>
@@ -15,7 +23,14 @@ const CategoryList = ({}: CategoryListProps) => {
           </CategoryLi>
         ))}
       </CategoryUl>
-      <CategoryUl>로그아웃</CategoryUl>
+      <CategoryUl>
+        <CategoryLi
+          css={tw`p-0`}
+          onClick={onClickLogout}
+        >
+          로그아웃
+        </CategoryLi>
+      </CategoryUl>
     </section>
   );
 };
