@@ -15,6 +15,7 @@ interface INavItemProps {
 const NavItem = ({ to, index }: INavItemProps) => {
   const location = useLocation();
   const iconstyle = 'm-auto';
+
   const navActivStyle =
     to === location.pathname ? `${iconstyle}` : `${iconstyle} text-gray-500`;
 
