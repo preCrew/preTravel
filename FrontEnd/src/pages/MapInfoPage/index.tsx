@@ -61,6 +61,7 @@ const MapInfoPage = ({}: MapInfoPageProps) => {
     searchParamsObj.name,
     searchParamsObj.latitude,
     searchParamsObj.longitude,
+    true,
   );
 
   const { mutate: deleteLikeMutation } = useDeleteLike(like?.idx ?? '');
@@ -87,6 +88,10 @@ const MapInfoPage = ({}: MapInfoPageProps) => {
   }, [mapLoad]);
 
   const handleClickAddScheduleButton = () => {
+    if (!currentScheduleState.idx) {
+      return alert('내 일정 추가 후 장소를 추가해 주세요.');
+    }
+
     const schdule = {
       placeName: searchParamsObj.name,
       address: searchParamsObj.address,
@@ -94,7 +99,6 @@ const MapInfoPage = ({}: MapInfoPageProps) => {
       la: searchParamsObj.latitude,
       lo: searchParamsObj.longitude,
     };
-    console.log(selectDayState);
     // order 순차적으로 변경
     const copyPlaceList = [...currentPlaceState.list, schdule];
     const newPlaceList = copyPlaceList.map((place, idx) => ({
@@ -108,6 +112,7 @@ const MapInfoPage = ({}: MapInfoPageProps) => {
       sctIdx: currentScheduleState.idx + '',
       list: newPlaceList,
     }));
+
     setPlaceAdd(true);
   };
 
