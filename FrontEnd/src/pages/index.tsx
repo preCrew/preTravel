@@ -15,7 +15,7 @@ import SearchPage from './SearchPage';
 import MyScheduleEdit from './SchedulePlan/edit';
 import Mypage from './Mypage';
 import ReviewPage from './ReviewPage';
-import MySchedule from './MySchedule/a';
+import MySchedule from './MySchedule';
 
 const App = () => {
   // TODO: 아래는 테스트 용으로 유저 id를 1로 지정함.
