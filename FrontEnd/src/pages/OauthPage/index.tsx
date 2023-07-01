@@ -1,3 +1,4 @@
+import useLocationSearch from '@src/hooks/useLocationSearch';
 import { userAtom } from '@src/recoil/user/atom';
 import { getLoginUri } from '@src/utils/getLoginUri';
 import axios from 'axios';
@@ -10,18 +11,19 @@ interface OauthPageProps {}
 
 const OauthPage = ({}: OauthPageProps) => {
   const params = useParams();
-  const location = useLocation();
+  // const location = useLocation();
+  const { getQueryString } = useLocationSearch();
   const navigate = useNavigate();
 
   const [userState, setUserState] = useRecoilState(userAtom);
 
   const get = async () => {
-    const baseUrl = getLoginUri('base');
+    const baseUrl = process.env.REAL_SERVER_URL; //getLoginUri('base');
     const where = params.where as 'kakao' | 'naver';
 
-    const href = new URLSearchParams(location.search);
-    const code = href.get('code');
-    const state = href.get('state');
+    // const href = new URLSearchParams(location.search);
+    const code = getQueryString('code');
+    const state = getQueryString('state');
 
     try {
       const reqUrl = {

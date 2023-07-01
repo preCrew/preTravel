@@ -37,6 +37,11 @@ public class IReviewService implements ReviewService {
         List<Review> list = dao.findByLatitudeBetweenAndLongitudeBetweenAndMemberIdx(smallLa, largeLa, smallLo, largeLo,
                 memberIdx);
 
+        for (Review review : list) {
+            List<File> tmpList = fileService.findByBoardNameAndBoardIdx("review", review.getIdx());
+            review.setFile(tmpList);
+        }
+
         return list;
     }
 
@@ -117,6 +122,17 @@ public class IReviewService implements ReviewService {
     @Override
     public List<Review> findByMemberIdxAndAddress(String memberIdx, String address) {
         return dao.findByMemberIdxAndAddress(memberIdx, address);
+    }
+
+    @Override
+    public List<Review> findByNameAndAndMemberIdxAndLatitudeAndLongitude(String name, String memberIdx, String latitude, String longitude) {
+        List<Review> list =  dao.findByNameAndAndMemberIdxAndLatitudeAndLongitude(name, memberIdx, Double.valueOf(latitude), Double.valueOf(longitude));
+
+        for (Review review : list) {
+            List<File> tmpList = fileService.findByBoardNameAndBoardIdx("review", review.getIdx());
+            review.setFile(tmpList);
+        }
+        return list;
     }
 
     private Map<String, Object> convertReviewToMap(Review target) {

@@ -8,5 +8,7 @@ import com.example.demo.dto.Member;
 
 public interface MemberRepository extends JpaRepository<Member, Long>{
 
-    List<Member> findByEmail(String email);    
+    List<Member> findByEmail(String email);
+
+    Member findByIdx(Long idx);    
 }

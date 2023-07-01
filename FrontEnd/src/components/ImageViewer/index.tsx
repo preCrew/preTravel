@@ -5,9 +5,10 @@ import tw from 'twin.macro';
 import Row from '../common/FlexBox/Row';
 import Slider from '../common/Slider';
 import ImageCounter from './ImageCounter';
+import { IReviewFile } from '@src/hooks/react-query/useGetReview';
 
 interface ImageViewerProps {
-  images?: string[]; // 이미지 주소 url들
+  images?: IReviewFile[]; // 이미지 주소 url들
 }
 
 const ImageViewer = ({ images }: ImageViewerProps) => {
@@ -26,18 +27,18 @@ const ImageViewer = ({ images }: ImageViewerProps) => {
   return (
     <div css={tw`relative w-full pb-[100%] rounded-xl`}>
       <div css={tw`absolute w-full h-full rounded-xl`}>
-        {images?.length && images.length > 0 && (
+        {images?.length && images.length > 0 ? (
           <>
             <Slider
               itemNum={images?.length ?? 0}
               onMovedLeft={handleSliderDraggingLeft}
               onMovedRight={handleSliderDraggingRight}
             >
-              <Row>
+              <Row css={tw`w-h-full`}>
                 {images?.map(image => (
                   <img
-                    key={image}
-                    src={image}
+                    key={image.fileDir}
+                    src={image.fileDir}
                     css={tw`rounded-xl`}
                   />
                 ))}
@@ -48,6 +49,8 @@ const ImageViewer = ({ images }: ImageViewerProps) => {
               max={imageIndex.max}
             />
           </>
+        ) : (
+          <div>등록된 이미지가 없어요!</div>
         )}
       </div>
     </div>
@@ -55,3 +58,7 @@ const ImageViewer = ({ images }: ImageViewerProps) => {
 };
 
 export default ImageViewer;
+
+// 1개 천원
+// 1+1 = 2개 1000/2 = 500
+// 2+1 = 3개 2000/3 = 666

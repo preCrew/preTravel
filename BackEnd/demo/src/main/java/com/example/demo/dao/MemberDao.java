@@ -26,5 +26,9 @@ public class MemberDao {
     @Transactional
     public void save(Member mem) {
         repository.save(mem);
+    }
+
+    public Member findByIdx(String idx) {
+        return repository.findByIdx(Long.valueOf(idx));
     }    
 }

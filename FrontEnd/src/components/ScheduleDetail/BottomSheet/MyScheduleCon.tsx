@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
@@ -9,32 +9,80 @@ import { currentScheduleAtom, selectedDayAtom } from '@src/recoil/date/atom';
 import { modalAtom, modalDragAtom } from '@src/recoil/modal/atom';
 import withSelectedDay from '@src/recoil/date/withSelectedDay';
 import useLocationState from '@src/hooks/recoil/useLocationState';
+import {
+  TCurrentplace,
+  Tplace,
+  currentPlaceAtom,
+} from '@src/recoil/place/atom';
+import useAddPlaceinScehduleQuery from '@src/hooks/react-query/useAddPlaceinScehdule';
+interface TMyschedulConProps {
+  id: string;
+}
 
-const MyScheduleCon = ({ region }: any) => {
+const MyScheduleCon = ({ id }: TMyschedulConProps) => {
   const [drag, setDrag] = useState(false);
+  const [changedOrderState, setchangedOrderState] = useState([]);
+  const [changeOrder, setChangeOrder] = useState(false);
+  const [snap, setSnap] = useState(1);
 
   const { setLocationRegion, setSelectData } = useLocationState();
   const currentScheduleState = useRecoilValue(currentScheduleAtom);
   const withSelectedDayState = useRecoilValue(withSelectedDay);
-  const selectedDayState = useRecoilValue(selectedDayAtom);
+  const [selectedDayState, setSelectedDayState] =
+    useRecoilState(selectedDayAtom);
   const setmodalOpen = useSetRecoilState(modalAtom);
+  const [currentPlaceState, setCurrentPlaceState] =
+    useRecoilState(currentPlaceAtom);
   const [modalDragOn, setModalDraOn] = useRecoilState(modalDragAtom);
   const [edit, setEdit] = useState(false);
-  const edtiBtnOn = edit && modalDragOn;
+  const [moreOnClick, setMoreOnClick] = useState<boolean>(true);
 
+  const { mutate: mutateOrderChagePlace, isLoading: isLoadingAddPlace } =
+    useAddPlaceinScehduleQuery();
   const navigate = useNavigate();
+  useEffect(() => {
+    //console.log('편집', changedOrderState);
+  });
+  useEffect(() => {
+    setSelectedDayState(0);
+    setmodalOpen(true);
+  }, []);
 
   useEffect(() => {
-    setmodalOpen(true);
-  });
+    //해당 날짜 일정 recoil 저장
+    if (currentScheduleState.schedule[selectedDayState]?.list.length) {
+      //기존 일정 idx빼고 order string 변환(일정추가시 요청 이슈로 인해..)
+      const currentPlaceList = currentScheduleState.schedule[
+        selectedDayState
+      ]?.list?.map(({ idx, order, ...rest }) => ({
+        ...rest,
+        order: String(order),
+      }));
+      // recoil 저장
+      setCurrentPlaceState((state: TCurrentplace) => ({
+        ...state,
+        list: currentPlaceList,
+      }));
+    } else {
+      setCurrentPlaceState((state: TCurrentplace) => ({
+        ...state,
+        list: [],
+      }));
+    }
+  }, [selectedDayState, currentScheduleState]);
 
-  const onClickAddSchedule = () => {
-    setLocationRegion(region);
-    navigate('/search');
+  useEffect(() => {
+    //순서변경후 요청
+    if (changeOrder) mutateOrderChagePlace(currentPlaceState);
+    setChangeOrder(false);
+  }, [currentPlaceState]);
+
+  const onClickAddSchedule = async () => {
+    setLocationRegion(currentScheduleState.city);
+    navigate(`/search/place/${currentScheduleState.city}`);
   };
 
   const onClickEdit = () => {
-    console.log(1);
     setEdit(true);
   };
 
@@ -45,14 +93,35 @@ const MyScheduleCon = ({ region }: any) => {
 
   const onClickOrderChange = () => {
     setModalDraOn(false);
+    setSnap(0);
   };
 
-  const onClickEditSubmit = () => {
+  const onClickOrderChangeSubmit = () => {
     setModalDraOn(true);
+
+    const copyPlaceList: Tplace[] = [...changedOrderState];
+    // order 순차적으로 변경
+    const newPlaceList = copyPlaceList.map((place, idx) => ({
+      ...place,
+      order: (idx + 1).toString(),
+    }));
+
+    // recoil에 선저장
+    setCurrentPlaceState((state: TCurrentplace) => ({
+      date: currentScheduleState.schedule[selectedDayState]?.date,
+      sctIdx: currentScheduleState.idx + '',
+      list: newPlaceList,
+    }));
+    setChangeOrder(true);
   };
 
   return (
-    <BottomSheetWrap drag={drag}>
+    <BottomSheetWrap
+      drag={drag}
+      moreOnClick={moreOnClick}
+      setMoreOnClick={setMoreOnClick}
+      snapIndex={snap}
+    >
       <div className="flex justify-between">
         <h4 className="flex items-end text-body1Bold">
           {currentScheduleState.schedule[selectedDayState]?.date}
@@ -81,12 +150,13 @@ const MyScheduleCon = ({ region }: any) => {
               </>
             ) : (
               <>
+                {/*순서변경 시*/}
                 <Button
                   onClick={onClickBack}
                   name="취소"
                 />
                 <Button
-                  onClick={onClickEditSubmit}
+                  onClick={onClickOrderChangeSubmit}
                   name="완료"
                   submitColor={true}
                 />
@@ -117,6 +187,8 @@ const MyScheduleCon = ({ region }: any) => {
         drag={drag}
         setDrag={setDrag}
         edit={edit}
+        moreOnClick={moreOnClick}
+        setchangedOrderState={setchangedOrderState}
       />
     </BottomSheetWrap>
   );

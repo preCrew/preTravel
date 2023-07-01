@@ -24,13 +24,14 @@ const MyScheduleCard = ({
   file,
   onClickCard,
 }: MyScheduleCardProps) => {
-  const { changeCardState } = useCardListState();
+  const { changeCardState, cardList } = useCardListState();
   const [isSeleted, setIsSeleted] = useState(false);
 
   const handleClickCheckBox = () => {
     setIsSeleted(!isSeleted);
     changeCardState(cardIdx, isSeleted);
   };
+
   const handleClickCard = () => {
     if (deleteMode) {
       handleClickCheckBox();
@@ -42,8 +43,6 @@ const MyScheduleCard = ({
   const generateNum = Math.floor(Math.random() * 4 + 1);
   const bgColor = ['#fedcf5', '#c7ecf4', '#d6ede5', '#7ca3de', '#ffcfdb'];
   const bgColorValue = useMemo(() => bgColor[generateNum], []);
-
-  console.log(file.length);
 
   return (
     <li

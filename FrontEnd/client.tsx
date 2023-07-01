@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { BrowserRouter } from 'react-router-dom';
 import { createRoot } from 'react-dom/client';
 import { RecoilRoot } from 'recoil';
@@ -10,6 +11,7 @@ import '@src/styles/global.css';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HelmetProvider } from 'react-helmet-async';
+import OvelayRoot from '@src/hooks/ovelay/OvelayRoot';
 
 const twentyFourHoursInMs = 1000 * 60 * 60 * 24;
 const queryClient = new QueryClient({
@@ -32,8 +34,13 @@ createRoot(container as Element).render(
       <BrowserRouter>
         <HelmetProvider>
           <App />
+          <OvelayRoot />
         </HelmetProvider>
       </BrowserRouter>
     </RecoilRoot>
+    <ReactQueryDevtools
+      initialIsOpen={false}
+      position="bottom-right"
+    />
   </QueryClientProvider>,
 );

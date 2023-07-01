@@ -8,19 +8,23 @@ interface MyScheduleListItemProps {
   data: any;
   index: number;
   edit: boolean;
+  onClickDelete: () => void;
 }
 
-const MyScheduleListItem = ({ data, index, edit }: MyScheduleListItemProps) => {
+const MyScheduleListItem = ({
+  data,
+  index,
+  edit,
+  onClickDelete,
+}: MyScheduleListItemProps) => {
   const modalDragOn = useRecoilValue(modalDragAtom);
   const edtiBtnOn = edit && modalDragOn;
-
-  console.log(modalDragOn, data, index, edit);
 
   return (
     <>
       <Draggable
-        key={data.idx}
-        draggableId={data.idx}
+        key={data.order * 1}
+        draggableId={data.order}
         index={index}
         isDragDisabled={modalDragOn}
       >
@@ -29,20 +33,23 @@ const MyScheduleListItem = ({ data, index, edit }: MyScheduleListItemProps) => {
             ref={provided.innerRef}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
-            className="mb-3 flex pl-7 text-body2"
+            className="flex mb-3 pl-7 text-body2"
             style={{
+              color: snap.isDragging ? 'white' : 'black',
               backgroundColor: snap.isDragging
-                ? 'var(--primary2)'
+                ? 'var(--primary1)'
                 : 'transparent',
               ...provided.draggableProps.style,
             }}
           >
-            <span className="-ml-7 inline-block h-20 w-20 shrink-0 rounded-full bg-gray4 text-center text-body2Bold font-bold">
+            <span className="inline-block w-20 h-20 font-bold text-center text-black rounded-full -ml-7 shrink-0 bg-gray4 text-body2Bold">
               {index + 1}
             </span>
             <div className="flex grow">
-              <p className="grow break-words px-2">{data.placeName}</p>
-              {edtiBtnOn && <MyScheduleListEditBtn />}
+              <p className="px-2 break-words grow">{data.placeName}</p>
+              {edtiBtnOn && (
+                <MyScheduleListEditBtn onClickDelete={onClickDelete} />
+              )}
             </div>
           </li>
         )}

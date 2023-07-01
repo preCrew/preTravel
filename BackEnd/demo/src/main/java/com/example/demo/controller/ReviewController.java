@@ -53,6 +53,13 @@ public class ReviewController {
         return returnUtil.code200("리뷰 상세 조회", review);
     }
 
+    @GetMapping("name")
+    public ResponseEntity<ResponseDTO> findByNameAndAndMemberIdxAndLatitudeAndLongitude(String name, String memberIdx, String latitude, String longitude) {
+        log.info("리뷰 이름, 위경도 조회");
+        List<Review> review = service.findByNameAndAndMemberIdxAndLatitudeAndLongitude(name, memberIdx, latitude, longitude);
+        return returnUtil.code200("리뷰 이름, 위경도 조회", review);
+    }
+
     @PostMapping("")
     public ResponseEntity<ResponseDTO> saveReview(@RequestBody Review review) {
         log.info("리뷰 생성&수정");

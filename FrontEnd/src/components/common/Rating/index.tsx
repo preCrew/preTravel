@@ -6,7 +6,8 @@ import Star from './Star';
 export type RatingNum = 1 | 2 | 3 | 4 | 5;
 interface RatingProps {
   rating: RatingNum;
-  setRating?: (rating: RatingNum) => void;
+  // setRating?: (rating: RatingNum) => void;
+  onChange?: (rating: RatingNum) => void;
   noText?: boolean;
   starSize: number;
 }
@@ -22,7 +23,7 @@ const message = [
 
 const ratingArr: RatingNum[] = [1, 2, 3, 4, 5];
 
-const Rating = ({ rating, setRating, noText, starSize }: RatingProps) => {
+const Rating = ({ rating, onChange, noText, starSize }: RatingProps) => {
   return (
     <Column>
       <Row css={tw`gap-2 `}>
@@ -31,14 +32,14 @@ const Rating = ({ rating, setRating, noText, starSize }: RatingProps) => {
             <Star
               key={r}
               isFilled
-              onClick={() => setRating?.(r)}
+              onClick={() => onChange?.(r)}
               size={starSize}
               canClick={noText ? false : true}
             />
           ) : (
             <Star
               key={r}
-              onClick={() => setRating?.(r)}
+              onClick={() => onChange?.(r)}
               size={starSize}
               canClick={noText ? false : true}
             />

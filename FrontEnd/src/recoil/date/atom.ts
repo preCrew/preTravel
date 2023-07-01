@@ -9,6 +9,7 @@ interface IdateAtom {
   idx: string;
   name: string;
   region: string;
+  city: string;
   dateRange: {
     start: string;
     end: string;
@@ -22,6 +23,7 @@ const currentScheduleAtom = atom<IdateAtom>({
     idx: '',
     name: '',
     region: '',
+    city: '',
     dateRange: {
       start: '',
       end: '',
@@ -31,7 +33,7 @@ const currentScheduleAtom = atom<IdateAtom>({
 });
 const selectedDayAtom = atom({
   key: 'selectedDayAtom',
-  default: 0,
+  default: -1,
 });
 
 export { selectedDayAtom, currentScheduleAtom };

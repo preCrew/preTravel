@@ -1,5 +1,6 @@
 package com.example.demo.service.impl;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -38,19 +39,19 @@ public class IScheduleService implements ScheduleService {
         return list;
     }
 
+    // file이라는 key값이 아예 없거나 / file이라는 key값이 "" 이거나
     @Override
     public Schedule save(Schedule schedule) {
         String fileIdx = (String) (schedule.getFile());
         Schedule result = dao.save(schedule);
-        if (fileIdx == null) {
-            return result;
-        } else {
-            List<File> tmpList = fileService.findByBoardNameAndBoardIdx("schedule", result.getIdx());
-            for (File file : tmpList) {
-                file.setBoardIdx(null);
-                fileService.saveFile(file);
-            }
 
+        List<File> tmpList = fileService.findByBoardNameAndBoardIdx("schedule", result.getIdx());
+        for (File file : tmpList) {
+            file.setBoardIdx(null);
+            fileService.saveFile(file);
+        }
+        
+        if (fileIdx != null && !fileIdx.equals("")) {
             Optional<File> optFile = fileService.findById(fileIdx);
             if (optFile.isEmpty()) {
                 return null;
@@ -61,8 +62,9 @@ public class IScheduleService implements ScheduleService {
             List<File> fileList = new ArrayList<>();
             fileList.add(resultFile);
             result.setFile(fileList);
-            return result;
         }
+
+        return result;
     }
 
     @Override
@@ -81,4 +83,9 @@ public class IScheduleService implements ScheduleService {
         }
     }
 
+    @Override
+    public List<Schedule> findByMemberIdxAndEndDateLessThanEqual(String code, LocalDate now) {
+        List<Schedule> list = dao.findByMemberIdxAndEndDateLessThanEqual(code, now);    
+        return list;
+    }
 }

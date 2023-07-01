@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +17,8 @@ public interface ScheduleService {
     Schedule save(Schedule schedule);
 
     void deleteById(Map<String, Object> map);
+
+    List<Schedule> findByMemberIdxAndEndDateLessThanEqual(String code, LocalDate now);
 
 
 }

@@ -1,50 +1,49 @@
-import { RatingNum } from '@src/components/common/Rating';
-import { useMutation } from '@tanstack/react-query';
+import {
+  QueryClient,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import useLocationState from '../recoil/useLocationState';
+import { File } from './useAddImages';
+import { IReview } from './useGetReview';
+import { useRecoilValue } from 'recoil';
+import { userAtom } from '@src/recoil/user/atom';
 
-export interface File {
-  url: string;
-  file: globalThis.File;
-  key: string;
-}
-
+// memberIdx	String	회원 idx
 const updateReview = async (
-  isRevisit: boolean,
-  rating: RatingNum,
-  textValue: string,
-  imgFiles: File[],
-  region: string,
+  queryClient: QueryClient,
+  review: IReview,
+  memberIdx: string,
+  file: File[],
 ) => {
-  const form = new FormData();
-
-  const dataSet = {
-    isRevisit,
-    rating,
-    textValue,
-    region,
-  };
-
-  form.append('data', JSON.stringify(dataSet));
-  imgFiles.forEach(imgFile => {
-    form.append('files', imgFile.file);
-  });
-
-  const data = await axios.post(`${process.env.SERVER_URL}/review/edit`, form);
-
-  return data.data;
+  try {
+    console.log(review);
+    const response = await axios.post(`${process.env.REAL_SERVER_URL}/review`, {
+      memberIdx: memberIdx,
+      name: review.name,
+      address: review.address,
+      star: review.star,
+      latitude: review.latitude,
+      longitude: review.longitude,
+      revisit: review.revisit,
+      contents: review.contents,
+      idx: review.idx ?? '',
+      file: file.map(f => f.idx.toString()),
+    });
+    if (response.data.code === 200) {
+      queryClient.invalidateQueries(['useGetReviewByName', review.name]);
+    }
+    return response.data.data;
+  } catch (e) {
+    throw new Error('리뷰 업데이트에 실패했습니다.');
+  }
 };
 
-const useReviewUpdateQuery = (
-  isRevisit: boolean,
-  rating: RatingNum,
-  textValue: string,
-  imgFiles: File[],
-  region: string,
-) =>
-  useMutation(() =>
-    updateReview(isRevisit, rating, textValue, imgFiles, region),
-  );
+const useReviewUpdateQuery = (review: IReview, file: File[]) => {
+  const { id } = useRecoilValue(userAtom);
+  const queryClient = useQueryClient();
+
+  return useMutation(() => updateReview(queryClient, review, id, file));
+};
 
 export default useReviewUpdateQuery;
