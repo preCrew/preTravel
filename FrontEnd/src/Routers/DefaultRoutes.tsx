@@ -1,5 +1,7 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { Suspense } from 'react';
+import { useRecoilValue } from 'recoil';
+import { userAtom } from '@src/recoil/user/atom';
 
 import MyPlace from '../pages/MyPlaceInSchedule';
 import LoginPage from '../pages/LoginPage';
@@ -13,8 +15,11 @@ import MyScheduleEdit from '../pages/SchedulePlan/ScheduleEdit';
 import Mypage from '../pages/Mypage';
 import ReviewPage from '../pages/ReviewPage';
 import MySchedule from '../pages/MySchedule';
+import AuthRoute from './AuthRoute';
 
 const DefaultRoutes = () => {
+  const userState = useRecoilValue(userAtom);
+
   return (
     <Routes>
       <Route
@@ -63,7 +68,12 @@ const DefaultRoutes = () => {
       />
       <Route
         path="/login"
-        element={<LoginPage />}
+        element={
+          <AuthRoute>
+            {userState.id ? <Navigate to="/" /> : <LoginPage />}
+          </AuthRoute>
+          // <LoginPage />
+        }
       />
       <Route
         path="/oauth/:where"
