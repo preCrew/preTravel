@@ -96,7 +96,7 @@ const ReviewEditPage = () => {
         <TopText>{locationState.name}</TopText>
       </TopBar>
 
-      <Column css={tw`w-h-full gap-14`}>
+      <Column css={tw`mt-16 w-h-full gap-14 content-inner`}>
         <Column>
           <FormText required>만족도</FormText>
           <Rating
@@ -106,7 +106,7 @@ const ReviewEditPage = () => {
           />
         </Column>
 
-        <Column css={tw`gap-5 relative `}>
+        <Column css={tw`relative gap-5 `}>
           <FormText placeHolder="리뷰 사진을 업로드 해주세요. (최대 10장)">
             사진 업로드
           </FormText>
@@ -127,7 +127,7 @@ const ReviewEditPage = () => {
               css={tw`items-center `}
             >
               <CheckBox onClick={handleClickRevisitCheckBox} />
-              <span css={tw`text-body3 cursor-pointer select-none`}>
+              <span css={tw`cursor-pointer select-none text-body3 pl-9`}>
                 다음에도 방문하고 싶어요😃
               </span>
             </Row>
@@ -139,7 +139,7 @@ const ReviewEditPage = () => {
           <textarea
             onChange={onChangeText}
             value={textValue}
-            css={tw`w-h-full text-body1 border border-gray1 rounded-2xl p-4 resize-none flex-1`}
+            css={tw`flex-1 p-4 border resize-none w-h-full text-body1 border-gray1 rounded-2xl`}
           />
         </Column>
 

@@ -14,7 +14,7 @@ const Nav = () => {
   return (
     <nav
       ref={navRef}
-      className="fixed bottom-0 left-0 z-50 w-full py-1 bg-white"
+      className="fixed bottom-0 left-0 z-50 w-full bg-white py-1"
     >
       <ul className="flex items-center justify-around">
         <NavItem
@@ -22,11 +22,11 @@ const Nav = () => {
           index={0}
         />
         <NavItem
-          to="/myschedule"
+          to="/mySchedule"
           index={1}
         />
         <NavItem
-          to="/search"
+          to="/search/region"
           index={2}
         />
         <NavItem

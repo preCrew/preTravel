@@ -25,35 +25,37 @@ const ImageViewer = ({ images }: ImageViewerProps) => {
   };
 
   return (
-    <div css={tw`relative w-full pb-[100%] rounded-xl`}>
-      <div css={tw`absolute w-full h-full rounded-xl`}>
-        {images?.length && images.length > 0 ? (
-          <>
-            <Slider
-              itemNum={images?.length ?? 0}
-              onMovedLeft={handleSliderDraggingLeft}
-              onMovedRight={handleSliderDraggingRight}
-            >
-              <Row css={tw`w-h-full`}>
-                {images?.map(image => (
-                  <img
-                    key={image.fileDir}
-                    src={image.fileDir}
-                    css={tw`rounded-xl`}
-                  />
-                ))}
-              </Row>
-            </Slider>
-            <ImageCounter
-              now={imageIndex.now}
-              max={imageIndex.max}
-            />
-          </>
-        ) : (
-          <div>등록된 이미지가 없어요!</div>
-        )}
-      </div>
-    </div>
+    <>
+      {images?.length && images.length > 0 ? (
+        <div css={tw`relative w-full pb-[100%] rounded-xl`}>
+          <div css={tw`absolute w-full h-full rounded-xl`}>
+            <>
+              <Slider
+                itemNum={images?.length ?? 0}
+                onMovedLeft={handleSliderDraggingLeft}
+                onMovedRight={handleSliderDraggingRight}
+              >
+                <Row css={tw`w-h-full`}>
+                  {images?.map(image => (
+                    <img
+                      key={image.fileDir}
+                      src={image.fileDir}
+                      css={tw`rounded-xl`}
+                    />
+                  ))}
+                </Row>
+              </Slider>
+              <ImageCounter
+                now={imageIndex.now}
+                max={imageIndex.max}
+              />
+            </>
+          </div>
+        </div>
+      ) : (
+        ''
+      )}
+    </>
   );
 };
 

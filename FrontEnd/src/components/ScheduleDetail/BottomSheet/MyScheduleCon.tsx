@@ -39,10 +39,9 @@ const MyScheduleCon = ({ id }: TMyschedulConProps) => {
 
   const { mutate: mutateOrderChagePlace, isLoading: isLoadingAddPlace } =
     useAddPlaceinScehduleQuery();
+
   const navigate = useNavigate();
-  useEffect(() => {
-    //console.log('편집', changedOrderState);
-  });
+
   useEffect(() => {
     setSelectedDayState(0);
     setmodalOpen(true);

@@ -62,6 +62,7 @@ const SearchTemplate = ({
     <div css={tw`absolute top-0 z-[500] w-full h-full bg-white`}>
       <TopBar onClickBackButton={onClickBackButton}>
         <SearchButton
+          css={tw`ml-2`}
           bgColor={searchButtonColor}
           placeHolder={searchButtonPlaceHolder}
           inputRef={searchButtonRef}

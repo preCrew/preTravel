@@ -1,22 +1,54 @@
-import React from 'react';
-import tw, { css } from 'twin.macro';
+import { Routes, Route } from 'react-router-dom';
+import { Suspense, useEffect } from 'react';
 
-import CategoryList from '@src/components/common/Mypage/CategoryList';
-import Profile from '@src/components/common/Mypage/Profile';
-import Nav from '@src/components/common/Layout/Nav';
+import MypageLike from './MypageLike';
+import MypageMain from './MypageMain';
+import MypageReview from './MypageReview';
+import MypageVisit from './MypageVisit';
+import VisitedList from './MypageVisit/VisitedList';
 
 const Mypage = () => {
   return (
-    <div
-      css={[
-        tw`h-full bg-gray4 after:(content-[''] h-[55%] w-full absolute left-0 top-0 bg-primary1)`,
-        css``,
-      ]}
-    >
-      <Profile />
-      <CategoryList />
-      <Nav />
-    </div>
+    <>
+      <Routes>
+        <Route
+          path="/"
+          element={<MypageMain />}
+        />
+        <Route
+          path="/like"
+          element={
+            <Suspense>
+              <MypageLike />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/review"
+          element={
+            <Suspense>
+              <MypageReview />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/visit"
+          element={
+            <Suspense>
+              <MypageVisit />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/visit/list"
+          element={
+            <Suspense>
+              <VisitedList />
+            </Suspense>
+          }
+        />
+      </Routes>
+    </>
   );
 };
 

@@ -40,19 +40,17 @@ const MainPage = () => {
 
   return (
     <>
-      <header css={tw`fixed z-20 w-full left-5 top-5`}>
-        <Column>
-          <SearchButton
-            bgColor="gray2"
-            placeHolder="장소를 검색해주세요"
-            onClickSearchButton={handleClickSearchButton}
-            css={tw`z-[15]`}
-          />
-          <TabSlide
-            data={mainTabCategory}
-            category="카테고리별"
-          />
-        </Column>
+      <header css={tw`fixed z-20 w-full p-5 pt-2`}>
+        <SearchButton
+          bgColor="gray2"
+          placeHolder="장소를 검색해주세요"
+          onClickSearchButton={handleClickSearchButton}
+          css={tw`z-[15] mb-3`}
+        />
+        <TabSlide
+          data={mainTabCategory}
+          category="카테고리별"
+        />
       </header>
       <Map onLoad={onLoadMap} />
       {selectedDayState === 0 || selectedDayState === 1 ? (

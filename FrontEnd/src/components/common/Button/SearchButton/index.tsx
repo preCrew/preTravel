@@ -29,7 +29,7 @@ const SearchButton = ({
       onClick={onClickSearchButton}
       type="none"
       color={bgColor}
-      css={tw`flex items-center justify-start text-black cursor-text w-[calc(100%-var(--contentX))] h-40 m-2 rounded-3xl`}
+      css={tw`flex items-center justify-start w-full h-40 text-black cursor-text rounded-3xl`}
       className={className}
     >
       <div
