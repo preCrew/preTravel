@@ -6,6 +6,7 @@ import { userAtom } from '@src/recoil/user/atom';
 import useGetUserMemeberIdx from '@src/hooks/react-query/useGetUserMemberIdx';
 
 import useLocationSearch from '@src/hooks/useLocationSearch';
+import { useCookies } from 'react-cookie';
 
 interface OauthPageProps {}
 
@@ -19,6 +20,8 @@ const OauthPage = ({}: OauthPageProps) => {
   const where = params.where as 'kakao' | 'naver';
   const code = getQueryString('code') as string;
   const state = getQueryString('state') as string;
+
+  const [cookies, setCookies] = useCookies(['userCookie']);
 
   const {
     refetch: fetchUserMemeberIdx,
@@ -41,7 +44,9 @@ const OauthPage = ({}: OauthPageProps) => {
         ...state,
         accessToken: userMemberIdx.accessToken,
         isLogin: true,
+        id: userMemberIdx.id,
       }));
+      setCookies('userCookie', userMemberIdx.id, { path: '/' });
       navigate('/');
     }
   }, [isSuccess]);
