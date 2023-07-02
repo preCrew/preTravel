@@ -248,13 +248,13 @@
       "languageVersion": "2.17"
     },
     {
-      "name": "app",
+      "name": "pretravel",
       "rootUri": "../",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     }
   ],
-  "generated": "2023-05-27T08:31:42.693440Z",
+  "generated": "2023-07-02T09:13:21.825361Z",
   "generator": "pub",
   "generatorVersion": "3.0.0"
 }
