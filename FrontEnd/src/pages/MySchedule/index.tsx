@@ -20,9 +20,11 @@ import { SkeletonMyScheduleCard } from '@src/components/MyScedule/MyScheduleCard
 import MyScheduleCardList from '@src/components/MyScedule/MyScheduleCardList';
 import Nav, { navH } from '@src/components/common/Layout/Nav';
 
-const MySchedule2 = () => {
+const MySchedule = () => {
   const navigate = useNavigate();
   const [isDeleteMode, setIsDeleteMode] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [editCard, setEditCard] = useState<any>([]);
 
   const { clearCardState } = useCardListState();
   const filterdSelectedListState = useRecoilValue(filteredCardListSelector);
@@ -40,7 +42,12 @@ const MySchedule2 = () => {
   const handleClickBackButton = () => {
     navigate(-1);
   };
+  const handleClickEditButton = () => {
+    //navigate('/schedulePlan/edit', { state: editCard });
+    setIsEditMode(prev => !prev);
+  };
   const handleClickAddButton = () => {
+    navigate('/search/region');
     navigate('/search/region');
   };
   const handleClickTopRemoveButton = () => {
@@ -57,7 +64,7 @@ const MySchedule2 = () => {
   return (
     <>
       <div className={MyScheduleDiv.childrenBox}>
-        <div className={MyScheduleDiv.title}>내 일정</div>
+        <h2 className={MyScheduleDiv.title}>내 일정</h2>
         <div className={MyScheduleDiv.buttonBox}>
           {isDeleteMode ? (
             <div className="flex">
@@ -66,23 +73,30 @@ const MySchedule2 = () => {
             </div>
           ) : (
             <IconBox
+              onClickEditButton={handleClickEditButton}
               onClickAddButton={handleClickAddButton}
               onClickRemoveButton={handleClickTopRemoveButton}
             />
           )}
         </div>
       </div>
-
+      {isEditMode && (
+        <p className="px-5 text-body3">편집할 일정을 클릭하세요.</p>
+      )}
       <div css={tw`overflow-y-scroll`}>
         <Suspense fallback={<SkeletonMyScheduleCard />}>
-          <MyScheduleCardList deleteMode={isDeleteMode} />
+          <MyScheduleCardList
+            deleteMode={isDeleteMode}
+            editMode={isEditMode}
+            setEditCard={setEditCard}
+          />
         </Suspense>
         {filterdSelectedListState > 0 && (
           <Button
             type="large"
             color="primary1"
             onClick={handleClickBottomRemoveButton}
-            className={`fixed bottom-0 z-[51]`}
+            className={`fixed bottom-0`}
           >
             삭제하기
           </Button>
@@ -94,4 +108,4 @@ const MySchedule2 = () => {
   );
 };
 
-export default MySchedule2;
+export default MySchedule;

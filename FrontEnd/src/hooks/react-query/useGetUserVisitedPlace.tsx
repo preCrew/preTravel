@@ -49,11 +49,19 @@ const useGetUserVisitedPlace = (
   storeName: string,
   latitude: string,
   longitude: string,
+  enabledExist: boolean,
 ) => {
   const { id: memberIdx } = useRecoilValue(userAtom);
 
-  return useQuery(['useGetUserVisitedPlace', memberIdx], () =>
-    getData(storeName, latitude, longitude, memberIdx),
+  return useQuery(
+    ['useGetUserVisitedPlace', memberIdx],
+    () => getData(storeName, latitude, longitude, memberIdx),
+    {
+      enabled: enabledExist,
+      onSuccess: data => {
+        console.log(data);
+      },
+    },
   );
 };
 

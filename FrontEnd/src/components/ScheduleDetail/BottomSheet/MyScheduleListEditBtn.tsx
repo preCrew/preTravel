@@ -18,7 +18,7 @@ const MyScheduleListEdit = ({ onClickDelete }: MyScheduleListEditProps) => {
         type="button"
         onClick={onClickDelete}
         style={style}
-        className="border rounded-full h-25 w-25 border-gray5"
+        className="h-25 w-25 rounded-full border border-gray5"
       >
         <TbTrash className="m-auto" />
       </button>

@@ -24,13 +24,14 @@ const MyScheduleCard = ({
   file,
   onClickCard,
 }: MyScheduleCardProps) => {
-  const { changeCardState } = useCardListState();
+  const { changeCardState, cardList } = useCardListState();
   const [isSeleted, setIsSeleted] = useState(false);
 
   const handleClickCheckBox = () => {
     setIsSeleted(!isSeleted);
     changeCardState(cardIdx, isSeleted);
   };
+
   const handleClickCard = () => {
     if (deleteMode) {
       handleClickCheckBox();

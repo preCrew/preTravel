@@ -8,6 +8,7 @@ const useCardListState = () => {
     // 만약 누르기 전에 체크가 돼있었다면 현재 상태는 체크 안한상태
     // 배열에서 지워줌
     if (isSelected) {
+      console.log(cardList, isSelected);
       setCardList(prev => prev.filter(cardId => cardId !== id));
     }
     // 누르기 전에 체크가 돼있지 않았다면 현재 상태는 체크 한 상태

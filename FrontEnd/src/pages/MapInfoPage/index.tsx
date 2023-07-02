@@ -1,10 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { createSearchParams, useLocation, useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import tw from 'twin.macro';
 
 import { currentScheduleAtom, selectedDayAtom } from '@src/recoil/date/atom';
-import { locationAtom } from '@src/recoil/location/atom';
 import { modalAtom } from '@src/recoil/modal/atom';
 
 import useAddPlaceinScehduleQuery from '@src/hooks/react-query/useAddPlaceinScehdule';
@@ -17,10 +16,11 @@ import IconButton from '@src/components/common/Button/IconButton';
 import Button from '@src/components/common/Button';
 import TopBar from '@src/components/common/TobBar';
 import useGetUserVisitedPlace from '@src/hooks/react-query/useGetUserVisitedPlace';
-import useGetReview, { IReview } from '@src/hooks/react-query/useGetReview';
 import useGetReviewByName from '@src/hooks/react-query/useGetReviewByName';
 import { TCurrentplace, currentPlaceAtom } from '@src/recoil/place/atom';
 import useLocationState from '@src/hooks/recoil/useLocationState';
+import Map from '@src/components/common/Map';
+import useMap from '@src/hooks/map/useMap';
 
 export interface MapInfoPageProps {}
 
@@ -29,7 +29,7 @@ const MapInfoPage = ({}: MapInfoPageProps) => {
   const {
     locationState: { selectData },
   } = useLocationState();
-  const { mutate: mutateAddPlace } = useAddPlaceinScehduleQuery();
+  const { initializeMap, mapLoad, getCenterMap, setLevelMap } = useMap();
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -42,6 +42,7 @@ const MapInfoPage = ({}: MapInfoPageProps) => {
   const selectDayState = useRecoilValue(selectedDayAtom);
   const [placeAdd, setPlaceAdd] = useState(false);
 
+  const { mutate: mutateAddPlace } = useAddPlaceinScehduleQuery();
   const { data: like, refetch: getLikeRefetch } = useGetLike(
     searchParamsObj.name,
     searchParamsObj.latitude,
@@ -60,6 +61,7 @@ const MapInfoPage = ({}: MapInfoPageProps) => {
     searchParamsObj.name,
     searchParamsObj.latitude,
     searchParamsObj.longitude,
+    true,
   );
 
   const { mutate: deleteLikeMutation } = useDeleteLike(like?.idx ?? '');
@@ -70,11 +72,26 @@ const MapInfoPage = ({}: MapInfoPageProps) => {
     searchParamsObj.longitude,
   );
 
+  const onLoadMap = useCallback((map: any) => {
+    initializeMap(map);
+  }, []);
+
   useEffect(() => {
     setModalOpen(true);
   }, []);
 
+  useEffect(() => {
+    if (mapLoad) {
+      getCenterMap([searchParamsObj.latitude, searchParamsObj.longitude]);
+      setLevelMap();
+    }
+  }, [mapLoad]);
+
   const handleClickAddScheduleButton = () => {
+    if (!currentScheduleState.idx) {
+      return alert('내 일정 추가 후 장소를 추가해 주세요.');
+    }
+
     const schdule = {
       placeName: searchParamsObj.name,
       address: searchParamsObj.address,
@@ -95,6 +112,7 @@ const MapInfoPage = ({}: MapInfoPageProps) => {
       sctIdx: currentScheduleState.idx + '',
       list: newPlaceList,
     }));
+
     setPlaceAdd(true);
   };
 
@@ -157,6 +175,7 @@ const MapInfoPage = ({}: MapInfoPageProps) => {
       addLikeMutation(tempLikeData);
     }
   };
+
   return (
     <>
       <TopBar onClickBackButton={handleClickBackButton}>
@@ -166,7 +185,16 @@ const MapInfoPage = ({}: MapInfoPageProps) => {
           {searchParamsObj.name}
         </div>
       </TopBar>
-      <BottomSheetWrap drag={true}>
+      <Map
+        onLoad={onLoadMap}
+        // initialCetner={
+        //   currentPlaceState.list.length ? [allLatitude, allLongitude] : 0
+        // }
+      />
+      <BottomSheetWrap
+        drag={true}
+        snapIdx={2}
+      >
         <div css={tw`flex flex-col items-center gap-3 p-2`}>
           <div css={tw`text-h5 `}>{searchParamsObj.address}</div>
           <div css={tw`rounded-full w-30 h-30 flex-with-center bg-gray3`}>
@@ -184,7 +212,7 @@ const MapInfoPage = ({}: MapInfoPageProps) => {
               disabled={isVisitedPlace}
               onClickDisabled={handleClickisabledReviewButton}
             >
-              {isVisitedPlace ? '리뷰 작성' : '리뷰 보기'}
+              {isVisitedPlace ? '리뷰 보기' : '리뷰 작성'}
             </Button>
             <Button
               type="large"

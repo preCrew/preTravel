@@ -19,7 +19,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,8 +45,6 @@ public class KaKaoService {
 
     @Value("${oauth.kakao.redirect_uri}")
     private String REDIRECT; // http://localhost:8080/oauth/kakao
-
-    private String WEB_HOST = "http://localhost:8080/";
 
     @Autowired
     RestTemplate restTemplate;
@@ -195,13 +192,12 @@ public class KaKaoService {
 
     public ResponseEntity<Object> logout() {
         log.info("카카오 로그아웃 합니다.");
-        String url = LOGOUT_HOST
-                + "?client_id=" + REST_API_KEY // 1. client_id (rest_api_key)
-                + "&redirect_uri=" + WEB_HOST; // 2. redirect_uri
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(URI.create(url));
-        return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
-
+        return ResponseEntity
+                .ok()
+                .body(ResponseDTO.builder()
+                        .code(200)
+                        .msg("로그아웃 성공")
+                        .data("")
+                        .build());
     }
 }

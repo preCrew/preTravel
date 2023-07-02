@@ -65,6 +65,7 @@ const TabSlide = ({ active, data, category, onClick }: TabSlideProps) => {
             >
               <button
                 type="button"
+                data-idx={i}
                 onClick={onClick}
                 className={`${btnActive(
                   i,

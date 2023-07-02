@@ -10,6 +10,7 @@ import { calendarIsOpenAtom, modalAtom } from '@src/recoil/modal/atom';
 import { currentScheduleAtom, selectedDayAtom } from '@src/recoil/date/atom';
 
 const css = `
+    .rdp-month {margin: auto !important;}
     .rdp-button:hover:not([disabled]):not(.rdp-day_selected),
     .rdp-day_selected, .rdp-day_selected:focus-visible, .rdp-day_selected:hover{
         background-color: var(--primary1) !important;
@@ -24,7 +25,7 @@ const Calendar = () => {
     useRecoilState(selectedDayAtom);
 
   const [selectedDay, setSelectedDay] = useState<any>(
-    new Date(currentScheduleState.dateRange.start),
+    new Date(currentScheduleState.schedule[selectedDayState].date),
   );
   const [calendarIsOpenState, setCalendarIsOpenState] =
     useRecoilState(calendarIsOpenAtom);
@@ -47,8 +48,21 @@ const Calendar = () => {
   };
 
   const handleDayClick: DayClickEventHandler = day => {
+    const date1: any = new Date(currentScheduleState.schedule[0].date);
+    const date2: any = new Date(day);
+
+    const differenceInMilliseconds = Math.abs(date2 - date1);
+    const differenceInDays = Math.ceil(
+      differenceInMilliseconds / (1000 * 60 * 60 * 24),
+    );
+    if (date2 - date1 < 0) {
+      setSelectedDayState(0);
+    } else {
+      setSelectedDayState(differenceInDays);
+    }
+
     setCalendarIsOpenState(false);
-    setSelectedDayState(getDateDiff(currentScheduleState.dateRange.start, day));
+    //]setSelectedDayState(getDateDiff(currentScheduleState.dateRange.start, day));
   };
 
   return (
