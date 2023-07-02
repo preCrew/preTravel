@@ -7,7 +7,7 @@ export interface MySchedule {
   createDate: string;
   endDate: string;
   idx: number;
-  memberIdx: number;
+  memberIdx: string;
   modifyDate?: string;
   name: string;
   startDate: string;
@@ -15,7 +15,7 @@ export interface MySchedule {
   file: any[];
 }
 
-const getData = async (memberIdx: number) => {
+const getData = async (memberIdx: string) => {
   try {
     const response = await axios.get<AxiosResponse<MySchedule[]>>(
       `${process.env.REAL_SERVER_URL}/schedule?memberIdx=${memberIdx}`,
@@ -28,7 +28,7 @@ const getData = async (memberIdx: number) => {
 };
 const useMyScheduleGetQuery = () => {
   const userState = useRecoilValue(userAtom);
-  return useQuery(['mySchedule'], () => getData(userState.testId), {
+  return useQuery(['mySchedule'], () => getData(userState.id), {
     //staleTime:
   });
 };
