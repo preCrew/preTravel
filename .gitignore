@@ -5,7 +5,7 @@ node_modules/
 fake_server/
 dist/
 build/
-.dart_tool
+.dart_tool/
 Flutter/.flutter-plugins
 Flutter/.flutter-plugins-dependencies
 Flutter/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java
