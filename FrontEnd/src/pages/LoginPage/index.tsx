@@ -35,10 +35,10 @@ const LoginPage = ({}: LoginPageProps) => {
         where="kakao"
         onClick={handleClickKakaoLoginButton}
       />
-      <LoginButton
+      {/* <LoginButton
         where="naver"
         onClick={handleClickNaverLoginButton}
-      />
+      /> */}
     </div>
   );
 };

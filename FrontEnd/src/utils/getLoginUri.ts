@@ -3,15 +3,15 @@ export const getLoginUri = (where: 'naver' | 'kakao' | 'base') => {
   const uri = {
     naver: {
       development:
-        'https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=76Nr2e2G6KuBeyuVPqbf&state=STATE_STRING&redirect_uri=https://web-fronttest-ll32glc6adwo3.gksl2.cloudtype.app/oauth/naver',
+        'https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=76Nr2e2G6KuBeyuVPqbf&state=STATE_STRING&redirect_uri=https://web-pretravelfrontend-lhe2blhxg4o79.sel4.cloudtype.app/oauth/naver',
       production:
-        'https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=76Nr2e2G6KuBeyuVPqbf&state=STATE_STRING&redirect_uri=https://web-fronttest-ll32glc6adwo3.gksl2.cloudtype.app/oauth/naver',
+        'https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=76Nr2e2G6KuBeyuVPqbf&state=STATE_STRING&redirect_uri=https://web-pretravelfrontend-lhe2blhxg4o79.sel4.cloudtype.app/oauth/naver',
     },
     kakao: {
       development:
-        'https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=2581cd83651b3e51982587f4cb1652f5&redirect_uri=https://web-fronttest-ll32glc6adwo3.gksl2.cloudtype.app/oauth/kakao',
+        'https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=2581cd83651b3e51982587f4cb1652f5&redirect_uri=https://web-pretravelfrontend-lhe2blhxg4o79.sel4.cloudtype.app/oauth/kakao',
       production:
-        'https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=2581cd83651b3e51982587f4cb1652f5&redirect_uri=https://web-fronttest-ll32glc6adwo3.gksl2.cloudtype.app/oauth/kakao',
+        'https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=2581cd83651b3e51982587f4cb1652f5&redirect_uri=https://web-pretravelfrontend-lhe2blhxg4o79.sel4.cloudtype.app/oauth/kakao',
     },
     base: {
       development: 'http://localhost:3001',
