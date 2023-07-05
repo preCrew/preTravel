@@ -4,9 +4,8 @@ export const userAtom = atom({
   key: 'userAtom',
   default: {
     isLogin: false,
-    id: '12',
+    id: '',
     accessToken: '',
-    testId: 12,
     info: {
       likespot: [],
       member: null,

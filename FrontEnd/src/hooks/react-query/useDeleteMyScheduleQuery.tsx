@@ -1,12 +1,10 @@
-// import { CardListI } from '@src/recoil/cardList/atom';
-import cardListAtom from '@src/recoil/cardList/atom';
 import {
   QueryClient,
   useMutation,
   useQueryClient,
 } from '@tanstack/react-query';
 import axios from 'axios';
-import { useRecoilValue } from 'recoil';
+import useCardListState from '../recoil/useCardListState';
 
 const del = async (list: number[], queryClient: QueryClient) => {
   const response = await axios.delete(
@@ -23,10 +21,10 @@ const del = async (list: number[], queryClient: QueryClient) => {
   return response;
 };
 const useMyScheduleDeleteQuery = () => {
-  const list = useRecoilValue(cardListAtom);
+  const { cardList } = useCardListState();
   const queryClient = useQueryClient();
   return useMutation(['myScheduleDelete'], {
-    mutationFn: () => del(list, queryClient),
+    mutationFn: () => del(cardList, queryClient),
   });
 };
 

@@ -29,11 +29,15 @@ const MySchedule = () => {
   const { clearCardState } = useCardListState();
   const filterdSelectedListState = useRecoilValue(filteredCardListSelector);
 
-  const { mutate: deleteScheduleQuery, isSuccess } = useMyScheduleDeleteQuery();
+  const { mutate: deleteScheduleQuery, isSuccess: isSuccessDeleteSchedule } =
+    useMyScheduleDeleteQuery();
 
   useEffect(() => {
-    if (isSuccess) clearCardState();
-  }, [isSuccess]);
+    if (isSuccessDeleteSchedule) {
+      setIsDeleteMode(false);
+      clearCardState();
+    }
+  }, [isSuccessDeleteSchedule]);
 
   const handleClickBackButton = () => {
     navigate(-1);
@@ -44,12 +48,12 @@ const MySchedule = () => {
   };
   const handleClickAddButton = () => {
     navigate('/search/region');
+    navigate('/search/region');
   };
   const handleClickTopRemoveButton = () => {
     setIsDeleteMode(true);
   };
   const handleClickBottomRemoveButton = () => {
-    setIsDeleteMode(false);
     deleteScheduleQuery();
   };
   const handleClickCancelButton = () => {
