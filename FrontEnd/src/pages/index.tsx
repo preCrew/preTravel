@@ -21,7 +21,6 @@ const App = () => {
       </Helmet>
       <Routes>
         <Route
-          path="/*"
           element={
             <AuthRoute>
               <DefaultRoutes />
