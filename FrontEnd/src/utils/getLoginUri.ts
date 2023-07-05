@@ -15,7 +15,8 @@ export const getLoginUri = (where: 'naver' | 'kakao' | 'base') => {
     },
     base: {
       development: 'http://localhost:3001',
-      production: 'https://port-0-pretravel-ll32glc6adwo3.gksl2.cloudtype.app',
+      production:
+        'https://web-pretravelfrontend-lhe2blhxg4o79.sel4.cloudtype.app',
     },
   };
   return uri[where][mode];
