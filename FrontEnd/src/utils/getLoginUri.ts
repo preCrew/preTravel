@@ -9,9 +9,9 @@ export const getLoginUri = (where: 'naver' | 'kakao' | 'base') => {
     },
     kakao: {
       development:
-        'https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=2581cd83651b3e51982587f4cb1652f5&redirect_uri=https://port-0-pretravel-lhe2blhxg4o79.sel4.cloudtype.app/oauth/kakao',
+        'https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=2581cd83651b3e51982587f4cb1652f5&redirect_uri=https://web-pretravelfrontend-lhe2blhxg4o79.sel4.cloudtype.app/',
       production:
-        'https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=2581cd83651b3e51982587f4cb1652f5&redirect_uri=https://port-0-pretravel-lhe2blhxg4o79.sel4.cloudtype.app/oauth/kakao',
+        'https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=2581cd83651b3e51982587f4cb1652f5&redirect_uri=https://web-pretravelfrontend-lhe2blhxg4o79.sel4.cloudtype.app/',
     },
     base: {
       development: 'http://localhost:3001',
