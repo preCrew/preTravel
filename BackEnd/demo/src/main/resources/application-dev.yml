@@ -3,7 +3,7 @@ spring:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://svc.sel4.cloudtype.app:30772/schedule?characterEncoding=UTF-8&useTimezone=true&serverTimezone=Asia/Seoul
     username: root
-    password: charmacist
+    password: root
   jpa:
     hibernate:
       ddl-auto: none
