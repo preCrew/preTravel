@@ -2,6 +2,8 @@ import { Route, Routes } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import DefaultRoutes from '../Routers/DefaultRoutes';
 import AuthRoute from '@src/Routers/AuthRoute';
+import LoginPage from './LoginPage';
+import OauthPage from './OauthPage';
 
 const App = () => {
   return (
@@ -20,6 +22,14 @@ const App = () => {
         />
       </Helmet>
       <Routes>
+        {/* <Route
+          path="/login"
+          element={<LoginPage />}
+        /> */}
+        <Route
+          path="/oauth/:where"
+          element={<OauthPage />}
+        />
         <Route
           path="/*"
           element={
